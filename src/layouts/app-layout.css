@@ -1,0 +1,43 @@
+.ant-layout-sider {
+  min-height: 100vh;
+}
+
+.ant-layout-footer {
+  background-color: #1a1a13;
+  display: flex;
+  flex-direction: row;
+  vertical-align: middle;
+}
+
+.--layout__sider-logo {
+  min-height: 64px;
+  background-color: #1a1a13;
+  background-image: url("../assets/images/logo.png");
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-position: center;
+}
+
+.--layout__footer {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-content: center;
+}
+
+.ant-menu-overflow-item {
+  line-height: 30px;
+}
+
+.ant-menu-overflow {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+.--footer__avatar {
+  margin-right: 12px;
+}

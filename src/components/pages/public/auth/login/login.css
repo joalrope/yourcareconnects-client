@@ -1,0 +1,24 @@
+.--login__container {
+    display: flex;
+    height: 83.5vh;
+    flex-direction: row;
+    align-items: center;
+
+}
+
+.--login__bg {
+    flex: auto;
+    width: 100vw;
+    height: 50vh;
+    background-image: url("../../../../../assets/images/register-bg.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.--login__form {
+    display: flex;
+    justify-items: left;
+    flex: auto;
+    width: 100vw;
+    height: 50vh;
+}

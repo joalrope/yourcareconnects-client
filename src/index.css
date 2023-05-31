@@ -1,69 +1,90 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 
 body {
-  margin: 0;
+  font-family: Inter !important;
+}
+
+.ant-layout-header {
+  background-color: #1a1a13;
+  height: 64px;
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  align-items: center;
+  align-content: center;
+  justify-content: flex-start;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.ant-layout .ant-layout-sider {
+  position: relative;
+  min-width: 0;
+  background: #1a1a13;
+  transition: all 0.2s, background 0s;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.ant-layout-header {
+  padding-inline: 50px;
+  color: rgba(0, 0, 0, 0.88);
+  background: #1a1a13;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.ant-menu-dark,
+.ant-menu-dark>.ant-menu {
+  color: #f8c65b;
+  background: #1a1a13;
+}
+
+.ant-layout .ant-layout-sider-trigger {
+  background: #1a1a13;
+}
+
+.ant-menu-dark.ant-menu-horizontal>.ant-menu-item-selected,
+.ant-menu-dark>.ant-menu .ant-menu-horizontal>.ant-menu-item-selected,
+.ant-menu-dark.ant-menu-horizontal>.ant-menu-submenu-selected,
+.ant-menu-dark>.ant-menu .ant-menu-horizontal>.ant-menu-submenu-selected {
+  color: #1a1a13;
+  background-color: #f8c65b;
+}
+
+.ant-menu-dark .ant-menu-item-selected,
+.ant-menu-item-selected {
+  color: #1a1a13;
+}
+
+.ant-layout-header ul {
+  width: 100%;
+}
+
+.ant-layout-header li {
+  background: none;
+  padding: 0 5px;
+  border-radius: 10px !important;
+  margin: 0 10px 0 0 !important;
+}
+
+.ant-layout-header li:first-child {
+  margin: 0 10px 0 0 !important;
+}
+
+.ant-menu-overflow {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-top: 0;
+}
+
+.ant-layout-footer {
+  background-color: #1a1a13;
+  padding: 10px 50px !important;
+}
+
+.ant-layout .ant-layout-sider-trigger {
+  color: #f8c65b;
+}
+
+.--layout__content {
+  height: 83.5vh;
+  max-height: 83.5vh;
+}
+
+.--layout__footer {
+  background-color: #1a1a13;
 }
