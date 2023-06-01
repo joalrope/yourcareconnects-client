@@ -1,37 +1,49 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Menu } from "antd";
-// import { routes } from '../router/routes';
-import {
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-} from "@ant-design/icons";
+import { Menu, MenuProps } from "antd";
+import { UploadOutlined, ProfileOutlined } from "@ant-design/icons";
+
 import { Link } from "react-router-dom";
+import { INav } from "./AppLayout";
+
+const providerRoutes = [
+  {
+    label: <Link to="/profile">Profile</Link>,
+    path: "/profile",
+    key: "profile",
+    icon: <ProfileOutlined />,
+  },
+  {
+    label: <Link to="/upload">Docs upload</Link>,
+    path: "/upload",
+    key: "upload",
+    icon: <UploadOutlined />,
+  },
+];
 
 export const SiderMenu = () => {
-  // return (
-  //   <Menu theme='dark' mode='inline' defaultSelectedKeys={['1']}>
-  //     {routes.map((props, index) => {
-  //       return <ItemMenu key={index} data={props} />;
-  //     })}
-  //   </Menu>
-  // );
+  let locationPath;
+
+  const items: MenuProps["items"] = providerRoutes;
+
+  const handleClick = ({ key }: INav) => {
+    locationPath = key;
+
+    if (key === "logout") {
+      // dispatch(startLogout());
+      // clearStore(dispatch);
+      //history.push("/home");
+      // dispatch(setCurrentPath("/home"));
+    }
+  };
 
   return (
-    <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-      <Menu.Item key="1">
-        <UserOutlined />
-        <span>Mi perfil</span>
-        <Link to="/login" />
-      </Menu.Item>
-      <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-        <span>Mis Servicios</span>
-        <Link to="/register" />
-      </Menu.Item>
-      <Menu.Item key="3" icon={<UploadOutlined />}>
-        <span>Cargar Documentos</span>
-        {/* <Link to='/app/inventory' /> */}
-      </Menu.Item>
-    </Menu>
+    <Menu
+      theme="dark"
+      mode="inline"
+      selectedKeys={locationPath}
+      defaultSelectedKeys={["/"]}
+      onClick={handleClick}
+      items={items}
+    />
   );
 };

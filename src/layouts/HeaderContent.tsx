@@ -1,15 +1,23 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Menu } from "antd";
+import { useAppSelector, useAppDispatch } from "../store/hooks";
+import { selecti18n, useES, useUS } from "../store/reducers/i18n";
+import { Link } from "react-router-dom";
+import { Menu, Tooltip, theme } from "antd";
 import type { MenuProps } from "antd";
-import { Route, routes } from "../router/routes";
+import { TranslationOutlined } from "@ant-design/icons";
 
-interface INav {
-  key: string;
-  keyPath: string[];
-}
+import { Route, routes } from "../router/routes";
+import { INav } from "./AppLayout";
+
+const { useToken } = theme;
 
 export const HeaderContent = () => {
-  const isLoggedIn = false;
+  const i18n = useAppSelector(selecti18n);
+  console.log(i18n);
+  const dispatch = useAppDispatch();
+
+  const { token } = useToken();
+
+  const isLoggedIn = true;
 
   const mode = "";
 
@@ -21,20 +29,23 @@ export const HeaderContent = () => {
           (route.type === "auth" && route.mode === mode))
     )
     .map((route: Route) => ({
-      label: route.name,
+      label: <Link to={route.path}>{route.name}</Link>,
       path: route.path,
       key: route.key,
-      // icon: route.icon,
     }));
 
   let locationPath;
 
-  const handleClick = ({ key, keyPath }: INav) => {
-    //const [path]: any = keyPath;
-    locationPath = keyPath;
+  const setLng = () => {
+    if (i18n === "enUS") dispatch(useES);
+    if (i18n === "enES") dispatch(useUS);
+    console.log(i18n);
+  };
 
-    // dispatch(setCurrentPath(path));
-    if (key === "/logout") {
+  const handleClick = ({ key }: INav) => {
+    locationPath = key;
+
+    if (key === "logout") {
       // dispatch(startLogout());
       // clearStore(dispatch);
       //history.push("/home");
@@ -53,10 +64,16 @@ export const HeaderContent = () => {
         theme="dark"
         mode="horizontal"
         selectedKeys={locationPath}
-        defaultSelectedKeys={["register"]}
+        defaultSelectedKeys={["/"]}
         onClick={handleClick}
         items={items}
       />
+      <Tooltip placement="top" title={"English/Español"}>
+        <TranslationOutlined
+          onClick={setLng}
+          style={{ color: token.colorPrimary, paddingLeft: "25px" }}
+        />
+      </Tooltip>
     </>
   );
 };

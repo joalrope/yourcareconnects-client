@@ -1,4 +1,4 @@
-import { Avatar, theme } from "antd";
+import { Avatar, Col, Row, theme } from "antd";
 import {
   InstagramFilled,
   TwitterCircleFilled,
@@ -12,13 +12,15 @@ export const FooterContent = () => {
   const { token } = useToken();
 
   return (
-    <div className="--layout__footer" style={{ color: token.colorPrimary }}>
-      <div className="copyitem">Hecho con amor por Bohiques</div>
-      <div className="copyitem">
+    <Row className="--layout__footer" style={{ color: token.colorPrimary }}>
+      <Col className="copyitem" xs={0} sm={0} md={0} lg={5}>
+        Hecho con ♥ por Bohiques
+      </Col>
+      <Col className="copyitem">
         Copyright <CopyrightOutlined /> {new Date().getFullYear()} -
         Yourcareconnects
-      </div>
-      <div className="copyitem">
+      </Col>
+      <Col className="copyitem">
         <a
           className="--footer__avatar"
           href="https://ant.design"
@@ -38,7 +40,7 @@ export const FooterContent = () => {
             <InstagramFilled style={{ color: "#1a1a13" }} />
           </Avatar>
         </a>
-      </div>
-    </div>
+      </Col>
+    </Row>
   );
 };

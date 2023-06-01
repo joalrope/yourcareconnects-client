@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { Layout } from "antd";
 import { FooterContent } from "./FooterContent";
 import { HeaderContent } from "./HeaderContent";
 import { SiderContent } from "./SiderContent";
-import { ContentContent } from "./ContentContent";
 
 import "./app-layout.css";
 
 const { Header, Footer, Sider, Content } = Layout;
 
-export const AppLayout = () => {
+export interface INav {
+  key: string;
+  keyPath: string[];
+}
+
+export const AppLayout = ({ children }: { children: ReactNode }) => {
   const [collapsed, setCollapsed] = useState(false);
 
   const onCollapse = () => {
@@ -24,9 +28,7 @@ export const AppLayout = () => {
         <Header>
           <HeaderContent />
         </Header>
-        <Content>
-          <ContentContent />
-        </Content>
+        <Content>{children}</Content>
         <Footer>
           <FooterContent />
         </Footer>

@@ -1,0 +1,21 @@
+.--register__container {
+    display: flex;
+    justify-items: center;
+    width: 100%;
+}
+
+.--register__form {
+    display: flex;
+    margin: auto;
+    width: 40%;
+}
+
+.ant-form-item-control-input-content:nth-child(1),
+.ant-form-item-control-input-content:nth-child(2) {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ant-form-item-row {
+    width: 100%;
+}

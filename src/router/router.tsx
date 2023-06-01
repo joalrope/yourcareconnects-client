@@ -1,17 +1,46 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Home, Login, Register } from "../components/pages";
+import { AppLayout } from "../layouts/AppLayout";
+import { Home, Login, Profile, Register, Upload } from "../components/pages";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: (
+      <AppLayout>
+        <Home />
+      </AppLayout>
+    ),
   },
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <AppLayout>
+        <Login />
+      </AppLayout>
+    ),
   },
   {
     path: "/register",
-    element: <Register />,
+    element: (
+      <AppLayout>
+        <Register />
+      </AppLayout>
+    ),
+  },
+  {
+    path: "/profile",
+    element: (
+      <AppLayout>
+        <Profile />
+      </AppLayout>
+    ),
+  },
+  {
+    path: "/upload",
+    element: (
+      <AppLayout>
+        <Upload />
+      </AppLayout>
+    ),
   },
 ]);
