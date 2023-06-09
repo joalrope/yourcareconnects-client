@@ -5,15 +5,13 @@ import enUS from "antd/locale/en_US";
 import esES from "antd/locale/es_ES";
 import "antd/dist/reset.css";
 import "./index.css";
-import { useAppSelector } from "./store/hooks";
-import { selecti18n } from "./store/reducers/i18n";
+import { useSelector } from "react-redux";
+import { RootState } from "./store";
 
 function App() {
-  const i18n = useAppSelector(selecti18n);
+  const { language } = useSelector((state: RootState) => state.i18n);
 
-  console.log(i18n);
-
-  const curLng = i18n === "esES" ? esES : enUS;
+  const curLng = language === "esES" ? esES : enUS;
 
   return (
     <ConfigProvider

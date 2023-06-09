@@ -1,10 +1,29 @@
-import { Button, Checkbox, Col, Form, Input, Row } from "antd";
-import { Typography } from "antd";
+import { useDispatch } from "react-redux";
+import { setLoggedIn } from "../../store/slices";
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  Row,
+  Typography,
+  theme,
+} from "antd";
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 const { Paragraph, Title } = Typography;
+const { useToken } = theme;
 
 export const LoginForm = () => {
+  const dispatch = useDispatch();
+
+  const { t } = useTranslation();
+  const { token } = useToken();
+
   const onFinish = (values: unknown) => {
+    dispatch(setLoggedIn(true));
     console.log("Success:", values);
   };
   const onFinishFailed = (errorInfo: unknown) => {
@@ -12,19 +31,21 @@ export const LoginForm = () => {
   };
 
   return (
-    <Row style={{ width: "100%" }}>
+    <Row style={{ width: "70%", justifyContent: "center" }}>
       <Col style={{ width: "100%" }}>
         <Row style={{ display: "flex", flexDirection: "column" }}>
-          <Title level={3} style={{ marginBottom: "0px" }}>
-            Login in
+          <Title level={3} style={{ marginBottom: "0px", width: "100%" }}>
+            {t("Login in")}
           </Title>
-          <Paragraph strong>Welcome back to your account</Paragraph>
+          <Paragraph style={{ width: "100%" }} strong>
+            {t("Welcome back to your account")}
+          </Paragraph>
         </Row>
         <Row
           style={{
             width: "100%",
             display: "flex",
-            alignItems: "flex-start",
+            justifyContent: "center",
           }}
         >
           <Form
@@ -36,7 +57,7 @@ export const LoginForm = () => {
               span: 24,
             }}
             style={{
-              width: "80%",
+              width: "100%",
             }}
             initialValues={{
               remember: false,
@@ -46,12 +67,16 @@ export const LoginForm = () => {
             autoComplete="off"
           >
             <Form.Item
-              label="Email"
+              label={t("Email")}
               name="email"
               rules={[
                 {
                   required: true,
-                  message: "Please input your username!",
+                  message: `${t("Please input a email")}`,
+                },
+                {
+                  type: "email",
+                  message: `${t("Please input a valid email")}`,
                 },
               ]}
             >
@@ -59,12 +84,12 @@ export const LoginForm = () => {
             </Form.Item>
 
             <Form.Item
-              label="Password"
+              label={t("Password")}
               name="password"
               rules={[
                 {
                   required: true,
-                  message: "Please input your password!",
+                  message: `${t("Please input your password")}`,
                 },
               ]}
             >
@@ -79,7 +104,7 @@ export const LoginForm = () => {
                 span: 16,
               }}
             >
-              <Checkbox>Remember me</Checkbox>
+              <Checkbox>{t("Remember me")}</Checkbox>
             </Form.Item>
 
             <Form.Item
@@ -89,11 +114,39 @@ export const LoginForm = () => {
               }}
             >
               <Button type="primary" htmlType="submit">
-                Submit
+                {t("Submit")}
               </Button>
             </Form.Item>
           </Form>
         </Row>
+        <Link to={"/home/create-account"}>
+          <Paragraph
+            style={{
+              color: token.colorPrimary,
+              fontSize: 16,
+              fontWeight: 700,
+              marginBottom: 0,
+              textAlign: "center",
+              userSelect: "none",
+            }}
+          >
+            {t("Create an account")}
+          </Paragraph>
+        </Link>
+        <Link to={"/login/reset-password"}>
+          <Paragraph
+            style={{
+              color: token.colorWhite,
+              fontSize: 16,
+              fontWeight: 700,
+              marginTop: "8%",
+              textAlign: "center",
+              userSelect: "none",
+            }}
+          >
+            {t("Have you forgotten your password")}
+          </Paragraph>
+        </Link>
       </Col>
     </Row>
   );

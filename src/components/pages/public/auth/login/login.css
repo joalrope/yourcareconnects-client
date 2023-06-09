@@ -1,25 +1,34 @@
 .--login__container {
     display: flex;
-    height: 83.5vh;
+    height: var(--height-content);
+    max-height: var(--height-content);
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     width: 100%;
 
 }
 
 .--login__bg {
-    flex: auto;
-    width: 100vw;
-    height: 50vh;
-    background-image: url("../../../../../assets/images/register-bg.png");
-    background-size: cover;
+    width: 120%;
+    height: 80%;
+    background-image: url("/images/register-bg.png");
+    background-size: contain;
+    background-position: center right;
     background-repeat: no-repeat;
 }
 
+.--login__bg::after {
+    width: 100%;
+    height: 50%;
+    background-color: var(--primary-color);
+}
+
+
+
 .--login__form {
     display: flex;
-    justify-items: left;
-    flex: auto;
-    width: 100vw;
-    height: 50vh;
+    justify-content: center;
+    width: 100%;
+    height: 50%;
 }

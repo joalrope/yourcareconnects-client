@@ -1,24 +1,87 @@
-import { Button, Checkbox, Col, Form, Input, Row } from "antd";
+import { Button, Checkbox, Col, Form, Input, Modal, Row } from "antd";
 import { Typography } from "antd";
+import type { CheckboxChangeEvent } from "antd/es/checkbox";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 const { Title } = Typography;
 
+interface IRegister {
+  company: string;
+  conditions: boolean;
+  confirmation: string;
+  email: string;
+  names: string;
+  password: string;
+  phone: string;
+  surnames: string;
+}
+
 export const RegisterForm = () => {
-  const onFinish = (values: unknown) => {
-    console.log("Success:", values);
+  const { role } = useSelector((state: RootState) => state.user);
+  const [form] = Form.useForm<IRegister>();
+  const { t } = useTranslation();
+
+  const conditionsValue = Form.useWatch("conditions", form);
+
+  const [hideBtn, setHideBtn] = useState<boolean>(conditionsValue);
+
+  const onChange = (e: CheckboxChangeEvent) => {
+    setHideBtn(e.target.checked);
   };
+
+  const onFinish = ({
+    company,
+    conditions,
+    confirmation,
+    email,
+    names,
+    password,
+    phone,
+    surnames,
+  }: IRegister) => {
+    console.log("Success:", {
+      company,
+      conditions,
+      confirmation,
+      email,
+      names,
+      password,
+      phone,
+      surnames,
+    });
+
+    if (password !== confirmation) {
+      Modal.error({
+        title: t("Invalid data!"),
+        content: [
+          <>
+            <span>{`Password and password confirmation do not match.`} </span>
+            <br />
+            <br />
+            <span>{`Please input them again`}</span>
+          </>,
+        ],
+        autoFocusButton: null,
+        okText: "agreed",
+      });
+
+      return;
+    }
+  };
+
   const onFinishFailed = (errorInfo: unknown) => {
     console.log("Failed:", errorInfo);
   };
-
-  const role = "provider";
 
   return (
     <Row style={{ width: "100%" }}>
       <Col style={{ width: "100%" }}>
         <Row style={{ display: "flex", flexDirection: "column" }}>
           <Title level={3} style={{ margin: "50px 0px" }}>
-            Create your account
+            {t("Create your account")}
           </Title>
         </Row>
         <Row
@@ -40,7 +103,7 @@ export const RegisterForm = () => {
               width: "100%",
             }}
             initialValues={{
-              remember: false,
+              conditions: false,
             }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
@@ -54,12 +117,12 @@ export const RegisterForm = () => {
               }}
             >
               <Form.Item
-                label="Names"
+                label={t("Names")}
                 name="names"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your name!",
+                    message: `${t("Please input your names")}`,
                   },
                 ]}
                 labelCol={{
@@ -74,16 +137,16 @@ export const RegisterForm = () => {
                   marginBottom: "6px",
                 }}
               >
-                <Input placeholder="names" />
+                <Input placeholder={`${t("Names").toLowerCase()}`} />
               </Form.Item>
 
               <Form.Item
-                label="Surnames"
+                label={t("Surnames")}
                 name="surnames"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your surnames!",
+                    message: `${t("Please input your surnames")}`,
                   },
                 ]}
                 labelCol={{
@@ -98,18 +161,18 @@ export const RegisterForm = () => {
                   marginBottom: "6px",
                 }}
               >
-                <Input placeholder="surnames" />
+                <Input placeholder={`${t("Surnames").toLowerCase()}`} />
               </Form.Item>
             </Form.Item>
 
             {role === "provider" && (
               <Form.Item
-                label="Company name"
+                label={t("Company Name")}
                 name="company"
                 rules={[
                   {
                     required: false,
-                    message: "Please input your company name!",
+                    message: `${t("Please input your company name")}`,
                   },
                 ]}
                 style={{
@@ -117,17 +180,21 @@ export const RegisterForm = () => {
                   marginBottom: "6px",
                 }}
               >
-                <Input placeholder="company name" />
+                <Input placeholder={`${t("Company Name").toLowerCase()}`} />
               </Form.Item>
             )}
 
             <Form.Item
-              label="Email"
+              label={t("Email")}
               name="email"
               rules={[
                 {
                   required: true,
-                  message: "Please input your email!",
+                  message: `${t("Please input your email")}`,
+                },
+                {
+                  type: "email",
+                  message: `${t("Please input a valid email")}`,
                 },
               ]}
               style={{
@@ -139,12 +206,12 @@ export const RegisterForm = () => {
             </Form.Item>
 
             <Form.Item
-              label="Phone number"
+              label={t("Phone number")}
               name="phone"
               rules={[
                 {
                   required: true,
-                  message: "Please input your phone number!",
+                  message: `${t("Please input your phone number")}`,
                 },
               ]}
               style={{
@@ -152,16 +219,22 @@ export const RegisterForm = () => {
                 marginBottom: "6px",
               }}
             >
-              <Input placeholder="phone number" />
+              <Input placeholder={`${t("Phone number").toLowerCase()}`} />
             </Form.Item>
 
             <Form.Item
-              label="Password"
+              label={t("Password")}
               name="password"
               rules={[
                 {
                   required: true,
-                  message: "Please input your password!",
+                  message: `${t("Please input your password")}`,
+                },
+                {
+                  min: 6,
+                  message: `${t(
+                    "Sorry, your password must be at least 6 characters"
+                  )}`,
                 },
               ]}
               style={{
@@ -169,16 +242,22 @@ export const RegisterForm = () => {
                 marginBottom: "6px",
               }}
             >
-              <Input.Password placeholder="password" />
+              <Input.Password placeholder={`${t("Password").toLowerCase()}`} />
             </Form.Item>
 
             <Form.Item
-              label="Confirm password"
+              label={t("Confirm password")}
               name="confirmation"
               rules={[
                 {
                   required: true,
-                  message: "Please confirm your password!",
+                  message: `${t("Please confirm your password")}`,
+                },
+                {
+                  min: 6,
+                  message: `${t(
+                    "Sorry, your password must be at least 6 characters"
+                  )}`,
                 },
               ]}
               style={{
@@ -186,11 +265,13 @@ export const RegisterForm = () => {
                 marginBottom: "6px",
               }}
             >
-              <Input.Password placeholder="password" />
+              <Input.Password placeholder={`${t("Password").toLowerCase()}`} />
             </Form.Item>
 
             <Form.Item name="conditions" valuePropName="checked">
-              <Checkbox>Terms and conditions</Checkbox>
+              <Checkbox checked={hideBtn} onChange={onChange}>
+                {t("I accept terms and conditions")}
+              </Checkbox>
             </Form.Item>
 
             <Form.Item
@@ -200,8 +281,8 @@ export const RegisterForm = () => {
               }}
               style={{ display: "flex", justifyContent: "center" }}
             >
-              <Button type="primary" htmlType="submit">
-                Submit
+              <Button type="primary" htmlType="submit" disabled={!hideBtn}>
+                {t("Get Into")}
               </Button>
             </Form.Item>
           </Form>

@@ -3,16 +3,25 @@
 }
 
 .ant-layout-footer {
-  background-color: #1a1a13;
+  background-color: var(--secondary-color);
   display: flex;
   flex-direction: row;
   vertical-align: middle;
 }
 
+.ant-tooltip-inner {
+  color: var(--primary-color) !important;
+}
+
+.--layout__sider {
+  width: 200px;
+}
+
+
 .--layout__sider-logo {
   min-height: 64px;
-  background-color: #1a1a13;
-  background-image: url("../assets/images/logo.png");
+  background-color: var(--primary-color);
+  background-image: url("/public/images/logo.png");
   background-repeat: no-repeat;
   background-size: 50%;
   background-position: center;

@@ -1,25 +1,28 @@
-import { useAppSelector, useAppDispatch } from "../store/hooks";
-import { selecti18n, useES, useUS } from "../store/reducers/i18n";
 import { Link } from "react-router-dom";
-import { Menu, Tooltip, theme } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { Avatar, Badge, Menu, Tooltip } from "antd";
 import type { MenuProps } from "antd";
-import { TranslationOutlined } from "@ant-design/icons";
+import { ProfileOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 import { Route, routes } from "../router/routes";
 import { INav } from "./AppLayout";
 
-const { useToken } = theme;
+import { RootState } from "../store";
+import { setES, setLoggedIn, setUS } from "../store/slices";
+import "./app-layout.css";
 
 export const HeaderContent = () => {
-  const i18n = useAppSelector(selecti18n);
-  console.log(i18n);
-  const dispatch = useAppDispatch();
-
-  const { token } = useToken();
-
-  const isLoggedIn = true;
+  const { t, i18n } = useTranslation();
+  const { language } = useSelector((state: RootState) => state.i18n);
+  const { isLoggedIn } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
 
   const mode = "";
+
+  const handleLogOut = () => {
+    dispatch(setLoggedIn(false));
+  };
 
   const items: MenuProps["items"] = routes
     .filter(
@@ -29,17 +32,52 @@ export const HeaderContent = () => {
           (route.type === "auth" && route.mode === mode))
     )
     .map((route: Route) => ({
-      label: <Link to={route.path}>{route.name}</Link>,
+      label: <Link to={route.path}>{t(`${route.name}`)}</Link>,
       path: route.path,
       key: route.key,
     }));
 
+  const loggedItems: MenuProps["items"] = [
+    {
+      label: (
+        <Link to="/upload" style={{ userSelect: "none" }}>
+          <Avatar shape="circle" src="/public/images/man.png" />
+        </Link>
+      ),
+      key: "notify",
+    },
+    {
+      label: (
+        <Link to="/upload" style={{ userSelect: "none" }}>
+          <Badge count={1}>
+            <Avatar shape="circle" src="/public/images/bell-icon.png" />
+          </Badge>
+        </Link>
+      ),
+      key: "upload",
+    },
+    {
+      label: (
+        <Link to="/" onClick={handleLogOut}>
+          Log Out
+        </Link>
+      ),
+      key: "logout",
+      icon: <ProfileOutlined />,
+    },
+  ];
+
   let locationPath;
 
   const setLng = () => {
-    if (i18n === "enUS") dispatch(useES);
-    if (i18n === "enES") dispatch(useUS);
-    console.log(i18n);
+    if (language === "enUS") {
+      i18n.changeLanguage("en");
+      dispatch(setES());
+    }
+    if (language === "esES") {
+      i18n.changeLanguage("es");
+      dispatch(setUS());
+    }
   };
 
   const handleClick = ({ key }: INav) => {
@@ -56,22 +94,44 @@ export const HeaderContent = () => {
   return (
     <>
       {!isLoggedIn && (
-        <div className="--layout-header__logo">
+        <div className="--layout__sider-logo"></div>
+        /*  <div className="--layout-header__logo">
           <div className="--app__logo" />
-        </div>
+        </div> */
       )}
-      <Menu
-        theme="dark"
-        mode="horizontal"
-        selectedKeys={locationPath}
-        defaultSelectedKeys={["/"]}
-        onClick={handleClick}
-        items={items}
-      />
-      <Tooltip placement="top" title={"English/Español"}>
-        <TranslationOutlined
+      {!isLoggedIn && (
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          selectedKeys={locationPath}
+          defaultSelectedKeys={["/"]}
+          onClick={handleClick}
+          items={items}
+        />
+      )}
+
+      {isLoggedIn && (
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          onClick={handleClick}
+          items={loggedItems}
+        />
+      )}
+
+      <Tooltip
+        placement="top"
+        title={"English/Español"}
+        className="--tooltip-title__language"
+      >
+        <Avatar
           onClick={setLng}
-          style={{ color: token.colorPrimary, paddingLeft: "25px" }}
+          size={24}
+          src={
+            language === "enUS"
+              ? "/public/images/US-flag.png"
+              : "/public/images/ES-flag.png"
+          }
         />
       </Tooltip>
     </>

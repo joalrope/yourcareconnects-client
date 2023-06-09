@@ -25,7 +25,7 @@ export const routes: Route[] = [
     type: "public",
     name: "Inicio",
     mode: "",
-    icon: HomeOutlined,
+    icon: "HomeOutlined",
     component: Home,
   }, */
   {
@@ -41,9 +41,19 @@ export const routes: Route[] = [
   {
     key: "register",
     Pos: "header",
-    path: "/register",
+    path: "/home/create-account",
     type: "public",
     name: "Create account",
+    mode: "",
+    icon: "VideoCameraOutlined",
+    component: Register,
+  },
+  {
+    key: "logout",
+    Pos: "header",
+    path: "/",
+    type: "private",
+    name: "Log Out",
     mode: "",
     icon: "VideoCameraOutlined",
     component: Register,

@@ -4,26 +4,40 @@ import { UploadOutlined, ProfileOutlined } from "@ant-design/icons";
 
 import { Link } from "react-router-dom";
 import { INav } from "./AppLayout";
-
-const providerRoutes = [
-  {
-    label: <Link to="/profile">Profile</Link>,
-    path: "/profile",
-    key: "profile",
-    icon: <ProfileOutlined />,
-  },
-  {
-    label: <Link to="/upload">Docs upload</Link>,
-    path: "/upload",
-    key: "upload",
-    icon: <UploadOutlined />,
-  },
-];
+import { useTranslation } from "react-i18next";
 
 export const SiderMenu = () => {
   let locationPath;
+  const { t } = useTranslation();
+  const role = "customer";
 
-  const items: MenuProps["items"] = providerRoutes;
+  const providerRoutes = [
+    {
+      label: <Link to="/dashboard">{t("Dashboard")}</Link>,
+      path: "/dashboard",
+      key: "dashboard",
+      role: "customer",
+      icon: <ProfileOutlined />,
+    },
+    {
+      label: <Link to="/profile">{t("Profile")}</Link>,
+      path: "/profile",
+      key: "profile",
+      role: "customer",
+      icon: <ProfileOutlined />,
+    },
+    {
+      label: <Link to="/upload">{t("Docs upload")}</Link>,
+      path: "/upload",
+      key: "upload",
+      role: "customer",
+      icon: <UploadOutlined />,
+    },
+  ];
+
+  const items: MenuProps["items"] = providerRoutes.filter(
+    (item) => item.role == role
+  );
 
   const handleClick = ({ key }: INav) => {
     locationPath = key;
