@@ -4,6 +4,7 @@ import { Home, Login, Profile, Register, Upload } from "../components/pages";
 import SelectCreateAccount from "../components/pages/public/home/SelectCreateAccount";
 import ResetPassword from "../components/pages/public/auth/login/ResetPassword";
 import Dashboard from "../components/pages/private/dashboard/Dashboard";
+import { Provider } from "../components/pages/public/auth/register/Provider";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,14 @@ export const router = createBrowserRouter([
     element: (
       <AppLayout>
         <Register />
+      </AppLayout>
+    ),
+  },
+  {
+    path: "/register/provider",
+    element: (
+      <AppLayout>
+        <Provider />
       </AppLayout>
     ),
   },

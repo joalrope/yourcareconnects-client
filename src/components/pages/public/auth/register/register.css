@@ -1,10 +1,12 @@
-.--register__container {
+.--register__container,
+.--provider__container {
     display: flex;
     justify-items: center;
     width: 100%;
 }
 
-.--register__form {
+.--register__form,
+.--provider__form {
     display: flex;
     margin: auto;
     width: 40%;

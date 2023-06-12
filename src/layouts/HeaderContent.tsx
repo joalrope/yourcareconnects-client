@@ -71,11 +71,11 @@ export const HeaderContent = () => {
 
   const setLng = () => {
     if (language === "enUS") {
-      i18n.changeLanguage("en");
+      i18n.changeLanguage("es");
       dispatch(setES());
     }
     if (language === "esES") {
-      i18n.changeLanguage("es");
+      i18n.changeLanguage("en");
       dispatch(setUS());
     }
   };
@@ -129,8 +129,8 @@ export const HeaderContent = () => {
           size={24}
           src={
             language === "enUS"
-              ? "/public/images/US-flag.png"
-              : "/public/images/ES-flag.png"
+              ? "/public/images/ES-flag.png"
+              : "/public/images/US-flag.png"
           }
         />
       </Tooltip>
