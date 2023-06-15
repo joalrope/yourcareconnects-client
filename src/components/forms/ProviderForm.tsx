@@ -21,7 +21,7 @@ interface IProvider {
   company: string;
   owner: string;
   address: string;
-  postalCode: string;
+  zipcode: string;
   phone: string;
   fax: string;
   webUrl: string;
@@ -120,7 +120,7 @@ export const ProviderForm = () => {
     company,
     owner,
     address,
-    postalCode,
+    zipcode,
     phone,
     fax,
     webUrl,
@@ -133,7 +133,7 @@ export const ProviderForm = () => {
       company,
       owner,
       address,
-      postalCode,
+      zipcode,
       phone,
       fax,
       webUrl,
@@ -241,7 +241,7 @@ export const ProviderForm = () => {
             >
               <Form.Item
                 label={t("Zip code")}
-                name="postalCode"
+                name="zipcode"
                 rules={[
                   {
                     required: true,

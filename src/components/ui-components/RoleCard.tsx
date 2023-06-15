@@ -33,8 +33,7 @@ const RoleCard = ({ role }: { role: string }) => {
 
   const backgroundColor = role === "customer" ? token.colorPrimary : "#4762EE";
   const color = role === "customer" ? token.colorWhite : "white";
-  const image =
-    role === "customer" ? "/public/images/woman.png" : "/public/images/man.png";
+  const image = role === "customer" ? "/images/woman.png" : "/images/man.png";
 
   const setSelectedRole = () => {
     dispatch(setRole(role));

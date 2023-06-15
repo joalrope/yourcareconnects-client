@@ -41,7 +41,7 @@ export const HeaderContent = () => {
     {
       label: (
         <Link to="/upload" style={{ userSelect: "none" }}>
-          <Avatar shape="circle" src="/public/images/man.png" />
+          <Avatar shape="circle" src="/images/man.png" />
         </Link>
       ),
       key: "notify",
@@ -50,7 +50,7 @@ export const HeaderContent = () => {
       label: (
         <Link to="/upload" style={{ userSelect: "none" }}>
           <Badge count={1}>
-            <Avatar shape="circle" src="/public/images/bell-icon.png" />
+            <Avatar shape="circle" src="/images/bell-icon.png" />
           </Badge>
         </Link>
       ),
@@ -128,9 +128,7 @@ export const HeaderContent = () => {
           onClick={setLng}
           size={24}
           src={
-            language === "enUS"
-              ? "/public/images/ES-flag.png"
-              : "/public/images/US-flag.png"
+            language === "enUS" ? "/images/ES-flag.png" : "/images/US-flag.png"
           }
         />
       </Tooltip>

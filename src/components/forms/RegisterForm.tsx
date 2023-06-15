@@ -5,26 +5,28 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { fetchWithoutToken } from "../../helpers/fetch";
 
 const { Title } = Typography;
 
 interface IRegister {
-  company: string;
-  conditions: boolean;
-  confirmation: string;
+  company?: string;
+  conditions?: boolean;
+  confirmation?: string;
   email: string;
   names: string;
   password: string;
-  phone: string;
+  phonenumber: string;
   surnames: string;
+  role: string;
 }
 
 export const RegisterForm = () => {
-  const { role } = useSelector((state: RootState) => state.user);
+  const { role: curRole } = useSelector((state: RootState) => state.user);
   const [form] = Form.useForm<IRegister>();
   const { t } = useTranslation();
 
-  const conditionsValue = Form.useWatch("conditions", form);
+  const conditionsValue = Form.useWatch("conditions", form) || false;
 
   const [hideBtn, setHideBtn] = useState<boolean>(conditionsValue);
 
@@ -32,27 +34,15 @@ export const RegisterForm = () => {
     setHideBtn(e.target.checked);
   };
 
-  const onFinish = ({
+  const onFinish = async ({
     company,
-    conditions,
     confirmation,
     email,
     names,
     password,
-    phone,
+    phonenumber,
     surnames,
   }: IRegister) => {
-    console.log("Success:", {
-      company,
-      conditions,
-      confirmation,
-      email,
-      names,
-      password,
-      phone,
-      surnames,
-    });
-
     if (password !== confirmation) {
       Modal.error({
         title: t("Invalid data!"),
@@ -70,6 +60,21 @@ export const RegisterForm = () => {
 
       return;
     }
+
+    const newUser: IRegister = {
+      email,
+      names,
+      password,
+      phonenumber,
+      role: curRole ? curRole : "customer",
+      surnames,
+    };
+
+    if (company) newUser.company = company;
+
+    const result = await fetchWithoutToken("/users", newUser, "POST");
+
+    console.log(result);
   };
 
   const onFinishFailed = (errorInfo: unknown) => {
@@ -81,7 +86,7 @@ export const RegisterForm = () => {
       <Col style={{ width: "100%" }}>
         <Row style={{ display: "flex", flexDirection: "column" }}>
           <Title level={3} style={{ margin: "50px 0px" }}>
-            {t("Create your account")}
+            {`${t(curRole)} ${t("Create your account")}`}
           </Title>
         </Row>
         <Row
@@ -165,7 +170,7 @@ export const RegisterForm = () => {
               </Form.Item>
             </Form.Item>
 
-            {role === "provider" && (
+            {curRole === "provider" && (
               <Form.Item
                 label={t("Company Name")}
                 name="company"
@@ -207,7 +212,7 @@ export const RegisterForm = () => {
 
             <Form.Item
               label={t("Phone number")}
-              name="phone"
+              name="phonenumber"
               rules={[
                 {
                   required: true,

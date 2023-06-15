@@ -14,11 +14,7 @@ const ImageYCC = ({ width }: { width: string | number }) => {
         width: `${width}`,
       }}
     >
-      <Image
-        preview={false}
-        width={"100%"}
-        src="/public/images/register-bg.png"
-      />
+      <Image preview={false} width={"100%"} src="/images/register-bg.png" />
       <div
         style={{
           width: "100%",
