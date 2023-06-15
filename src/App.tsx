@@ -17,7 +17,7 @@ function App() {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: "#f8c65b", // color primario
+          colorPrimary: "#FBD467", // color primario
           colorBgBase: "#ffffff29", // body color
           colorTextBase: "#1a1a13",
           colorWhite: "#1a1a13",

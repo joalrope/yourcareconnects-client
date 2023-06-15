@@ -59,7 +59,7 @@ export const HeaderContent = () => {
     {
       label: (
         <Link to="/" onClick={handleLogOut}>
-          Log Out
+          {t("Log Out")}
         </Link>
       ),
       key: "logout",
