@@ -13,10 +13,6 @@
   color: var(--primary-color) !important;
 }
 
-.--layout__sider {
-  width: 200px;
-}
-
 .--layout__sider-logo {
   min-height: 64px;
   background-color: var(--primary-color);
