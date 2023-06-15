@@ -4,7 +4,7 @@ import { Modal } from "antd";
 //import history from './history/history';
 import { parseJwt } from "./parse-jwt";
 
-const baseUrl = "http://localhost:8080/api";
+const baseUrl = import.meta.env.VITE_URL_BASE;
 let response;
 
 export const fetchWithoutToken = (
