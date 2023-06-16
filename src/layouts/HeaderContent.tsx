@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar, Badge, Menu, Tooltip } from "antd";
 import type { MenuProps } from "antd";
-import { ProfileOutlined } from "@ant-design/icons";
+import { LogoutOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 
 import { Route, routes } from "../router/routes";
@@ -63,7 +63,7 @@ export const HeaderContent = () => {
         </Link>
       ),
       key: "logout",
-      icon: <ProfileOutlined />,
+      icon: <LogoutOutlined />,
     },
   ];
 

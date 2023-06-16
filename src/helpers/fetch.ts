@@ -13,7 +13,6 @@ export const fetchWithoutToken = (
   method = "GET"
 ) => {
   const url = `${baseUrl}${endpoint}`;
-  console.log({ url });
 
   if (method === "GET") {
     response = fetch(url)
@@ -33,8 +32,6 @@ export const fetchWithoutToken = (
         return catchError(e);
       });
   } else {
-    console.log({ url, method, data });
-
     response = fetch(url, {
       method,
       headers: {

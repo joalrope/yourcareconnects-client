@@ -1,5 +1,5 @@
 import { RouterProvider } from "react-router-dom";
-import { ConfigProvider } from "antd";
+import { App as AntdApp, ConfigProvider } from "antd";
 import { router } from "./router/router";
 import enUS from "antd/locale/en_US";
 import esES from "antd/locale/es_ES";
@@ -25,7 +25,9 @@ function App() {
       }}
       locale={curLng}
     >
-      <RouterProvider router={router} />
+      <AntdApp>
+        <RouterProvider router={router} />
+      </AntdApp>
     </ConfigProvider>
   );
 }

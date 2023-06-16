@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, Form, Input, Modal, Row } from "antd";
+import { Button, Checkbox, Col, Form, Input, App, Row } from "antd";
 import { Typography } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useState } from "react";
@@ -23,6 +23,7 @@ interface IRegister {
 
 export const RegisterForm = () => {
   const { role: curRole } = useSelector((state: RootState) => state.user);
+  const { modal } = App.useApp();
   const [form] = Form.useForm<IRegister>();
   const { t } = useTranslation();
 
@@ -44,18 +45,18 @@ export const RegisterForm = () => {
     surnames,
   }: IRegister) => {
     if (password !== confirmation) {
-      Modal.error({
+      modal.error({
         title: t("Invalid data!"),
         content: [
           <>
-            <span>{`Password and password confirmation do not match.`} </span>
+            <span>{t("Password and password confirmation do not match")}</span>
             <br />
             <br />
-            <span>{`Please input them again`}</span>
+            <span>{t("Please input them again")}</span>
           </>,
         ],
         autoFocusButton: null,
-        okText: "agreed",
+        okText: `${t("Agreed")}`,
       });
 
       return;
@@ -74,7 +75,40 @@ export const RegisterForm = () => {
 
     const result = await fetchWithoutToken("/users", newUser, "POST");
 
-    console.log(result);
+    if (result.ok) {
+      modal.success({
+        title: t("Successful registration!"),
+        content: [
+          <>
+            <span key={1}>
+              {t("Your account has been created successfully")}
+            </span>
+            <br key={2} />
+            <br key={3} />
+            <span key={4}>{t("Please login")}</span>
+          </>,
+        ],
+        autoFocusButton: null,
+        okText: `${t("Agreed")}`,
+      });
+      return;
+    }
+
+    modal.error({
+      title: t("Error registration!"),
+      content: [
+        <>
+          <span key={1}>
+            {t("An error occurred while creating your account")}
+          </span>
+          <br key={2} />
+          <br key={3} />
+          <span key={4}>{t("Please try again")}</span>
+        </>,
+      ],
+      autoFocusButton: null,
+      okText: `${t("Agreed")}`,
+    });
   };
 
   const onFinishFailed = (errorInfo: unknown) => {
