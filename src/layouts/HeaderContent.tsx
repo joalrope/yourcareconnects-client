@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Avatar, Badge, Menu, Tooltip } from "antd";
+import { Avatar, Badge, Menu, Tooltip, Typography, theme } from "antd";
 import type { MenuProps } from "antd";
 import { LogoutOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
@@ -12,11 +12,15 @@ import { RootState } from "../store";
 import { logout, setES, setUS } from "../store/slices";
 import "./app-layout.css";
 
+const { Title } = Typography;
+const { useToken } = theme;
+
 export const HeaderContent = () => {
   const { t, i18n } = useTranslation();
   const { language } = useSelector((state: RootState) => state.i18n);
-  const { isLoggedIn } = useSelector((state: RootState) => state.user);
+  const { isLoggedIn, names } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
+  const { token } = useToken();
 
   const mode = "";
 
@@ -41,21 +45,23 @@ export const HeaderContent = () => {
   const loggedItems: MenuProps["items"] = [
     {
       label: (
-        <Link to="/upload" style={{ userSelect: "none" }}>
-          <Avatar shape="circle" src="/images/man.png" />
-        </Link>
+        <Title style={{ color: token.colorPrimary }} level={5}>
+          {names}
+        </Title>
       ),
-      key: "notify",
+      key: "names",
+    },
+    {
+      label: <Avatar shape="circle" src="/images/man.png" />,
+      key: "avatar",
     },
     {
       label: (
-        <Link to="/upload" style={{ userSelect: "none" }}>
-          <Badge count={1}>
-            <Avatar shape="circle" src="/images/bell-icon.png" />
-          </Badge>
-        </Link>
+        <Badge count={1}>
+          <Avatar shape="circle" src="/images/bell-icon.png" />
+        </Badge>
       ),
-      key: "upload",
+      key: "notify",
     },
     {
       label: (

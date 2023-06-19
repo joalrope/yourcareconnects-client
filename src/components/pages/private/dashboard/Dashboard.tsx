@@ -23,7 +23,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <Col span={24}>
+    <Col span={24} style={{ maxWidth: "96%" }}>
       <Col span={24} style={{ borderBottom: "1px solid #e8e8e8" }}>
         <Title level={3} style={{ margin: "20px", width: "100%" }}>
           {t("Dashboard")}

@@ -40,6 +40,7 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
             height: hScreen,
             maxWidth: "100vw",
             overflowY: "scroll",
+            overflowX: "hidden",
           }}
         >
           {children}
