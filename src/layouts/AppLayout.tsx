@@ -35,7 +35,13 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
         <Header>
           <HeaderContent />
         </Header>
-        <Content style={{ height: hScreen, maxWidth: "100vw" }}>
+        <Content
+          style={{
+            height: hScreen,
+            maxWidth: "100vw",
+            overflowY: "scroll",
+          }}
+        >
           {children}
         </Content>
         <Footer>

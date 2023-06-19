@@ -5,13 +5,42 @@ import enUS from "antd/locale/en_US";
 import esES from "antd/locale/es_ES";
 import "antd/dist/reset.css";
 import "./index.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./store";
+import { useEffect } from "react";
+import { fetchWithoutToken } from "./helpers/fetch";
+import { setUser } from "./store/slices";
 
 function App() {
+  const dispatch = useDispatch();
   const { language } = useSelector((state: RootState) => state.i18n);
 
   const curLng = language === "esES" ? esES : enUS;
+
+  useEffect(() => {
+    if (sessionStorage.getItem("id")) {
+      getUser();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getUser = async () => {
+    const ssId = sessionStorage.getItem("id");
+    const token = sessionStorage.getItem("token");
+
+    const id = ssId ? JSON.parse(ssId) : "";
+
+    console.log(token);
+
+    const { ok, result } = await fetchWithoutToken(`/users/${id}`, {}, "GET");
+    console.log({ result });
+
+    if (ok) {
+      result.token = token;
+      dispatch(setUser(result));
+      return;
+    }
+  };
 
   return (
     <ConfigProvider

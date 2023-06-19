@@ -1,11 +1,13 @@
-import { Button, Checkbox, Col, Form, Input, App, Row } from "antd";
+import { App, Button, Checkbox, Col, Form, Input, Row } from "antd";
 import { Typography } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { fetchWithoutToken } from "../../helpers/fetch";
+import { useNavigate } from "react-router-dom";
+import { setUser } from "../../store/slices";
 
 const { Title } = Typography;
 
@@ -22,7 +24,9 @@ interface IRegister {
 }
 
 export const RegisterForm = () => {
+  const dispatch = useDispatch();
   const { role: curRole } = useSelector((state: RootState) => state.user);
+  const navigate = useNavigate();
   const { modal } = App.useApp();
   const [form] = Form.useForm<IRegister>();
   const { t } = useTranslation();
@@ -73,11 +77,17 @@ export const RegisterForm = () => {
 
     if (company) newUser.company = company;
 
-    const result = await fetchWithoutToken("/users", newUser, "POST");
+    const { ok, msg, result } = await fetchWithoutToken(
+      "/users",
+      newUser,
+      "POST"
+    );
 
-    if (result.ok) {
+    console.log({ ok, msg, result });
+
+    if (ok) {
       modal.success({
-        title: t("Successful registration!"),
+        title: t("Successful registration"),
         content: [
           <>
             <span key={1}>
@@ -90,25 +100,30 @@ export const RegisterForm = () => {
         ],
         autoFocusButton: null,
         okText: `${t("Agreed")}`,
+        onOk: () => {
+          form.resetFields();
+          dispatch(setUser(result.user));
+          navigate("/dashboard");
+        },
       });
-      return;
+    } else {
+      modal.error({
+        title: t("Error registration"),
+        content: [
+          <>
+            <span key={1}>
+              {t("An error occurred while creating your account")}
+            </span>
+            <span>{msg}</span>
+            <br key={2} />
+            <br key={3} />
+            <span key={4}>{t("Please try again")}</span>
+          </>,
+        ],
+        autoFocusButton: null,
+        okText: `${t("Agreed")}`,
+      });
     }
-
-    modal.error({
-      title: t("Error registration!"),
-      content: [
-        <>
-          <span key={1}>
-            {t("An error occurred while creating your account")}
-          </span>
-          <br key={2} />
-          <br key={3} />
-          <span key={4}>{t("Please try again")}</span>
-        </>,
-      ],
-      autoFocusButton: null,
-      okText: `${t("Agreed")}`,
-    });
   };
 
   const onFinishFailed = (errorInfo: unknown) => {

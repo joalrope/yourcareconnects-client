@@ -13,7 +13,7 @@ export const fetchWithoutToken = (
   method = "GET"
 ) => {
   const url = `${baseUrl}${endpoint}`;
-
+  console.log(endpoint);
   if (method === "GET") {
     response = fetch(url)
       .then((resp) => {
@@ -41,8 +41,6 @@ export const fetchWithoutToken = (
       body: JSON.stringify(data),
     })
       .then((resp) => {
-        console.log({ resp });
-
         if (resp.ok) {
           return resp.json();
         } else {

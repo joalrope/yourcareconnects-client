@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
-import { setLoggedIn } from "../../store/slices";
+
 import {
+  App,
   Button,
   Checkbox,
   Col,
@@ -11,20 +12,64 @@ import {
   theme,
 } from "antd";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { fetchWithoutToken } from "../../helpers/fetch";
+import { setUser } from "../../store/slices";
 
 const { Paragraph, Title } = Typography;
 const { useToken } = theme;
+
+interface ILoginData {
+  email: string;
+  password: string;
+}
 
 export const LoginForm = () => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
   const { token } = useToken();
+  const navigate = useNavigate();
+  const { modal } = App.useApp();
+  const [form] = Form.useForm<ILoginData>();
 
-  const onFinish = (values: unknown) => {
-    dispatch(setLoggedIn(true));
-    console.log("Success:", values);
+  const onFinish = async ({ email, password }: ILoginData) => {
+    const userData: ILoginData = {
+      email,
+      password,
+    };
+
+    const { ok, msg, result } = await fetchWithoutToken(
+      "/auth/login",
+      userData,
+      "POST"
+    );
+
+    console.log(result);
+
+    if (ok) {
+      form.resetFields();
+      result.user.token = result.token;
+      dispatch(setUser(result.user));
+      sessionStorage.setItem("token", result.token);
+      sessionStorage.setItem("id", JSON.stringify(result.user.id));
+      navigate("/dashboard");
+      return;
+    }
+
+    modal.error({
+      title: t("Error login"),
+      content: [
+        <>
+          <span key={1}>{t(`${msg}`)}</span>
+          <br key={2} />
+          <br key={3} />
+          <span key={4}>{t("Please try again")}</span>
+        </>,
+      ],
+      autoFocusButton: null,
+      okText: `${t("Agreed")}`,
+    });
   };
   const onFinishFailed = (errorInfo: unknown) => {
     console.log("Failed:", errorInfo);

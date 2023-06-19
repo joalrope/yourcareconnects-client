@@ -9,7 +9,7 @@ import { Route, routes } from "../router/routes";
 import { INav } from "./AppLayout";
 
 import { RootState } from "../store";
-import { setES, setLoggedIn, setUS } from "../store/slices";
+import { logout, setES, setUS } from "../store/slices";
 import "./app-layout.css";
 
 export const HeaderContent = () => {
@@ -21,7 +21,8 @@ export const HeaderContent = () => {
   const mode = "";
 
   const handleLogOut = () => {
-    dispatch(setLoggedIn(false));
+    dispatch(logout());
+    sessionStorage.clear();
   };
 
   const items: MenuProps["items"] = routes

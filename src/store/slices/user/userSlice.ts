@@ -2,19 +2,21 @@ import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 
 interface IUser {
-  userId: string;
-  name: string;
+  id: string;
+  names: string;
   role: string;
   email: string;
+  token: string;
   isLoggedIn: boolean;
 }
 
 const initialState: IUser = {
-  userId: "",
-  name: "",
+  id: "",
+  names: "",
   role: "", // customer | provider | admin | superadmin
   email: "",
   isLoggedIn: false,
+  token: "",
 };
 
 export const userSlice = createSlice({
@@ -22,23 +24,25 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      const { userId, name, role, email, isLoggedIn } = action.payload;
+      const { id, names, role, email, token } = action.payload;
 
-      state.userId = userId;
-      state.name = name;
+      state.id = id;
+      state.names = names;
       state.role = role;
       state.email = email;
-      state.isLoggedIn = isLoggedIn;
+      state.token = token;
+      state.isLoggedIn = true;
     },
     setLoggedIn: (state, { payload }) => {
       state.isLoggedIn = payload;
     },
+    logout: () => initialState,
     setRole: (state, { payload }) => {
       state.role = payload;
     },
     setClearUser: (state) => {
-      state.userId = "";
-      state.name = "";
+      state.id = "";
+      state.names = "";
       state.role = "";
       state.email = "";
       state.isLoggedIn = false;
@@ -46,7 +50,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setUser, setLoggedIn, setRole, setClearUser } =
+export const { setUser, setLoggedIn, logout, setRole, setClearUser } =
   userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user;
