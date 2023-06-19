@@ -19,7 +19,7 @@ interface IRegister {
   names: string;
   password: string;
   phonenumber: string;
-  surnames: string;
+  lastname: string;
   role: string;
 }
 
@@ -46,7 +46,7 @@ export const RegisterForm = () => {
     names,
     password,
     phonenumber,
-    surnames,
+    lastname,
   }: IRegister) => {
     if (password !== confirmation) {
       modal.error({
@@ -72,7 +72,7 @@ export const RegisterForm = () => {
       password,
       phonenumber,
       role: curRole ? curRole : "customer",
-      surnames,
+      lastname,
     };
 
     if (company) newUser.company = company;
@@ -195,8 +195,8 @@ export const RegisterForm = () => {
               </Form.Item>
 
               <Form.Item
-                label={t("Surnames")}
-                name="surnames"
+                label={t("Last Name")}
+                name="lastname"
                 rules={[
                   {
                     required: true,
@@ -215,7 +215,7 @@ export const RegisterForm = () => {
                   marginBottom: "6px",
                 }}
               >
-                <Input placeholder={`${t("Surnames").toLowerCase()}`} />
+                <Input placeholder={`${t("Last Name").toLowerCase()}`} />
               </Form.Item>
             </Form.Item>
 
