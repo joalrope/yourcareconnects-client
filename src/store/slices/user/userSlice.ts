@@ -4,6 +4,8 @@ import { RootState } from "../../store";
 interface IUser {
   id: string;
   names: string;
+  balance: number;
+  points: number;
   role: string;
   email: string;
   token: string;
@@ -13,6 +15,8 @@ interface IUser {
 const initialState: IUser = {
   id: "",
   names: "",
+  balance: 0.1,
+  points: 0,
   role: "", // customer | provider | admin | superadmin
   email: "",
   isLoggedIn: false,
@@ -24,10 +28,12 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      const { id, names, role, email, token } = action.payload;
+      const { id, names, balance, points, role, email, token } = action.payload;
 
       state.id = id;
       state.names = names;
+      state.balance = balance;
+      state.points = points;
       state.role = role;
       state.email = email;
       state.token = token;
@@ -43,6 +49,8 @@ export const userSlice = createSlice({
     setClearUser: (state) => {
       state.id = "";
       state.names = "";
+      state.balance = 0.1;
+      state.points = 0;
       state.role = "";
       state.email = "";
       state.isLoggedIn = false;

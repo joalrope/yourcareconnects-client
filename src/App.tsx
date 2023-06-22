@@ -30,10 +30,7 @@ function App() {
 
     const id = ssId ? JSON.parse(ssId) : "";
 
-    console.log(token);
-
     const { ok, result } = await fetchWithoutToken(`/users/${id}`, {}, "GET");
-    console.log({ result });
 
     if (ok) {
       result.token = token;

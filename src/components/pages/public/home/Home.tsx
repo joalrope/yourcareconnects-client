@@ -1,6 +1,6 @@
-import { Button, Col, Row, Typography } from "antd";
+import { /* Button, */ Col, Row, Typography } from "antd";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import ImageYCC from "../../../ui-components/ImageYCC";
 
 const { Paragraph, Title } = Typography;
@@ -38,11 +38,11 @@ export const Home = () => {
         <Row
           style={{ justifyContent: "center", marginTop: "7%", width: "100%" }}
         >
-          <Link to="/login">
+          {/*  <Link to="/login">
             <Button type="primary" style={{ width: 150 }}>
               {t("Login")}
             </Button>
-          </Link>
+          </Link> */}
         </Row>
       </Col>
     </Row>

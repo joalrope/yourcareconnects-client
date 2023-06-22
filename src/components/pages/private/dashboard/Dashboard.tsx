@@ -4,14 +4,15 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { ProviderSelectorCard } from "../../../ui-components/ProvSelCard";
+import { useLocale } from "../../../../hooks/useLocale";
 
 const { useToken } = theme;
 const Dashboard = () => {
-  const { names } = useSelector((state: RootState) => state.user);
+  const { names, balance, points } = useSelector(
+    (state: RootState) => state.user
+  );
   const { t } = useTranslation();
   const { token } = useToken();
-
-  const userPoints = 55;
 
   const providerCard = [
     { service: "Clinical Services", color: "#FCCA3E" },
@@ -43,7 +44,7 @@ const Dashboard = () => {
         <Col xs={24} xl={12}>
           <Card title="Balance" style={{ height: "100%" }}>
             <Title level={4} style={{ marginBottom: 0, textAlign: "center" }}>
-              $ 10.000.284
+              {useLocale(balance)}
             </Title>
             <Title
               level={5}
@@ -51,9 +52,11 @@ const Dashboard = () => {
                 marginTop: 0,
                 textAlign: "center",
                 color: token.colorPrimary,
+                WebkitTextStrokeColor: token.colorWhite,
+                WebkitTextStrokeWidth: "1px",
               }}
             >
-              {`${userPoints} ${t("Points")}`}
+              {`${points} ${t("Points")}`}
             </Title>
           </Card>
         </Col>

@@ -7,13 +7,23 @@ import { parseJwt } from "./parse-jwt";
 const baseUrl = import.meta.env.VITE_URL_BASE;
 let response;
 
+interface Imethod {
+  [key: string]: string;
+}
+
+const methods: Imethod = {
+  POST: "create",
+  PUT: "update",
+  PATCH: "update",
+  DELETE: "delete",
+};
+
 export const fetchWithoutToken = (
   endpoint: string,
   data: unknown,
   method = "GET"
 ) => {
   const url = `${baseUrl}${endpoint}`;
-  console.log(endpoint);
   if (method === "GET") {
     response = fetch(url)
       .then((resp) => {
@@ -22,6 +32,7 @@ export const fetchWithoutToken = (
         } else {
           return {
             ok: false,
+            msg: `Failed to ${methods[method]} resource, resp.ok = false`,
           };
         }
       })
@@ -45,7 +56,9 @@ export const fetchWithoutToken = (
           return resp.json();
         } else {
           return {
+            // TODO: handle response must be a json object
             ok: false,
+            msg: `Failed to ${methods[method]} resource!!!`,
           };
         }
       })
@@ -69,7 +82,9 @@ export const fetchWithToken = (
   const url = `${baseUrl}${endpoint}`;
   const role = parseJwt();
   const token = sessionStorage.token;
+
   const getHeaders = { "x-token": token, "x-role": role, ...header };
+
   const postHeaders = {
     "content-type": "application/json",
     "x-token": token,
@@ -89,7 +104,7 @@ export const fetchWithToken = (
         } else {
           return {
             ok: false,
-            msg: "No se pudo obtener el recurso",
+            msg: `Failed to ${methods[method]} resource`,
             result: {},
           };
         }
@@ -114,7 +129,7 @@ export const fetchWithToken = (
         } else {
           return {
             ok: false,
-            msg: "No se pudo crear el recurso",
+            msg: `Failed to ${methods[method]} resource`,
             result: {},
           };
         }
@@ -139,7 +154,7 @@ export const fetchWithToken = (
 const catchError = (error: Error) => {
   return {
     ok: false,
-    msg: "La solicitud fue rechazada. Parece que no hay conección de Internet",
+    msg: "The request was rejected. It seems that there is no Internet connection",
     result: error,
   };
 };
@@ -160,7 +175,7 @@ const checkSessionStatus = (status: number) => {
   if (status === 404) {
     return {
       ok: false,
-      msg: "Recurso No encontrado",
+      msg: "Resource not found ",
       result: {},
     };
   }
@@ -168,9 +183,9 @@ const checkSessionStatus = (status: number) => {
 
 const showExpiredSessionMessage = (url: string) => {
   Modal.info({
-    title: "Sesión de usuario",
-    content: ["Su sesión activa ha expirado. Por favor inicie una nueva"],
-    okText: "Aceptar",
+    title: "User session",
+    content: ["Your active session has expired. Please start a new one"],
+    okText: "Agreed",
     okType: "primary",
     //confirmLoading: true,
     autoFocusButton: null,

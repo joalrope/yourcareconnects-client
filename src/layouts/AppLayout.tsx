@@ -10,11 +10,6 @@ import { RootState } from "../store";
 
 const { Header, Footer, Sider, Content } = Layout;
 
-export interface INav {
-  key: string;
-  keyPath: string[];
-}
-
 export const AppLayout = ({ children }: { children: ReactNode }) => {
   const [collapsed, setCollapsed] = useState(false);
   const { isLoggedIn } = useSelector((state: RootState) => state.user);

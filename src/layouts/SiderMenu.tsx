@@ -3,8 +3,12 @@ import { Menu, MenuProps } from "antd";
 import { UploadOutlined, ProfileOutlined } from "@ant-design/icons";
 
 import { Link } from "react-router-dom";
-import { INav } from "./AppLayout";
 import { useTranslation } from "react-i18next";
+
+export interface INav {
+  key: string;
+  keyPath: string[];
+}
 
 export const SiderMenu = () => {
   let locationPath;

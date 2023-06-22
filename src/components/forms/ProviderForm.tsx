@@ -14,6 +14,9 @@ import {
 } from "antd";
 
 import { UploadOutlined } from "@ant-design/icons";
+import { fetchWithoutToken } from "../../helpers/fetch";
+import { RootState } from "../../store";
+import { useSelector } from "react-redux";
 
 const { Title } = Typography;
 
@@ -22,17 +25,17 @@ interface IProvider {
   owner: string;
   address: string;
   zipcode: string;
-  phone: string;
-  fax: string;
+  phonenumber: string;
+  faxnumber: string;
   webUrl: string;
   services: string[];
   certificates: string[];
   serviceModality: string;
-  description: string;
 }
 
 export const ProviderForm = () => {
   const { t } = useTranslation();
+  const { id } = useSelector((state: RootState) => state.user);
 
   const services: SelectProps["options"] = [];
   const modalities: SelectProps["options"] = [];
@@ -112,36 +115,55 @@ export const ProviderForm = () => {
     }
   );
 
-  const handleChange = (value: string) => {
+  /*  const handleChange = (value: string) => {
     console.log(`selected ${value}`);
-  };
+  }; */
 
-  const onFinish = ({
+  const onFinish = async ({
     company,
     owner,
     address,
     zipcode,
-    phone,
-    fax,
+    phonenumber,
+    faxnumber,
     webUrl,
     services,
     certificates,
     serviceModality,
-    description,
   }: IProvider) => {
     console.log("Success:", {
       company,
       owner,
       address,
       zipcode,
-      phone,
-      fax,
+      phonenumber,
+      certificates,
+      faxnumber,
       webUrl,
       services,
       serviceModality,
-      certificates,
-      description,
     });
+
+    const dataUser: IProvider = {
+      company,
+      owner,
+      address,
+      zipcode,
+      phonenumber,
+      faxnumber,
+      webUrl,
+      services,
+      certificates,
+      serviceModality,
+    };
+
+    const { ok, msg, result } = await fetchWithoutToken(
+      `/users/${id}`,
+      dataUser,
+      "PUT"
+    );
+
+    console.log({ ok, msg, result });
   };
 
   const onFinishFailed = (errorInfo: unknown) => {
@@ -200,7 +222,7 @@ export const ProviderForm = () => {
 
             <Form.Item
               label={t("Owner's name")}
-              name="ownerName"
+              name="owner"
               rules={[
                 {
                   required: false,
@@ -267,7 +289,7 @@ export const ProviderForm = () => {
 
               <Form.Item
                 label={t("Phone number")}
-                name="phone"
+                name="phonenumber"
                 rules={[
                   {
                     required: true,
@@ -292,7 +314,7 @@ export const ProviderForm = () => {
 
             <Form.Item
               label={t("Licenses and certificates to provide services")}
-              name="fax"
+              name="certificates"
               style={{
                 width: "100%",
                 marginBottom: "6px",
@@ -305,7 +327,7 @@ export const ProviderForm = () => {
 
             <Form.Item
               label={t("Fax number")}
-              name="fax"
+              name="faxnumber"
               style={{
                 width: "100%",
                 marginBottom: "6px",
@@ -316,7 +338,7 @@ export const ProviderForm = () => {
 
             <Form.Item
               label={t("Web Page")}
-              name="fax"
+              name="webUrl"
               style={{
                 width: "100%",
                 marginBottom: "6px",
@@ -337,7 +359,7 @@ export const ProviderForm = () => {
                 mode="multiple"
                 showArrow
                 tagRender={tagRender}
-                defaultValue={["gold", "cyan"]}
+                // defaultValue={["gold", "cyan"]}
                 style={{ width: "100%" }}
                 options={services}
               />
@@ -354,7 +376,7 @@ export const ProviderForm = () => {
               <Select
                 mode="tags"
                 style={{ width: "100%" }}
-                onChange={handleChange}
+                // onChange={handleChange}
                 tokenSeparators={[","]}
                 options={modalities}
                 placeholder={`${t("Service modality").toLowerCase()}`}

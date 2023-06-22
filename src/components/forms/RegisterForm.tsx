@@ -83,12 +83,10 @@ export const RegisterForm = () => {
       "POST"
     );
 
-    console.log({ ok, msg, result });
-
     if (ok) {
       modal.success({
         title: t("Successful registration"),
-        content: [
+        content: (
           <>
             <span key={1}>
               {t("Your account has been created successfully")}
@@ -96,8 +94,8 @@ export const RegisterForm = () => {
             <br key={2} />
             <br key={3} />
             <span key={4}>{t("Please login")}</span>
-          </>,
-        ],
+          </>
+        ),
         autoFocusButton: null,
         okText: `${t("Agreed")}`,
         onOk: () => {
@@ -109,17 +107,18 @@ export const RegisterForm = () => {
     } else {
       modal.error({
         title: t("Error registration"),
-        content: [
+        content: (
           <>
             <span key={1}>
               {t("An error occurred while creating your account")}
             </span>
-            <span>{msg}</span>
+            <br />
+            <span>{t(msg)}</span>
             <br key={2} />
             <br key={3} />
             <span key={4}>{t("Please try again")}</span>
-          </>,
-        ],
+          </>
+        ),
         autoFocusButton: null,
         okText: `${t("Agreed")}`,
       });
@@ -135,7 +134,7 @@ export const RegisterForm = () => {
       <Col style={{ width: "100%" }}>
         <Row style={{ display: "flex", flexDirection: "column" }}>
           <Title level={3} style={{ margin: "50px 0px" }}>
-            {`${t(curRole)} ${t("Create your account")}`}
+            {t("Create your account")}
           </Title>
         </Row>
         <Row

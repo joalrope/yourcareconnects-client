@@ -45,8 +45,6 @@ export const LoginForm = () => {
       "POST"
     );
 
-    console.log(result);
-
     if (ok) {
       form.resetFields();
       result.user.token = result.token;
@@ -59,14 +57,14 @@ export const LoginForm = () => {
 
     modal.error({
       title: t("Error login"),
-      content: [
+      content: (
         <>
           <span key={1}>{t(`${msg}`)}</span>
           <br key={2} />
           <br key={3} />
           <span key={4}>{t("Please try again")}</span>
-        </>,
-      ],
+        </>
+      ),
       autoFocusButton: null,
       okText: `${t("Agreed")}`,
     });
@@ -95,6 +93,7 @@ export const LoginForm = () => {
         >
           <Form
             name="login"
+            form={form}
             labelCol={{
               span: 24,
             }}
@@ -173,6 +172,8 @@ export const LoginForm = () => {
               marginBottom: 0,
               textAlign: "center",
               userSelect: "none",
+              WebkitTextStrokeColor: token.colorWhite,
+              WebkitTextStrokeWidth: "1px",
             }}
           >
             {t("Create an account")}
