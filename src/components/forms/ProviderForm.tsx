@@ -7,7 +7,7 @@ import {
   Row,
   Select,
   SelectProps,
-  Tag,
+  // Tag,
   Typography,
   Upload,
   UploadProps,
@@ -17,6 +17,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { fetchWithoutToken } from "../../helpers/fetch";
 import { RootState } from "../../store";
 import { useSelector } from "react-redux";
+import { CategorySelect } from "../ui-components/CategorySelect";
 
 const { Title } = Typography;
 
@@ -50,8 +51,8 @@ export const ProviderForm = () => {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const tagRender = (props: any) => {
-    const { label, /*  value, */ closable, onClose } = props;
+  /* const tagRender = (props: any) => {
+    const { label, closable, onClose } = props;
     const onPreventMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
       event.preventDefault();
       event.stopPropagation();
@@ -68,7 +69,7 @@ export const ProviderForm = () => {
       </Tag>
     );
   };
-
+ */
   services.push(
     {
       value: "1",
@@ -171,8 +172,8 @@ export const ProviderForm = () => {
   };
 
   return (
-    <Row style={{ width: "100%" }}>
-      <Col style={{ width: "100%" }}>
+    <Row justify={"center"} style={{ width: "100%" }}>
+      <Col style={{ width: "85%" }}>
         <Row style={{ display: "flex", flexDirection: "column" }}>
           <Title level={3} style={{ margin: "25px 0px" }}>
             {t("Provider form")}
@@ -355,14 +356,15 @@ export const ProviderForm = () => {
                 marginBottom: "6px",
               }}
             >
-              <Select
+              <CategorySelect />
+              {/*<Select
                 mode="multiple"
                 showArrow
                 tagRender={tagRender}
                 // defaultValue={["gold", "cyan"]}
                 style={{ width: "100%" }}
                 options={services}
-              />
+            />*/}
             </Form.Item>
 
             <Form.Item

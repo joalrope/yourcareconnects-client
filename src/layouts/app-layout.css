@@ -14,12 +14,13 @@
 }
 
 .--layout__sider-logo {
-  min-height: 64px;
   background-color: var(--primary-color);
   background-image: url("/images/logo.png");
   background-repeat: no-repeat;
   background-size: 50%;
   background-position: center;
+  min-height: 64px;
+  height: 100%;
 }
 
 .--layout__footer {
@@ -31,6 +32,8 @@
   align-content: center;
 }
 
+.--footer__item {
+}
 .ant-menu-overflow-item {
   line-height: 30px;
 }

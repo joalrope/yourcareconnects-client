@@ -14,6 +14,8 @@ const Dashboard = () => {
   const { t } = useTranslation();
   const { token } = useToken();
 
+  const gutter = 32;
+
   const providerCard = [
     { service: "Clinical Services", color: "#FCCA3E" },
     { service: "Holistic & Palliative Services", color: "#4762EE" },
@@ -24,13 +26,17 @@ const Dashboard = () => {
   ];
 
   return (
-    <Col span={24} style={{ maxWidth: "96%" }}>
+    <Col span={24} style={{ maxWidth: "96%", margin: "auto" }}>
       <Col span={24} style={{ borderBottom: "1px solid #e8e8e8" }}>
         <Title level={3} style={{ margin: "20px", width: "100%" }}>
           {t("Dashboard")}
         </Title>
       </Col>
-      <Row gutter={[64, 64]} justify="center" style={{ padding: 64 }}>
+      <Row
+        gutter={[gutter, gutter]}
+        justify="space-around"
+        style={{ padding: gutter }}
+      >
         <Col xs={24} xl={12}>
           <Card title={`${t("Welcome")}, ${names}`}>
             <p>
@@ -61,9 +67,9 @@ const Dashboard = () => {
           </Card>
         </Col>
       </Row>
-      <Row justify="center" style={{ paddingInline: 64 }}>
+      <Row justify="space-around" style={{ paddingInline: gutter }}>
         <Card title={t("Favorite Services")} style={{ width: "100%" }}>
-          <Row justify="space-between" style={{ width: "100%" }}>
+          <Row justify="space-around" style={{ width: "100%" }}>
             {providerCard.map((item) => (
               <ProviderSelectorCard
                 key={item.service}

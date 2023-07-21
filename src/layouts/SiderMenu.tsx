@@ -4,6 +4,9 @@ import { UploadOutlined, ProfileOutlined } from "@ant-design/icons";
 
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store";
+import { setLocationPath } from "../store/slices/router/routerSlice";
 
 export interface INav {
   key: string;
@@ -11,8 +14,10 @@ export interface INav {
 }
 
 export const SiderMenu = () => {
-  let locationPath;
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { locationPath } = useSelector((state: RootState) => state.router);
+
   const role = "customer";
 
   const providerRoutes = [
@@ -44,8 +49,8 @@ export const SiderMenu = () => {
   );
 
   const handleClick = ({ key }: INav) => {
-    locationPath = key;
-
+    console.log("locationPath", key);
+    dispatch(setLocationPath(key));
     if (key === "logout") {
       // dispatch(startLogout());
       // clearStore(dispatch);
@@ -58,7 +63,7 @@ export const SiderMenu = () => {
     <Menu
       theme="dark"
       mode="inline"
-      selectedKeys={locationPath}
+      selectedKeys={[locationPath]}
       defaultSelectedKeys={["/"]}
       onClick={handleClick}
       items={items}

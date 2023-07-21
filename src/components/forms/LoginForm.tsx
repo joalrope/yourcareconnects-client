@@ -13,13 +13,15 @@ import {
 } from "antd";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
-import { fetchWithoutToken } from "../../helpers/fetch";
+//import { fetchWithoutToken } from "../../helpers/fetch";
 import { setUser } from "../../store/slices";
+import { setLocationPath } from "../../store/slices/router/routerSlice";
+import { loginUser } from "../../services/authService";
 
 const { Paragraph, Title } = Typography;
 const { useToken } = theme;
 
-interface ILoginData {
+export interface ILoginData {
   email: string;
   password: string;
 }
@@ -39,11 +41,15 @@ export const LoginForm = () => {
       password,
     };
 
-    const { ok, msg, result } = await fetchWithoutToken(
+    const { ok, msg, result } = await loginUser(userData)
+
+    console.log({ok, msg, result})
+
+   /*  const { ok, msg, result } = await fetchWithoutToken(
       "/auth/login",
       userData,
       "POST"
-    );
+    ); */
 
     if (ok) {
       form.resetFields();
@@ -52,6 +58,7 @@ export const LoginForm = () => {
       sessionStorage.setItem("token", result.token);
       sessionStorage.setItem("id", JSON.stringify(result.user.id));
       navigate("/dashboard");
+      dispatch(setLocationPath("dashboard"));
       return;
     }
 
@@ -197,3 +204,5 @@ export const LoginForm = () => {
     </Row>
   );
 };
+
+

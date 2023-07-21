@@ -1,11 +1,12 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { Avatar, Badge, Row, Tooltip, Typography, theme } from "antd";
+import { Avatar, Badge, Col, Row, Typography, theme } from "antd";
 import { LogoutOutlined } from "@ant-design/icons";
 
-import { logout, setES, setUS } from "../store/slices";
+import { setLocationPath } from "../store/slices/router/routerSlice";
+import { logout } from "../store/slices";
 import { useTranslation } from "react-i18next";
-import { RootState } from "../store";
+import { LanguageSelect } from "../components/ui-components/LanguageSelect";
 
 const { Title } = Typography;
 const { useToken } = theme;
@@ -16,28 +17,19 @@ interface Props {
 
 export const InfoContent = ({ names }: Props) => {
   const dispatch = useDispatch();
-  const { t, i18n } = useTranslation();
-  const { language } = useSelector((state: RootState) => state.i18n);
+  const { t } = useTranslation();
   const { token } = useToken();
 
-  const handleLogOut = () => {
+  const handleLogOut = (e: unknown) => {
+    console.log(e);
+    dispatch(setLocationPath("/"));
     dispatch(logout());
     sessionStorage.clear();
   };
 
   const handleNameClick = () => {
-    window.history.replaceState(null, "", "/dashboard");
-  };
-
-  const setLng = () => {
-    if (language === "enUS") {
-      i18n.changeLanguage("es");
-      dispatch(setES());
-    }
-    if (language === "esES") {
-      i18n.changeLanguage("en");
-      dispatch(setUS());
-    }
+    console.log("dashboard");
+    setLocationPath("dashboard");
   };
 
   return (
@@ -45,62 +37,58 @@ export const InfoContent = ({ names }: Props) => {
       style={{
         display: "flex",
         flexDirection: "row",
-        justifyContent: "flex-end",
         alignItems: "center",
+        justifyContent: "flex-end",
         width: "100%",
       }}
     >
-      <Link to="/dashboard" onClick={handleNameClick}>
-        <Title
-          style={{
-            cursor: "pointer",
-            color: token.colorPrimary,
-            paddingTop: "8px",
-            userSelect: "none",
-          }}
-          level={5}
-        >
-          {names}
-        </Title>
-      </Link>
-      <Avatar
-        shape="circle"
-        src="/images/man.png"
-        style={{ cursor: "pointer", marginLeft: "12px" }}
-      />
-      ,
-      <Badge count={1}>
+      <Col>
+        <Link to="/dashboard" onClick={handleNameClick}>
+          <Title
+            style={{
+              cursor: "pointer",
+              color: token.colorPrimary,
+              paddingTop: "8px",
+              userSelect: "none",
+            }}
+            level={5}
+          >
+            {names}
+          </Title>
+        </Link>
+      </Col>
+      <Col>
         <Avatar
           shape="circle"
-          src="/images/bell-icon.png"
+          src="/images/man.png"
           style={{ cursor: "pointer", marginLeft: "12px" }}
         />
-      </Badge>
-      <Link
-        to="/"
-        onClick={handleLogOut}
-        style={{
-          marginLeft: "30px",
-          userSelect: "none",
-          color: token.colorPrimary,
-        }}
-      >
-        <LogoutOutlined /> {t("Log Out")}
-      </Link>
-      <Tooltip
-        placement="top"
-        title={"English/Español"}
-        className="--tooltip-title__language"
-      >
-        <Avatar
-          onClick={setLng}
-          size={24}
-          src={
-            language === "enUS" ? "/images/ES-flag.png" : "/images/US-flag.png"
-          }
-          style={{ cursor: "pointer", marginLeft: "30px" }}
-        />
-      </Tooltip>
+      </Col>
+      <Col>
+        <Badge count={1}>
+          <Avatar
+            shape="circle"
+            src="/images/bell-icon.png"
+            style={{ cursor: "pointer", marginLeft: "12px" }}
+          />
+        </Badge>
+      </Col>
+      <Col>
+        <Link
+          to="/"
+          onClick={handleLogOut}
+          style={{
+            marginLeft: "10px",
+            userSelect: "none",
+            color: token.colorPrimary,
+          }}
+        >
+          <LogoutOutlined /> {t("Log Out")}
+        </Link>
+      </Col>
+      <Col>
+        <LanguageSelect />
+      </Col>
     </Row>
   );
 };

@@ -1,21 +1,23 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { RouterProvider } from "react-router-dom";
 import { App as AntdApp, ConfigProvider } from "antd";
+import { RootState } from "./store";
+import { setUser } from "./store/slices";
 import { router } from "./router/router";
 import enUS from "antd/locale/en_US";
 import esES from "antd/locale/es_ES";
 import "antd/dist/reset.css";
 import "./index.css";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "./store";
-import { useEffect } from "react";
-import { fetchWithoutToken } from "./helpers/fetch";
-import { setUser } from "./store/slices";
+import { getUserById } from "./services/userService";
 
 function App() {
   const dispatch = useDispatch();
   const { language } = useSelector((state: RootState) => state.i18n);
 
   const curLng = language === "esES" ? esES : enUS;
+
+  console.log("=======Reinicio========");
 
   useEffect(() => {
     if (sessionStorage.getItem("id")) {
@@ -30,7 +32,8 @@ function App() {
 
     const id = ssId ? JSON.parse(ssId) : "";
 
-    const { ok, result } = await fetchWithoutToken(`/users/${id}`, {}, "GET");
+    const { ok, result } = await getUserById(id);
+    console.log({ ok, result });
 
     if (ok) {
       result.token = token;
@@ -43,7 +46,7 @@ function App() {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: "#FBD467", // color primario
+          colorPrimary: "#fbd467", // color primario
           colorBgBase: "#ffffff29", // body color
           colorTextBase: "#1a1a13",
           colorWhite: "#1a1a13",

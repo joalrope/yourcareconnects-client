@@ -21,21 +21,14 @@ export const FooterContent = () => {
 
   return (
     <Row className="--layout__footer" style={{ color: token.colorPrimary }}>
-      <Col
-        className="copyitem"
-        xs={0}
-        sm={0}
-        md={0}
-        lg={5}
-        style={{ userSelect: "none" }}
-      >
+      <Col xs={0} sm={0} md={0} lg={8} flex="1 0 auto">
         Made with <HeartFilled style={{ color: "red" }} /> by Bohiques
       </Col>
-      <Col className="copyitem" style={{ userSelect: "none" }}>
+      <Col flex="1 0 auto">
         Copyright <CopyrightOutlined /> {new Date().getFullYear()} -
         Yourcareconnects
       </Col>
-      <Col className="copyitem">
+      <Col flex="1 0 auto">
         <Link
           className="--footer__avatar"
           to={ownerFacebookUrl}

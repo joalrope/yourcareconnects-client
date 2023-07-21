@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { Menu } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { Menu, Row } from "antd";
 import type { MenuProps } from "antd";
 import { useTranslation } from "react-i18next";
 
@@ -10,10 +10,14 @@ import { RootState } from "../store";
 
 import "./app-layout.css";
 import { INav } from "./SiderMenu";
+import { setLocationPath } from "../store/slices/router/routerSlice";
+import { LanguageSelect } from "../components/ui-components/LanguageSelect";
 
 export const HeaderContent = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const { isLoggedIn, names } = useSelector((state: RootState) => state.user);
+  const { locationPath } = useSelector((state: RootState) => state.router);
 
   const mode = "";
 
@@ -30,10 +34,9 @@ export const HeaderContent = () => {
       key: route.key,
     }));
 
-  let locationPath;
-
   const handleClick = ({ key }: INav) => {
-    locationPath = key;
+    console.log(key);
+    dispatch(setLocationPath(key));
 
     if (key === "logout") {
       // dispatch(startLogout());
@@ -45,21 +48,26 @@ export const HeaderContent = () => {
 
   return (
     <>
-      {!isLoggedIn && (
+      {!isLoggedIn ? (
         <>
           <div className="--layout__sider-logo"></div>
           <Menu
             theme="dark"
             mode="horizontal"
-            selectedKeys={locationPath}
+            selectedKeys={[locationPath]}
             defaultSelectedKeys={["/"]}
             onClick={handleClick}
             items={items}
           />
+          <LanguageSelect />
         </>
+      ) : (
+        isLoggedIn && (
+          <Row justify={"end"} style={{ width: "100%" }}>
+            <InfoContent names={names} />
+          </Row>
+        )
       )}
-
-      {isLoggedIn && <InfoContent names={names} />}
     </>
   );
 };

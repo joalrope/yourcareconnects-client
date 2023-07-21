@@ -7,11 +7,11 @@ import { parseJwt } from "./parse-jwt";
 const baseUrl = import.meta.env.VITE_URL_BASE;
 let response;
 
-interface Imethod {
+interface IMethod {
   [key: string]: string;
 }
 
-const methods: Imethod = {
+const methods: IMethod = {
   POST: "create",
   PUT: "update",
   PATCH: "update",
@@ -20,7 +20,7 @@ const methods: Imethod = {
 
 export const fetchWithoutToken = (
   endpoint: string,
-  data: unknown,
+  data?: unknown,
   method = "GET"
 ) => {
   const url = `${baseUrl}${endpoint}`;
@@ -75,9 +75,9 @@ export const fetchWithoutToken = (
 
 export const fetchWithToken = (
   endpoint: string,
-  data: object,
+  data?: object,
   method = "GET",
-  header: object
+  header?: object
 ) => {
   const url = `${baseUrl}${endpoint}`;
   const role = parseJwt();

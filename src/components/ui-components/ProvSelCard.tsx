@@ -11,26 +11,25 @@ export const ProviderSelectorCard = ({ service, color }: IService) => {
 
   return (
     <Col
-      // xs={24}
-      // sm={12}
-      // md={12}
-      // lg={16}
-      // xl={8}
-      // xxl={4}
+      xs={24}
+      sm={12}
+      md={6}
+      lg={4}
       style={{
         alignItems: "center",
         backgroundColor: color,
         borderRadius: "8px",
         color: "#FFF",
         display: "flex",
-        fontSize: "12px",
+        fontSize: "calc(0.51em + 1vw)",
         fontWeight: "bold",
         height: "14vh",
         justifyContent: "center",
         margin: "5px",
         padding: "12px",
         textAlign: "center",
-        width: "10vw",
+        width: "100%",
+        maxWidth: "140px",
       }}
     >
       <span>{t(service)}</span>
