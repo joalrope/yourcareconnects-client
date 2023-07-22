@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Tag, TreeSelect } from "antd";
+import { FormInstance, Tag, TreeSelect } from "antd";
 import { PlusSquareOutlined } from "@ant-design/icons";
 import { getServices } from "../../services/categoryService";
 import { useTranslation } from "react-i18next";
+import { IProvider } from "../forms/ProviderForm";
 
 //const { TreeNode } = TreeSelect;
 
@@ -18,7 +19,11 @@ export interface Item {
   children: Item[];
 }
 
-export const CategorySelect = () => {
+interface Props {
+  form: FormInstance<IProvider>;
+}
+
+export const CategorySelect = ({ form }: Props) => {
   const { t } = useTranslation();
   const [data, setData] = useState<Item[] | undefined>();
   const [value, setValue] = useState<string>();
@@ -38,6 +43,10 @@ export const CategorySelect = () => {
   const onChange = (newValue: string) => {
     console.log(newValue);
     setValue(newValue);
+    form.setFieldsValue({
+      ...form.getFieldsValue(),
+      services: [newValue],
+    });
   };
 
   /*  const CategoryOptions = data?.map((item) => (
@@ -59,6 +68,7 @@ export const CategorySelect = () => {
       placeholder={t("Please select your services")}
       allowClear
       multiple
+      autoClearSearchValue={false}
       treeCheckable
       treeLine={true}
       treeData={data}

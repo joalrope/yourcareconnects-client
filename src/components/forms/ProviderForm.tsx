@@ -21,7 +21,7 @@ import { CategorySelect } from "../ui-components/CategorySelect";
 
 const { Title } = Typography;
 
-interface IProvider {
+export interface IProvider {
   company: string;
   owner: string;
   address: string;
@@ -35,6 +35,7 @@ interface IProvider {
 }
 
 export const ProviderForm = () => {
+  const [form] = Form.useForm<IProvider>();
   const { t } = useTranslation();
   const { id } = useSelector((state: RootState) => state.user);
 
@@ -187,7 +188,8 @@ export const ProviderForm = () => {
           }}
         >
           <Form
-            name="register"
+            name="providerRegister"
+            form={form}
             labelCol={{
               span: 24,
             }}
@@ -356,7 +358,7 @@ export const ProviderForm = () => {
                 marginBottom: "6px",
               }}
             >
-              <CategorySelect />
+              <CategorySelect form={form} />
               {/*<Select
                 mode="multiple"
                 showArrow
