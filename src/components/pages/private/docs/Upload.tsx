@@ -1,5 +1,3 @@
-import { CategorySelect } from "../../../ui-components/CategorySelect";
-
 export const Upload = () => {
-  return <CategorySelect />;
+  return <h1>Upload Docs</h1>;
 };
