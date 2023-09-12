@@ -30,7 +30,7 @@ export const LanguageSelect = () => {
         onClick={setLng}
         size={24}
         src={
-          language === "enUS" ? "/images/ES-flag.png" : "/images/US-flag.png"
+          language === "enUS" ? "/images/US-flag.png" : "/images/ES-flag.png"
         }
         style={{ cursor: "pointer", marginLeft: "30px" }}
       />

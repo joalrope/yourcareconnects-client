@@ -1,5 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { i18nSlice, themeSlice, userSlice } from "./slices";
+import {
+  formSlice,
+  i18nSlice,
+  themeSlice,
+  userSlice,
+  serviceSlice,
+} from "./slices";
 import { routerSlice } from "./slices/router/routerSlice";
 
 export const store = configureStore({
@@ -8,6 +14,8 @@ export const store = configureStore({
     user: userSlice.reducer,
     theme: themeSlice.reducer,
     router: routerSlice.reducer,
+    form: formSlice.reducer,
+    service: serviceSlice.reducer,
   },
   devTools: import.meta.env.NODE_ENV !== "production",
 });

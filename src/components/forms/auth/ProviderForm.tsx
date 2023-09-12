@@ -14,10 +14,10 @@ import {
 } from "antd";
 
 import { UploadOutlined } from "@ant-design/icons";
-import { fetchWithoutToken } from "../../helpers/fetch";
-import { RootState } from "../../store";
+import { fetchWithToken } from "../../../helpers/fetch";
+import { RootState } from "../../../store";
 import { useSelector } from "react-redux";
-import { CategorySelect } from "../ui-components/CategorySelect";
+import { CategorySelect } from "../../ui-components/CategorySelect";
 
 const { Title } = Typography;
 
@@ -25,9 +25,9 @@ export interface IProvider {
   company: string;
   owner: string;
   address: string;
-  zipcode: string;
-  phonenumber: string;
-  faxnumber: string;
+  zipCode: string;
+  phoneNumber: string;
+  faxNumber: string;
   webUrl: string;
   services: string[];
   certificates: string[];
@@ -39,7 +39,6 @@ export const ProviderForm = () => {
   const { t } = useTranslation();
   const { id } = useSelector((state: RootState) => state.user);
 
-  const services: SelectProps["options"] = [];
   const modalities: SelectProps["options"] = [];
 
   const props: UploadProps = {
@@ -71,97 +70,32 @@ export const ProviderForm = () => {
     );
   };
  */
-  services.push(
-    {
-      value: "1",
-      label: "Massage",
-    },
-    {
-      value: "2",
-      label: "Limpieza de Hogar",
-    },
-    {
-      value: "3",
-      label: "Lavado de vehiculos",
-    },
-    {
-      value: "4",
-      label: "Cuidado de Adultos mayores",
-    },
-    {
-      value: "5",
-      label: "Paseo de mascotas",
-    },
-    {
-      value: "6",
-      label: "Peluquería a Domicilio",
-    }
-  );
 
   modalities.push(
     {
-      value: "1",
+      value: "At home",
       label: "At home",
     },
     {
-      value: "2",
+      value: "Delivery",
       label: "Delivery",
     },
     {
-      value: "3",
+      value: "Remote",
       label: "Remote",
     },
     {
-      value: "4",
+      value: "Hour shifts",
       label: "Hour shifts",
     }
   );
 
-  /*  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-  }; */
+  const onFinish = async (values: IProvider) => {
+    console.log({ values });
 
-  const onFinish = async ({
-    company,
-    owner,
-    address,
-    zipcode,
-    phonenumber,
-    faxnumber,
-    webUrl,
-    services,
-    certificates,
-    serviceModality,
-  }: IProvider) => {
-    console.log("Success:", {
-      company,
-      owner,
-      address,
-      zipcode,
-      phonenumber,
-      certificates,
-      faxnumber,
-      webUrl,
-      services,
-      serviceModality,
-    });
-
-    const dataUser: IProvider = {
-      company,
-      owner,
-      address,
-      zipcode,
-      phonenumber,
-      faxnumber,
-      webUrl,
-      services,
-      certificates,
-      serviceModality,
-    };
-
-    const { ok, msg, result } = await fetchWithoutToken(
+    const { ok, msg, result } = await fetchWithToken(
       `/users/${id}`,
-      dataUser,
+      values,
       "PUT"
     );
 
@@ -266,7 +200,7 @@ export const ProviderForm = () => {
             >
               <Form.Item
                 label={t("Zip code")}
-                name="zipcode"
+                name="zipCode"
                 rules={[
                   {
                     required: true,
@@ -292,7 +226,7 @@ export const ProviderForm = () => {
 
               <Form.Item
                 label={t("Phone number")}
-                name="phonenumber"
+                name="phoneNumber"
                 rules={[
                   {
                     required: true,
@@ -330,7 +264,7 @@ export const ProviderForm = () => {
 
             <Form.Item
               label={t("Fax number")}
-              name="faxnumber"
+              name="faxNumber"
               style={{
                 width: "100%",
                 marginBottom: "6px",
@@ -358,15 +292,12 @@ export const ProviderForm = () => {
                 marginBottom: "6px",
               }}
             >
-              <CategorySelect form={form} />
-              {/*<Select
-                mode="multiple"
-                showArrow
-                tagRender={tagRender}
-                // defaultValue={["gold", "cyan"]}
-                style={{ width: "100%" }}
-                options={services}
-            />*/}
+              <CategorySelect
+                form={form}
+                formatted={true}
+                editable={true}
+                sortable={true}
+              />
             </Form.Item>
 
             <Form.Item

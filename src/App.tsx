@@ -33,7 +33,7 @@ function App() {
     const id = ssId ? JSON.parse(ssId) : "";
 
     const { ok, result } = await getUserById(id);
-    console.log({ ok, result });
+    //console.log({ ok, result });
 
     if (ok) {
       result.token = token;

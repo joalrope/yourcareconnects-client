@@ -5,7 +5,7 @@ export interface Children {
   key: React.ReactNode;
 }
 
-export interface Route {
+export interface IRoute {
   key: string;
   path: string;
   Pos: string;
@@ -17,7 +17,7 @@ export interface Route {
   children?: Children[];
 }
 
-export const routes: Route[] = [
+export const routes: IRoute[] = [
   /* {
     key: "home",
     Pos: "header",

@@ -35,10 +35,17 @@ export const SiderMenu = () => {
       role: "customer",
       icon: <ProfileOutlined />,
     },
-    {
+    /*{
       label: <Link to="/upload">{t("Docs upload")}</Link>,
       path: "/upload",
       key: "upload",
+      role: "customer",
+      icon: <UploadOutlined />,
+    },*/
+    {
+      label: <Link to="/services">{t("Services")}</Link>,
+      path: "/services",
+      key: "services",
       role: "customer",
       icon: <UploadOutlined />,
     },

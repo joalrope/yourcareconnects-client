@@ -4,10 +4,10 @@ import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { fetchWithoutToken } from "../../helpers/fetch";
+import { RootState } from "../../../store";
+import { fetchWithoutToken } from "../../../helpers/fetch";
 import { useNavigate } from "react-router-dom";
-import { setUser } from "../../store/slices";
+import { setUser } from "../../../store/slices";
 
 const { Title } = Typography;
 
@@ -18,8 +18,8 @@ interface IRegister {
   email: string;
   names: string;
   password: string;
-  phonenumber: string;
-  lastname: string;
+  phoneNumber: string;
+  lastName: string;
   role: string;
 }
 
@@ -45,8 +45,8 @@ export const RegisterForm = () => {
     email,
     names,
     password,
-    phonenumber,
-    lastname,
+    phoneNumber,
+    lastName,
   }: IRegister) => {
     if (password !== confirmation) {
       modal.error({
@@ -70,10 +70,12 @@ export const RegisterForm = () => {
       email,
       names,
       password,
-      phonenumber,
+      phoneNumber,
       role: curRole ? curRole : "customer",
-      lastname,
+      lastName,
     };
+
+    console.log(newUser);
 
     if (company) newUser.company = company;
 
@@ -195,7 +197,7 @@ export const RegisterForm = () => {
 
               <Form.Item
                 label={t("Last Name")}
-                name="lastname"
+                name="lastName"
                 rules={[
                   {
                     required: true,
@@ -260,7 +262,7 @@ export const RegisterForm = () => {
 
             <Form.Item
               label={t("Phone number")}
-              name="phonenumber"
+              name="phoneNumber"
               rules={[
                 {
                   required: true,

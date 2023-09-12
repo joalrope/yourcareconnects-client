@@ -99,6 +99,14 @@ body {
   color: var(--primary-color);
 }
 
+.ant-tag {
+  background-color: transparent !important;
+  border: none !important;
+  display: flex;
+  padding: 0px;
+  margin: 1px;
+}
+
 .--layout__content {
   height: var(--height-content);
   max-height: var(--height-content);

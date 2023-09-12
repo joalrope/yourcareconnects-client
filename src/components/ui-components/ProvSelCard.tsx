@@ -17,11 +17,12 @@ export const ProviderSelectorCard = ({ service, color }: IService) => {
       lg={4}
       style={{
         alignItems: "center",
-        backgroundColor: color,
+        backgroundColor: `${color}20`,
+        border: `1px solid ${color}`,
         borderRadius: "8px",
-        color: "#FFF",
+        color: `${color}`,
         display: "flex",
-        fontSize: "calc(0.51em + 1vw)",
+        fontSize: "clamp(1.2rem, 4cqi, 1.2rem)",
         fontWeight: "bold",
         height: "14vh",
         justifyContent: "center",

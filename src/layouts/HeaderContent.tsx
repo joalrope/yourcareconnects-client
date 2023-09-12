@@ -4,7 +4,7 @@ import { Menu, Row } from "antd";
 import type { MenuProps } from "antd";
 import { useTranslation } from "react-i18next";
 
-import { Route, routes } from "../router/routes";
+import { IRoute, routes } from "../router/routes";
 import { InfoContent } from "./InfoContent";
 import { RootState } from "../store";
 
@@ -23,12 +23,12 @@ export const HeaderContent = () => {
 
   const items: MenuProps["items"] = routes
     .filter(
-      (route: Route) =>
+      (route: IRoute) =>
         route.Pos === "header" &&
         (route.type === "public" ||
           (route.type === "auth" && route.mode === mode))
     )
-    .map((route: Route) => ({
+    .map((route: IRoute) => ({
       label: <Link to={route.path}>{t(`${route.name}`)}</Link>,
       path: route.path,
       key: route.key,

@@ -14,9 +14,9 @@ import {
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 //import { fetchWithoutToken } from "../../helpers/fetch";
-import { setUser } from "../../store/slices";
-import { setLocationPath } from "../../store/slices/router/routerSlice";
-import { loginUser } from "../../services/authService";
+import { setUser } from "../../../store/slices";
+import { setLocationPath } from "../../../store/slices/router/routerSlice";
+import { loginUser } from "../../../services";
 
 const { Paragraph, Title } = Typography;
 const { useToken } = theme;
@@ -41,11 +41,11 @@ export const LoginForm = () => {
       password,
     };
 
-    const { ok, msg, result } = await loginUser(userData)
+    const { ok, msg, result } = await loginUser(userData);
 
-    console.log({ok, msg, result})
+    console.log({ ok, msg, result });
 
-   /*  const { ok, msg, result } = await fetchWithoutToken(
+    /*  const { ok, msg, result } = await fetchWithoutToken(
       "/auth/login",
       userData,
       "POST"
@@ -204,5 +204,3 @@ export const LoginForm = () => {
     </Row>
   );
 };
-
-

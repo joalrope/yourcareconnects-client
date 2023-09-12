@@ -1,5 +1,5 @@
 import { Col, Row } from "antd";
-import { LoginForm } from "../../../../forms/LoginForm";
+import { LoginForm } from "../../../../forms/auth/LoginForm";
 import "./login.css";
 import ImageYCC from "../../../../ui-components/ImageYCC";
 

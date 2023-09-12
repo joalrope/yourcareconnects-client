@@ -1,4 +1,4 @@
-import { RegisterForm } from "../../../../forms/RegisterForm";
+import { RegisterForm } from "../../../../forms/auth/RegisterForm";
 import "./register.css";
 
 export const Register = () => {
