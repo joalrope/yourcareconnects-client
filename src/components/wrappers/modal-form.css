@@ -1,4 +1,85 @@
-.--form-modal__container {
+.--form-modal__container .--form-modal__draggable .ant-modal-content {
+  padding: 2px;
+  background-color: white !important;
+}
+
+.--form-modal__container
+  .--form-modal__draggable
+  .ant-modal-content
+  .ant-modal-close
+  .ant-modal-close-x {
+  line-height: 48px !important;
+}
+
+.--form-modal__container
+  .--form-modal__draggable
+  .ant-modal-content
+  .ant-modal-close {
+  color: black !important;
+  top: 10px;
+}
+
+.--form-modal__container
+  .--form-modal__draggable
+  .ant-modal-content
+  .ant-modal-header {
+  background: var(--primary-color) !important;
+  height: 32px;
+}
+
+.--form-modal__container
+  .--form-modal__draggable
+  .ant-modal-content
+  .ant-modal-header
+  .ant-modal-title
+  .--form-modal__title-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.--form-modal__container
+  .--form-modal__draggable
+  .ant-modal-content
+  .ant-modal-header
+  .ant-modal-title
+  .--form-modal__title-container
+  .--form-modal__title-logo {
+  align-items: center;
+  background-color: var(--primary-color);
+  display: flex;
+  flex: 0 0 66px !important;
+  height: 32px;
+  padding: 6px;
+  vertical-align: middle;
+}
+
+.--form-modal__container
+  .--form-modal__draggable
+  .ant-modal-content
+  .ant-modal-header
+  .ant-modal-title
+  .--form-modal__title-container
+  .--form-modal__title-value {
+  display: flex;
+  flex: 1 0 auto;
+  align-items: center;
+  color: "var(--secondary-color)";
+  padding-left: 12px;
+}
+
+.ant-modal-body,
+.ant-modal-footer {
+  padding: 0px 12px 12px 12px !important;
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
+  background-color: "white";
+}
+
+.ant-modal-body {
+  padding-top: 0px !important;
+}
+
+/*.--form-modal__container {
   .--form-modal__draggable {
     .ant-modal-content {
       padding: 2px;
@@ -15,7 +96,6 @@
       }
       .ant-modal-header {
         background: var(--primary-color) !important;
-
         height: 32px;
         .ant-modal-title {
           .--form-modal__title-container {
@@ -51,3 +131,4 @@
     }
   }
 }
+*/

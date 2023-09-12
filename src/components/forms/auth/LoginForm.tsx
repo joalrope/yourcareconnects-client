@@ -43,14 +43,6 @@ export const LoginForm = () => {
 
     const { ok, msg, result } = await loginUser(userData);
 
-    console.log({ ok, msg, result });
-
-    /*  const { ok, msg, result } = await fetchWithoutToken(
-      "/auth/login",
-      userData,
-      "POST"
-    ); */
-
     if (ok) {
       form.resetFields();
       result.user.token = result.token;

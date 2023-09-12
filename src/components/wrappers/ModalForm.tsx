@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { FormInstance, Image, Modal } from "antd";
+import { Col, FormInstance, Image, Modal } from "antd";
 import Draggable from "react-draggable";
 import type { DraggableData, DraggableEvent } from "react-draggable";
 import logo from "/images/logo.png";
@@ -78,7 +78,9 @@ export const ModalForm = ({
         <div className="--form-modal__title-logo">
           <Image src={logo} alt={"Logo Tractocenter"} height={28} />
         </div>
-        <div className="--form-modal__title-value">{title}</div>
+        <Col xs={0} md={12} className="--form-modal__title-value">
+          {title}
+        </Col>
       </div>
     );
   } else {

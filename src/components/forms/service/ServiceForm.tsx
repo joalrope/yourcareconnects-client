@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ColorPicker, Form, Input } from "antd";
+import { Col, ColorPicker, Form, Input, Row } from "antd";
 
 import { RootState } from "../../../store";
 import { setNewService, setServiceFormHide } from "../../../store/slices";
@@ -32,35 +32,57 @@ const NewService = ({ form }: { form: FormInstance }) => {
       }}
       initialValues={{ bgColor: "#fbd467" }}
     >
-      <Form.Item
-        className="--form-item__container"
-        name="inputNewService"
-        label="Indique el nuevo servicio"
-        rules={[
-          {
-            required: true,
-            message: "Please input a category",
-          },
-          {
-            pattern: new RegExp(/^[^|]*$/),
-            message:
-              "The slash character ( | ) is not allowed, please remove it",
-          },
-        ]}
+      <Row
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          width: "100%",
+          justifyContent: "space-between",
+        }}
       >
-        <Input placeholder="Input a new service" />
-      </Form.Item>
-      <Form.Item
-        className="--form-item__container"
-        name="bgColor"
-        label="Seleccione color del servicio"
-      >
-        <ColorPicker
-          onChange={(_date, dateString) => {
-            form.setFieldsValue({ bgColor: dateString });
-          }}
-        />
-      </Form.Item>
+        <Col xs={24} md={20}>
+          <Form.Item
+            className="--form-item__container"
+            name="inputNewService"
+            label="Indique el nuevo servicio"
+            rules={[
+              {
+                required: true,
+                message: "Please input a category",
+              },
+              {
+                pattern: new RegExp(/^[^|]*$/),
+                message:
+                  "The slash character ( | ) is not allowed, please remove it",
+              },
+            ]}
+          >
+            <Input placeholder="Input a new service" />
+          </Form.Item>
+        </Col>
+        <Col
+          xs={24}
+          md={3}
+          style={{ display: "flex", justifyContent: "flex-end" }}
+        >
+          <Form.Item
+            className="--form-item__container"
+            name="bgColor"
+            label="Color"
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              width: "100%",
+            }}
+          >
+            <ColorPicker
+              onChange={(_date, dateString) => {
+                form.setFieldsValue({ bgColor: dateString });
+              }}
+            />
+          </Form.Item>
+        </Col>
+      </Row>
     </Form>
   );
 };
@@ -114,7 +136,7 @@ export const ServiceForm = () => {
       onCancel={onCancel}
       cancelText={"Cancelar"}
       draggable={true}
-      width={"25vw"}
+      width={"40vw"}
     />
   );
 };

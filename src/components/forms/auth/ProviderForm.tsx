@@ -18,6 +18,7 @@ import { fetchWithToken } from "../../../helpers/fetch";
 import { RootState } from "../../../store";
 import { useSelector } from "react-redux";
 import { CategorySelect } from "../../ui-components/CategorySelect";
+import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography;
 
@@ -35,6 +36,7 @@ export interface IProvider {
 }
 
 export const ProviderForm = () => {
+  const navigate = useNavigate();
   const [form] = Form.useForm<IProvider>();
   const { t } = useTranslation();
   const { id } = useSelector((state: RootState) => state.user);
@@ -49,27 +51,6 @@ export const ProviderForm = () => {
       }
     },
   };
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  /* const tagRender = (props: any) => {
-    const { label, closable, onClose } = props;
-    const onPreventMouseDown = (event: React.MouseEvent<HTMLSpanElement>) => {
-      event.preventDefault();
-      event.stopPropagation();
-    };
-    return (
-      <Tag
-        color={"#f2CA61"}
-        onMouseDown={onPreventMouseDown}
-        closable={closable}
-        onClose={onClose}
-        style={{ marginRight: 3 }}
-      >
-        {label}
-      </Tag>
-    );
-  };
- */
 
   modalities.push(
     {
@@ -93,13 +74,12 @@ export const ProviderForm = () => {
   const onFinish = async (values: IProvider) => {
     console.log({ values });
 
-    const { ok, msg, result } = await fetchWithToken(
-      `/users/${id}`,
-      values,
-      "PUT"
-    );
+    const { ok } = await fetchWithToken(`/users/${id}`, values, "PUT");
 
-    console.log({ ok, msg, result });
+    if (ok) {
+      form.resetFields();
+      navigate("/dashboard");
+    }
   };
 
   const onFinishFailed = (errorInfo: unknown) => {
