@@ -21,11 +21,7 @@ export const LanguageSelect = () => {
   };
 
   return (
-    <Tooltip
-      placement="top"
-      title={"English/Español"}
-      className="--tooltip-title__language"
-    >
+    <Tooltip placement="top" title={"English/Español"}>
       <Avatar
         onClick={setLng}
         size={24}

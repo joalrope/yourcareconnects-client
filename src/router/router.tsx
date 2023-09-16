@@ -5,7 +5,7 @@ import SelectCreateAccount from "../components/pages/public/home/SelectCreateAcc
 import ResetPassword from "../components/pages/public/auth/login/ResetPassword";
 import Dashboard from "../components/pages/private/dashboard/Dashboard";
 import { Provider } from "../components/pages/public/auth/register/Provider";
-import { ComponentTest } from "../components/pages/private/ComponentTest";
+import { SearchServices } from "../components/pages/private/services/SearchServices";
 
 export const router = createBrowserRouter([
   {
@@ -84,7 +84,7 @@ export const router = createBrowserRouter([
     path: "/services",
     element: (
       <AppLayout>
-        <ComponentTest />
+        <SearchServices />
       </AppLayout>
     ),
   },

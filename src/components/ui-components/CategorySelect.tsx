@@ -3,7 +3,7 @@ import { Col, FormInstance, Row, Tag, TreeSelect } from "antd";
 import { PlusSquareOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { getServices } from "../../services/serviceService";
 import { useTranslation } from "react-i18next";
-import { IProvider } from "../forms/auth/ProviderForm";
+//import { IProvider } from "../forms/auth/ProviderForm";
 import { ServiceForm } from "../forms/service/ServiceForm";
 import { useDispatch /*useSelector*/, useSelector } from "react-redux";
 import {
@@ -31,7 +31,8 @@ interface Colors {
 }
 
 interface Props {
-  form: FormInstance<IProvider>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  form: FormInstance<any>;
   formatted?: boolean;
   editable: boolean;
   sortable?: boolean;
@@ -128,6 +129,7 @@ export const CategorySelect = ({
         treeData={data}
         treeLine={true}
         value={value}
+        style={{ width: "100%" }}
       />
     </>
   );
@@ -159,8 +161,8 @@ const formatterServiceItems = (
   handleClick: (value: string | React.ReactNode) => void
 ) => {
   services.map((item) => {
-    const bgc = item.tagColor?.frc ? `${item.tagColor.frc}20` : "#fbd467";
-    const frc = item.tagColor?.frc ? `${item.tagColor.frc}` : "#fbd467";
+    const bgc = `${item.tagColor}20`;
+    const frc = `${item.tagColor}`;
 
     item.title = (
       <Row>

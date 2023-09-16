@@ -95,13 +95,13 @@ export const ServiceForm = () => {
   } = useSelector((state: RootState) => state.form);
   const { pathNewService } = useSelector((state: RootState) => state.service);
 
+  let title: string;
   const mode = "add";
   const onOk = () => {
     form
       .validateFields()
       .then(async (values) => {
-        console.log(values);
-        const title: string = values.inputNewService;
+        title = values.inputNewService;
         const color: string = values.bgColor;
         const parent = pathNewService.replaceAll("|", ".");
 
@@ -115,6 +115,10 @@ export const ServiceForm = () => {
       })
       .catch((info) => {
         console.log("Validate Failed:", info);
+      })
+      .finally(() => {
+        form.resetFields();
+        dispatch(setServiceFormHide());
       });
 
     dispatch(setServiceFormHide());
