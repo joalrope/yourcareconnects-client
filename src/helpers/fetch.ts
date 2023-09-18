@@ -91,8 +91,6 @@ export const fetchWithToken = (
     ...header,
   };
 
-  console.log(url);
-
   if (method === "GET") {
     response = fetch(url, {
       method,

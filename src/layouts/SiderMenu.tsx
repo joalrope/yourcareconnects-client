@@ -35,13 +35,13 @@ export const SiderMenu = () => {
       role: "customer",
       icon: <ProfileOutlined />,
     },
-    /*{
+    {
       label: <Link to="/upload">{t("Docs upload")}</Link>,
       path: "/upload",
       key: "upload",
       role: "customer",
       icon: <UploadOutlined />,
-    },*/
+    },
     {
       label: <Link to="/services">{t("Services")}</Link>,
       path: "/services",
@@ -56,7 +56,6 @@ export const SiderMenu = () => {
   );
 
   const handleClick = ({ key }: INav) => {
-    console.log("locationPath", key);
     dispatch(setLocationPath(key));
     if (key === "logout") {
       // dispatch(startLogout());

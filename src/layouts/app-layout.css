@@ -27,13 +27,11 @@
   width: 100%;
   text-align: center;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
   align-content: center;
 }
 
-.--footer__item {
-}
 .ant-menu-overflow-item {
   line-height: 30px;
 }
@@ -46,5 +44,5 @@
 }
 
 .--footer__avatar {
-  margin-right: 12px;
+  margin-right: 10px;
 }

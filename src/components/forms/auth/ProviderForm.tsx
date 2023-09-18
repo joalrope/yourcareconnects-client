@@ -19,10 +19,12 @@ import { RootState } from "../../../store";
 import { useSelector } from "react-redux";
 import { CategorySelect } from "../../ui-components/CategorySelect";
 import { useNavigate } from "react-router-dom";
+import { ProfilePicture } from "../../ui-components/ProfilePicture";
 
 const { Title } = Typography;
 
 export interface IProvider {
+  id: string;
   company: string;
   owner: string;
   address: string;
@@ -120,6 +122,14 @@ export const ProviderForm = () => {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
+            <Form.Item
+              name="picture"
+              //valuePropName="fileList"
+              //getValueFromEvent={normFile}
+              rules={[{ required: true }]}
+            >
+              <ProfilePicture form={form} />
+            </Form.Item>
             <Form.Item
               label={t("Company Name")}
               name="company"

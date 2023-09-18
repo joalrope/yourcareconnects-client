@@ -1,11 +1,18 @@
 import { createBrowserRouter } from "react-router-dom";
 import { AppLayout } from "../layouts/AppLayout";
-import { Home, Login, Profile, Register, Upload } from "../components/pages";
+import {
+  Home,
+  Login,
+  Profile,
+  Register,
+  UploadDocs,
+} from "../components/pages";
 import SelectCreateAccount from "../components/pages/public/home/SelectCreateAccount";
 import ResetPassword from "../components/pages/public/auth/login/ResetPassword";
 import Dashboard from "../components/pages/private/dashboard/Dashboard";
 import { Provider } from "../components/pages/public/auth/register/Provider";
 import { SearchServices } from "../components/pages/private/services/SearchServices";
+//import { ComponentTest } from "../components/ComponentTest";
 
 export const router = createBrowserRouter([
   {
@@ -68,7 +75,8 @@ export const router = createBrowserRouter([
     path: "/upload",
     element: (
       <AppLayout>
-        <Upload />
+        <UploadDocs />
+        {/* <ComponentTest /> */}
       </AppLayout>
     ),
   },

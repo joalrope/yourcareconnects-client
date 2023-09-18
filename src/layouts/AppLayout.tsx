@@ -14,7 +14,7 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
   const [collapsed, setCollapsed] = useState(false);
   const { isLoggedIn } = useSelector((state: RootState) => state.user);
 
-  const hScreen = isLoggedIn ? "83.5vh" : "86.8vh";
+  const hScreen = isLoggedIn ? "83.5vh" : "86.7vh";
 
   const onCollapse = () => {
     setCollapsed(!collapsed);
@@ -22,7 +22,12 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
   return (
     <Layout>
       {isLoggedIn && (
-        <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+        <Sider
+          breakpoint="xs"
+          collapsible
+          collapsed={collapsed}
+          onCollapse={onCollapse}
+        >
           <SiderContent />
         </Sider>
       )}
