@@ -178,7 +178,7 @@ export const LoginForm = () => {
             {t("Create an account")}
           </Paragraph>
         </Link>
-        <Link to={"/login/reset-password"}>
+        <Link to={"/auth/reset-password"}>
           <Paragraph
             style={{
               color: token.colorWhite,

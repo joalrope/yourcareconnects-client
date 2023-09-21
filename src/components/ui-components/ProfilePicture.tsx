@@ -1,14 +1,29 @@
-import { useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
+import { Dispatch, SetStateAction, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Modal, Upload } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+
 import type { FormInstance } from "antd";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
 
-export const ProfilePicture = ({ form }: { form: FormInstance }) => {
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
+interface Props {
+  form: FormInstance;
+  pictureName: string;
+  fileList: UploadFile[];
+  setFileList: Dispatch<SetStateAction<UploadFile[]>>;
+}
+
+export const ProfilePicture = ({
+  form,
+  pictureName,
+  fileList,
+  setFileList,
+}: Props) => {
+  //const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewTitle, setPreviewTitle] = useState("");
   const [previewImage, setPreviewImage] = useState("");
+  const { t } = useTranslation();
 
   const handleCancel = () => setPreviewOpen(false);
 
@@ -29,9 +44,8 @@ export const ProfilePicture = ({ form }: { form: FormInstance }) => {
     if (fileList.length === 0) {
       return;
     }
-    const newImgBase64 = await getBase64(fileList[0].originFileObj as RcFile);
 
-    form.setFieldValue("picture", newImgBase64);
+    form.setFieldValue(pictureName, fileList);
 
     setFileList(fileList);
   };
@@ -52,14 +66,15 @@ export const ProfilePicture = ({ form }: { form: FormInstance }) => {
   const uploadButton = (
     <div>
       <PlusOutlined />
-      <div style={{ fontSize: 12, marginTop: 8 }}>Select an image</div>
+      <div style={{ fontSize: 12, marginTop: 8 }}>{t("Select an image")}</div>
     </div>
   );
 
   return (
     <>
       <Upload
-        name="avatar"
+        accept="image/png, image/jpeg"
+        name={pictureName}
         listType="picture-card"
         showUploadList={true}
         {...props}
@@ -74,7 +89,11 @@ export const ProfilePicture = ({ form }: { form: FormInstance }) => {
         footer={null}
         onCancel={handleCancel}
       >
-        <img alt="example" style={{ width: "100%" }} src={previewImage} />
+        <img
+          alt={`picture of ${pictureName}`}
+          style={{ width: "100%" }}
+          src={previewImage}
+        />
       </Modal>
     </>
   );
@@ -87,4 +106,40 @@ const getBase64 = (file: RcFile): Promise<string> => {
     reader.onload = () => resolve(reader.result as string);
     reader.onerror = (error) => reject(error);
   });
+};
+
+const baseUrl = import.meta.env.VITE_URL_BASE;
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const handleUpload = async (
+  fileList: UploadFile[],
+  fileName: string
+) => {
+  //
+  const ext = fileList[0].name.split(".").pop();
+  const formData = new FormData();
+
+  formData.append(
+    fileName,
+    fileList[0].originFileObj as RcFile,
+    `${fileName}.${ext}`
+  );
+
+  const url = `${baseUrl}/uploads`;
+
+  return await fetch(url, {
+    method: "POST",
+    headers: {
+      Accept: "*/*",
+      "x-token": sessionStorage.token,
+    },
+    body: formData,
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      return data;
+    })
+    .catch(() => {
+      console.error("An error occurred while loading the image.");
+    });
 };

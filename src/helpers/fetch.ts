@@ -24,6 +24,7 @@ export const fetchWithoutToken = (
   method = "GET"
 ) => {
   const url = `${baseUrl}${endpoint}`;
+  console.log(url);
   if (method === "GET") {
     response = fetch(url)
       .then((resp) => {
@@ -57,8 +58,9 @@ export const fetchWithoutToken = (
         } else {
           return {
             // TODO: handle response must be a json object
-            ok: false,
-            msg: `Failed to ${methods[method]} resource!!!`,
+            ok: resp.ok,
+            msg: resp.statusText,
+            statuscode: resp.status,
           };
         }
       })

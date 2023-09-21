@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RouterProvider } from "react-router-dom";
 import { App as AntdApp, ConfigProvider } from "antd";
@@ -14,8 +14,11 @@ import { getUserById } from "./services/userService";
 function App() {
   const dispatch = useDispatch();
   const { language } = useSelector((state: RootState) => state.i18n);
+  const [curLng, setCurLng] = useState(enUS);
 
-  const curLng = language === "esES" ? esES : enUS;
+  useEffect(() => {
+    setCurLng(language === "esES" ? esES : enUS);
+  }, [language]);
 
   console.log("=======Reinicio========");
 

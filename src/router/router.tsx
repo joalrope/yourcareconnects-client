@@ -1,14 +1,15 @@
 import { createBrowserRouter } from "react-router-dom";
 import { AppLayout } from "../layouts/AppLayout";
 import {
+  ChangePasword,
   Home,
   Login,
   Profile,
   Register,
+  ResetPassword,
   UploadDocs,
 } from "../components/pages";
 import SelectCreateAccount from "../components/pages/public/home/SelectCreateAccount";
-import ResetPassword from "../components/pages/public/auth/login/ResetPassword";
 import Dashboard from "../components/pages/private/dashboard/Dashboard";
 import { Provider } from "../components/pages/public/auth/register/Provider";
 import { SearchServices } from "../components/pages/private/services/SearchServices";
@@ -40,10 +41,18 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    path: "/login/reset-password",
+    path: "/auth/reset-password",
     element: (
       <AppLayout>
         <ResetPassword />
+      </AppLayout>
+    ),
+  },
+  {
+    path: "/auth/change-password/:init/:id/:code",
+    element: (
+      <AppLayout>
+        <ChangePasword />
       </AppLayout>
     ),
   },

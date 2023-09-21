@@ -6,3 +6,26 @@ export const loginUser = async (userData: ILoginData) => {
 
   return result;
 };
+
+export const forgotPassword = async (email: string) => {
+  //
+  console.log(email);
+
+  const result = await fetchWithoutToken(
+    "/auth/forgotPassword",
+    { email },
+    "POST"
+  );
+
+  return result;
+};
+
+export const changePassword = async (token: string, password: string) => {
+  const result = await fetchWithoutToken(
+    "/auth/changePassword",
+    { token, password },
+    "POST"
+  );
+
+  return result;
+};

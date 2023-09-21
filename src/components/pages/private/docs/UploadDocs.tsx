@@ -1,23 +1,35 @@
-import { Button, Form } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+//import { useNavigate } from "react-router-dom";
+import { App, Button, Form } from "antd";
+import { UploadFile } from "antd/lib/upload/interface";
 import { useTranslation } from "react-i18next";
-import { fetchWithToken } from "../../../../helpers/fetch";
-import { ProfilePicture } from "../../../ui-components/ProfilePicture";
+import {
+  ProfilePicture,
+  handleUpload,
+} from "../../../ui-components/ProfilePicture";
 import { IProvider } from "../../../forms/auth/ProviderForm";
 
 export const UploadDocs = () => {
-  const navigate = useNavigate();
+  const { message } = App.useApp();
+  //const navigate = useNavigate();
   const [form] = Form.useForm<IProvider>();
   const { t } = useTranslation();
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
-  const onFinish = async (values: IProvider) => {
-    console.log(values);
-    const { ok } = await fetchWithToken(`/users/${values.id}`, values, "PUT");
+  const pictureName = "profile";
 
-    if (ok) {
-      form.resetFields();
-      navigate("/dashboard");
+  const onFinish = async (/*values: IProvider*/) => {
+    const { ok, msg } = await handleUpload(fileList, pictureName);
+
+    if (!ok) {
+      message.error(t(`${msg}`));
+      return;
     }
+
+    setFileList([]);
+    form.resetFields();
+    message.success(`${msg}`);
+    //navigate("/dashboard");
   };
 
   const onFinishFailed = (errorInfo: unknown) => {
@@ -44,12 +56,17 @@ export const UploadDocs = () => {
         autoComplete="off"
       >
         <Form.Item
-          name="upload"
+          name={pictureName}
           //valuePropName="fileList"
           //getValueFromEvent={normFile}
           rules={[{ required: true }]}
         >
-          <ProfilePicture form={form} />
+          <ProfilePicture
+            form={form}
+            pictureName={pictureName}
+            fileList={fileList}
+            setFileList={setFileList}
+          />
         </Form.Item>
 
         <Button type="primary" htmlType="submit" style={{ marginTop: "25px" }}>

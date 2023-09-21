@@ -1,13 +1,28 @@
-import { Button, Col, Form, Input, Row, Typography } from "antd";
+import { App, Button, Col, Form, Input, Row, Typography } from "antd";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { forgotPassword } from "../../../../../services";
 
 const { Paragraph, Title } = Typography;
 
-const ResetPassword = () => {
+export const ResetPassword = () => {
+  const navigate = useNavigate();
+  const { message } = App.useApp();
+
   const { t } = useTranslation();
 
-  const onFinish = (values: unknown) => {
-    console.log("Success:", values);
+  const onFinish = async (values: { email: string }) => {
+    const { email } = values;
+
+    const { ok } = await forgotPassword(email);
+
+    console.log({ ok });
+
+    if (ok) {
+      message.success(t(`Please check your email, to reset your password`));
+      navigate("/");
+      return;
+    }
   };
   const onFinishFailed = (errorInfo: unknown) => {
     console.log("Failed:", errorInfo);

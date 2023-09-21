@@ -7,6 +7,8 @@ export const translate = (
 ) => {
   //
 
+  if (!jsonArray) return;
+
   jsonArray.map((item) => {
     item.title = t(`${item.title}`);
 

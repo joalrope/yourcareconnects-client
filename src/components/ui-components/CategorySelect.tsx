@@ -1,5 +1,5 @@
 import { ReactNode, useCallback, useEffect, useState } from "react";
-import { Col, FormInstance, Row, Tag, TreeSelect } from "antd";
+import { Col, FormInstance, Row, Tag, TreeSelect, message } from "antd";
 import { PlusSquareOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { getServices } from "../../services/serviceService";
 import { useTranslation } from "react-i18next";
@@ -58,6 +58,7 @@ export const CategorySelect = ({
   const [open, setOpen] = useState(false);
   const [data, setData] = useState<IItem[] | undefined>();
   const [value, setValue] = useState<string[]>();
+  const [messageApi] = message.useMessage();
 
   const handleClick = useCallback(
     (value: string | ReactNode) => {
@@ -72,13 +73,9 @@ export const CategorySelect = ({
     [dispatch]
   );
 
-  useEffect(() => {
-    const fetchData: () => Promise<void> = async () => {
-      const {
-        result: { services: serviceDB },
-      } = await getServices();
-
-      const services = translate(serviceDB, t);
+  const customizeServices = useCallback(
+    (servicesDB: IItem[]) => {
+      const services = translate(servicesDB, t);
 
       if (sortable) servicesSort(services);
 
@@ -88,10 +85,29 @@ export const CategorySelect = ({
 
       setData(services);
       dispatch(setNewService(""));
+    },
+    [dispatch, handleClick, editable, formatted, language, sortable, t]
+  );
+
+  useEffect(() => {
+    const fetchData: () => Promise<void> = async () => {
+      const {
+        ok,
+        result: { services: servicesDB },
+      } = await getServices();
+
+      if (!ok) {
+        messageApi.open({
+          type: "error",
+          content: "This is an error message",
+        });
+      }
+
+      customizeServices(servicesDB);
     };
 
     fetchData();
-  }, [formatted, editable, sortable, handleClick, dispatch, open, t, language]);
+  }, [customizeServices, messageApi]);
 
   const onChange = (newValue: string[]) => {
     setValue(newValue);

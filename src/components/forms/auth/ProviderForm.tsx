@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import {
+  App,
   Button,
   Col,
   Form,
@@ -10,16 +11,21 @@ import {
   // Tag,
   Typography,
   Upload,
-  UploadProps,
+  //UploadFile,
+  //UploadProps,
 } from "antd";
 
+import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
+
 import { UploadOutlined } from "@ant-design/icons";
-import { fetchWithToken } from "../../../helpers/fetch";
-import { RootState } from "../../../store";
-import { useSelector } from "react-redux";
 import { CategorySelect } from "../../ui-components/CategorySelect";
-import { useNavigate } from "react-router-dom";
-import { ProfilePicture } from "../../ui-components/ProfilePicture";
+import {
+  ProfilePicture,
+  handleUpload,
+} from "../../ui-components/ProfilePicture";
+import { useState } from "react";
+
+const baseUrl = import.meta.env.VITE_URL_BASE;
 
 const { Title } = Typography;
 
@@ -38,12 +44,14 @@ export interface IProvider {
 }
 
 export const ProviderForm = () => {
-  const navigate = useNavigate();
+  const { message } = App.useApp();
   const [form] = Form.useForm<IProvider>();
   const { t } = useTranslation();
-  const { id } = useSelector((state: RootState) => state.user);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const modalities: SelectProps["options"] = [];
+
+  const pictureName = "profile";
 
   const props: UploadProps = {
     action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
@@ -74,14 +82,21 @@ export const ProviderForm = () => {
   );
 
   const onFinish = async (values: IProvider) => {
+    const { ok, msg } = await handleUpload(fileList, pictureName);
+
+    if (!ok) {
+      message.error(t(`${msg}`));
+    }
+
+    setFileList([]);
+    form.resetFields();
+    message.success(`${msg}`);
+    //navigate("/dashboard");
     console.log({ values });
 
-    const { ok } = await fetchWithToken(`/users/${id}`, values, "PUT");
+    console.log(fileList);
 
-    if (ok) {
-      form.resetFields();
-      navigate("/dashboard");
-    }
+    handleImageUpload(fileList);
   };
 
   const onFinishFailed = (errorInfo: unknown) => {
@@ -123,12 +138,17 @@ export const ProviderForm = () => {
             autoComplete="off"
           >
             <Form.Item
-              name="picture"
+              name={pictureName}
               //valuePropName="fileList"
               //getValueFromEvent={normFile}
               rules={[{ required: true }]}
             >
-              <ProfilePicture form={form} />
+              <ProfilePicture
+                form={form}
+                pictureName={pictureName}
+                fileList={fileList}
+                setFileList={setFileList}
+              />
             </Form.Item>
             <Form.Item
               label={t("Company Name")}
@@ -191,14 +211,14 @@ export const ProviderForm = () => {
               <Form.Item
                 label={t("Zip code")}
                 name="zipCode"
-                rules={[
+                /*rules={[
                   {
                     required: true,
                     message: `${t(
                       "Please input the zip code of your residence"
                     )}`,
                   },
-                ]}
+                ]}*/
                 labelCol={{
                   span: 24,
                 }}
@@ -217,12 +237,12 @@ export const ProviderForm = () => {
               <Form.Item
                 label={t("Phone number")}
                 name="phoneNumber"
-                rules={[
+                /*rules={[
                   {
                     required: true,
                     message: `${t("Please input your phone number")}`,
                   },
-                ]}
+                ]}*/
                 labelCol={{
                   span: 24,
                 }}
@@ -328,4 +348,38 @@ export const ProviderForm = () => {
       </Col>
     </Row>
   );
+};
+
+const handleImageUpload = (fileList: UploadFile[]) => {
+  //
+  const formData = new FormData();
+
+  formData.append(fileList[0].name, fileList[0].originFileObj as RcFile);
+
+  const url = `${baseUrl}/uploads`;
+  console.log({ formData, url });
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      Accept: "*/*",
+      "x-token": sessionStorage.token,
+      "content-type": "multipart/form-data",
+      "x-role": "basic",
+    },
+    body: formData,
+  })
+    .then((res) => res.json())
+    .then(() => {
+      //setFileList([]);
+      //history.push("/dashboard");
+      //history.push("/playground");
+      //message.success("Las imagenes se cargaron exitosamente");
+    })
+    .catch(() => {
+      //message.error("Ocurrio un fallo al cargar las imagenes.");
+    })
+    .finally(() => {
+      //dispatch(loadingFinish());
+    });
 };
