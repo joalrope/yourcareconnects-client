@@ -2,7 +2,7 @@ import { Card } from "antd";
 
 const { Meta } = Card;
 
-export interface IProvCardProps {
+export interface Props {
   id: string;
   address: string;
   picture: string;
@@ -17,7 +17,7 @@ export const ProviderCard = ({
   lastName,
   names,
   ratings,
-}: IProvCardProps) => {
+}: Props) => {
   return (
     <Card
       hoverable

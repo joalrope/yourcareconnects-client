@@ -1,12 +1,12 @@
 import { Col } from "antd";
 import { useTranslation } from "react-i18next";
 
-interface IService {
+interface Props {
   service: string;
   color: string;
 }
 
-export const ProviderSelectorCard = ({ service, color }: IService) => {
+export const ProviderSelectorCard = ({ service, color }: Props) => {
   const { t } = useTranslation();
 
   return (

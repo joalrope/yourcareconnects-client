@@ -8,14 +8,11 @@ import {
   Row,
   Select,
   SelectProps,
-  // Tag,
   Typography,
   Upload,
-  //UploadFile,
-  //UploadProps,
 } from "antd";
 
-import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
+import type { UploadFile, UploadProps } from "antd/es/upload/interface";
 
 import { UploadOutlined } from "@ant-design/icons";
 import { CategorySelect } from "../../ui-components/CategorySelect";
@@ -24,8 +21,11 @@ import {
   handleUpload,
 } from "../../ui-components/ProfilePicture";
 import { useState } from "react";
-
-const baseUrl = import.meta.env.VITE_URL_BASE;
+import { updateUserById } from "../../../services/userService";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store";
+import { useNavigate } from "react-router-dom";
+import { getGeolocation } from "../../../helpers/geolocation";
 
 const { Title } = Typography;
 
@@ -44,9 +44,11 @@ export interface IProvider {
 }
 
 export const ProviderForm = () => {
+  const { id } = useSelector((state: RootState) => state.user);
   const { message } = App.useApp();
   const [form] = Form.useForm<IProvider>();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const modalities: SelectProps["options"] = [];
@@ -89,18 +91,24 @@ export const ProviderForm = () => {
     }
 
     setFileList([]);
+
+    const { ok: okII, msg: msgII } = await updateUserById(id, values);
+
+    if (!okII) {
+      message.error(t(`${msgII}`));
+    }
+
     form.resetFields();
     message.success(`${msg}`);
-    //navigate("/dashboard");
-    console.log({ values });
-
-    console.log(fileList);
-
-    handleImageUpload(fileList);
+    navigate("/dashboard");
   };
 
   const onFinishFailed = (errorInfo: unknown) => {
     console.log("Failed:", errorInfo);
+  };
+
+  const getUserGeolocation = () => {
+    getGeolocation();
   };
 
   return (
@@ -198,7 +206,10 @@ export const ProviderForm = () => {
                 marginBottom: "6px",
               }}
             >
-              <Input placeholder={`${t("Physical address").toLowerCase()}`} />
+              <Input
+                onFocus={getUserGeolocation}
+                placeholder={`${t("Physical address").toLowerCase()}`}
+              />
             </Form.Item>
 
             <Form.Item
@@ -348,38 +359,4 @@ export const ProviderForm = () => {
       </Col>
     </Row>
   );
-};
-
-const handleImageUpload = (fileList: UploadFile[]) => {
-  //
-  const formData = new FormData();
-
-  formData.append(fileList[0].name, fileList[0].originFileObj as RcFile);
-
-  const url = `${baseUrl}/uploads`;
-  console.log({ formData, url });
-
-  fetch(url, {
-    method: "POST",
-    headers: {
-      Accept: "*/*",
-      "x-token": sessionStorage.token,
-      "content-type": "multipart/form-data",
-      "x-role": "basic",
-    },
-    body: formData,
-  })
-    .then((res) => res.json())
-    .then(() => {
-      //setFileList([]);
-      //history.push("/dashboard");
-      //history.push("/playground");
-      //message.success("Las imagenes se cargaron exitosamente");
-    })
-    .catch(() => {
-      //message.error("Ocurrio un fallo al cargar las imagenes.");
-    })
-    .finally(() => {
-      //dispatch(loadingFinish());
-    });
 };

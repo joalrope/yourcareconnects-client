@@ -2,10 +2,7 @@ import { Button, Col, Form, Row, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { CategorySelect } from "../../../ui-components/CategorySelect";
 import { getUserByServices } from "../../../../services/userService";
-import {
-  IProvCardProps,
-  ProviderCard,
-} from "../../../ui-components/ProviderCard";
+import { Props, ProviderCard } from "../../../ui-components/ProviderCard";
 import { useState } from "react";
 //import { useNavigate } from "react-router-dom";
 
@@ -17,7 +14,7 @@ interface Props {
 }
 
 export const SearchServices = () => {
-  const [providers, setProviders] = useState<IProvCardProps[]>([]);
+  const [providers, setProviders] = useState<Props[]>([]);
   //const navigate = useNavigate();
   const [form] = Form.useForm<Props>();
   const { t } = useTranslation();
@@ -108,7 +105,7 @@ export const SearchServices = () => {
         </Col>
       </Row>
       <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-        {providers.map((provider: IProvCardProps) => (
+        {providers.map((provider: Props) => (
           <Col
             key={provider.id}
             xs={{ span: 24 }}
