@@ -2,11 +2,11 @@ import { Col } from "antd";
 import { useTranslation } from "react-i18next";
 
 interface Props {
-  service: string;
-  color: string;
+  service: string | React.ReactNode;
+  tagColor: string;
 }
 
-export const ProviderSelectorCard = ({ service, color }: Props) => {
+export const ProviderSelectorCard = ({ service, tagColor }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -17,10 +17,10 @@ export const ProviderSelectorCard = ({ service, color }: Props) => {
       lg={4}
       style={{
         alignItems: "center",
-        backgroundColor: `${color}20`,
-        border: `1px solid ${color}`,
+        backgroundColor: `${tagColor}20`,
+        border: `1px solid ${tagColor}`,
         borderRadius: "8px",
-        color: `${color}`,
+        color: `${tagColor}`,
         display: "flex",
         fontSize: "clamp(1.2rem, 4cqi, 1.2rem)",
         fontWeight: "bold",
@@ -33,7 +33,7 @@ export const ProviderSelectorCard = ({ service, color }: Props) => {
         maxWidth: "140px",
       }}
     >
-      <span>{t(service)}</span>
+      <span>{t(service as string)}</span>
     </Col>
   );
 };

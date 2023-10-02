@@ -14,7 +14,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 //import { fetchWithoutToken } from "../../helpers/fetch";
-import { setUser } from "../../../store/slices";
+import { setLoggedIn, setUser } from "../../../store/slices";
 import { setLocationPath } from "../../../store/slices/router/routerSlice";
 import { loginUser } from "../../../services";
 
@@ -47,6 +47,7 @@ export const LoginForm = () => {
       form.resetFields();
       result.user.token = result.token;
       dispatch(setUser(result.user));
+      dispatch(setLoggedIn(true));
       sessionStorage.setItem("token", result.token);
       sessionStorage.setItem("id", JSON.stringify(result.user.id));
       navigate("/dashboard");
@@ -73,8 +74,8 @@ export const LoginForm = () => {
   };
 
   return (
-    <Row style={{ width: "70%", justifyContent: "center" }}>
-      <Col style={{ width: "100%" }}>
+    <Row style={{ width: "100%" }}>
+      <Col xs={24} sm={24} md={16} style={{ width: "100%" }}>
         <Row style={{ display: "flex", flexDirection: "column" }}>
           <Title level={3} style={{ marginBottom: "0px", width: "100%" }}>
             {t("Login in")}

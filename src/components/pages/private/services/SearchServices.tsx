@@ -2,7 +2,7 @@ import { Button, Col, Form, Row, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { CategorySelect } from "../../../ui-components/CategorySelect";
 import { getUserByServices } from "../../../../services/userService";
-import { Props, ProviderCard } from "../../../ui-components/ProviderCard";
+import { IProvider, ProviderCard } from "../../../ui-components/ProviderCard";
 import { useState } from "react";
 //import { useNavigate } from "react-router-dom";
 
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export const SearchServices = () => {
-  const [providers, setProviders] = useState<Props[]>([]);
+  const [providers, setProviders] = useState<IProvider[]>([]);
   //const navigate = useNavigate();
   const [form] = Form.useForm<Props>();
   const { t } = useTranslation();
@@ -52,7 +52,7 @@ export const SearchServices = () => {
         </Col>
         <Col xs={24} md={16} lg={12} style={{ width: "100%" }}>
           <Form
-            name="providerRegister"
+            name="providerProfile"
             form={form}
             labelCol={{
               span: 24,
@@ -96,7 +96,7 @@ export const SearchServices = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                style={{ marginTop: "10px", width: "200px" }}
+                style={{ marginTop: 32, width: 200 }}
               >
                 {t("Search")}
               </Button>
@@ -104,17 +104,15 @@ export const SearchServices = () => {
           </Form>
         </Col>
       </Row>
-      <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-        {providers.map((provider: Props) => (
-          <Col
-            key={provider.id}
-            xs={{ span: 24 }}
-            sm={{ span: 12 }}
-            md={{ span: 8 }}
-            lg={{ span: 6 }}
-            xl={{ span: 4 }}
-            xxl={{ span: 3 }}
-          >
+      <Row
+        gutter={[
+          { xs: 8, sm: 16, md: 24, lg: 32 },
+          { xs: 8, sm: 16, md: 24, lg: 32 },
+        ]}
+        style={{ marginTop: 64, padding: 24 }}
+      >
+        {providers.map((provider: IProvider) => (
+          <Col key={provider.id} xs={24} sm={12} md={8} lg={6} xl={6} xxl={43}>
             <ProviderCard {...provider} />
           </Col>
         ))}

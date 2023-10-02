@@ -37,3 +37,23 @@ export const updateService = async (
 
   return result;
 };
+
+export interface IRes {
+  service: string;
+  color: string;
+}
+export const getServicesWithColor = async (services: string[]) => {
+  const { result } = await fetchWithToken(
+    `/services/get-colors`,
+    { services },
+    "POST"
+  );
+
+  return result;
+};
+
+export const setServicesWithColor = async () => {
+  const { result } = await fetchWithToken(`/services/set-colors`);
+
+  return result;
+};

@@ -5,6 +5,7 @@ import { PlusOutlined } from "@ant-design/icons";
 
 import type { FormInstance } from "antd";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
+import ImgCrop from "antd-img-crop";
 
 interface Props {
   form: FormInstance;
@@ -72,17 +73,19 @@ export const ProfilePicture = ({
 
   return (
     <>
-      <Upload
-        accept="image/png, image/jpeg"
-        name={pictureName}
-        listType="picture-card"
-        showUploadList={true}
-        {...props}
-        onPreview={handlePreview}
-        onChange={handleChange}
-      >
-        {fileList.length > 0 ? null : uploadButton}
-      </Upload>
+      <ImgCrop rotationSlider>
+        <Upload
+          accept="image/png, image/jpeg"
+          name={pictureName}
+          listType="picture-card"
+          showUploadList={true}
+          {...props}
+          onPreview={handlePreview}
+          onChange={handleChange}
+        >
+          {fileList.length > 0 ? null : uploadButton}
+        </Upload>
+      </ImgCrop>
       <Modal
         open={previewOpen}
         title={previewTitle}
@@ -116,16 +119,17 @@ export const handleUpload = async (
   fileName: string
 ) => {
   //
-  const ext = fileList[0].name.split(".").pop();
+  //const ext = fileList[0].name.split(".").pop();
   const formData = new FormData();
 
   formData.append(
     fileName,
     fileList[0].originFileObj as RcFile,
-    `${fileName}.${ext}`
+    //`${fileName}.${ext}`
+    `${fileName}.${"png"}`
   );
 
-  const url = `${baseUrl}/uploads`;
+  const url = `${baseUrl}/api/uploads`;
 
   return await fetch(url, {
     method: "POST",

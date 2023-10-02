@@ -10,28 +10,6 @@ export const register = (data: object) => {
 
     const resp = await result.json();
 
-    console.log(resp);
-
-    //console.log(getState);
     dispatch(setUser(resp));
   };
 };
-
-/* export const login = async (data: object) => {
-  return async (dispatch: AppDispatch, getState: () => unknown) => {
-    const url = `${baseUrl}${""}`;
-
-    const resp = await fetch(url, {
-      method,
-      headers: {
-        "content-type": "application/json",
-        "x-role": "basic",
-      },
-      body: JSON.stringify(data),
-    });
-
-    console.log(resp);
-    // console.log(getState);
-    //dispatch(setUser(resp));
-  };
-}; */

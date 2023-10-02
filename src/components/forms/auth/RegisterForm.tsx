@@ -75,8 +75,6 @@ export const RegisterForm = () => {
       lastName,
     };
 
-    console.log(newUser);
-
     if (company) newUser.company = company;
 
     const { ok, msg, result } = await fetchWithoutToken(

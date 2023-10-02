@@ -4,9 +4,14 @@ import RoleCard from "../../../ui-components/RoleCard";
 const SelectCreateAccount = () => {
   return (
     <Row
-      style={{ height: "100%", maxHeight: "86.5vh", maxWidth: "100vw" }}
+      style={{
+        height: "100%",
+        marginInline: 0,
+        maxHeight: "86.5vh",
+        maxWidth: "100vw",
+      }}
       align="middle"
-      gutter={50}
+      gutter={[50, 50]}
       justify="center"
     >
       <Col>

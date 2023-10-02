@@ -9,9 +9,10 @@ import { InfoContent } from "./InfoContent";
 import { RootState } from "../store";
 
 import "./app-layout.css";
-import { INav } from "./SiderMenu";
+import { INav } from "./sider/SiderMenu";
 import { setLocationPath } from "../store/slices/router/routerSlice";
 import { LanguageSelect } from "../components/ui-components/LanguageSelect";
+import { AppLogo } from "./AppLogo";
 
 export const HeaderContent = () => {
   const { t } = useTranslation();
@@ -35,7 +36,6 @@ export const HeaderContent = () => {
     }));
 
   const handleClick = ({ key }: INav) => {
-    console.log(key);
     dispatch(setLocationPath(key));
 
     if (key === "logout") {
@@ -50,7 +50,7 @@ export const HeaderContent = () => {
     <>
       {!isLoggedIn ? (
         <>
-          <div className="--layout__sider-logo"></div>
+          <AppLogo />
           <Menu
             theme="dark"
             mode="horizontal"

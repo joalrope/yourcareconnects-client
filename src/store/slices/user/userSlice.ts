@@ -1,22 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
-
-interface IUser {
-  id: string;
-  names: string;
-  balance: number;
-  points: number;
-  role: string;
-  email: string;
-  token: string;
-  isLoggedIn: boolean;
-}
+import { IUser } from "../../../interface";
 
 const initialState: IUser = {
   id: "",
   names: "",
   balance: 0.1,
+  biography: "",
+  notifications: 0,
   points: 0,
+  services: [],
   role: "", // customer | provider | admin | superadmin
   email: "",
   isLoggedIn: false,
@@ -28,16 +21,31 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      const { id, names, balance, points, role, email, token } = action.payload;
+      const {
+        id,
+        names,
+        balance,
+        biography,
+        notifications,
+        points,
+        services,
+        role,
+        email,
+        token,
+        isLoggedIn,
+      } = action.payload;
 
       state.id = id;
       state.names = names;
       state.balance = balance;
+      state.biography = biography;
+      state.notifications = notifications;
       state.points = points;
+      state.services = services;
       state.role = role;
       state.email = email;
       state.token = token;
-      state.isLoggedIn = true;
+      state.isLoggedIn = isLoggedIn;
     },
     setLoggedIn: (state, { payload }) => {
       state.isLoggedIn = payload;
@@ -50,7 +58,10 @@ export const userSlice = createSlice({
       state.id = "";
       state.names = "";
       state.balance = 0.1;
+      state.biography = "";
+      state.notifications = 0;
       state.points = 0;
+      state.services = [];
       state.role = "";
       state.email = "";
       state.isLoggedIn = false;

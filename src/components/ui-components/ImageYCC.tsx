@@ -10,8 +10,10 @@ const ImageYCC = ({ width }: { width: string | number }) => {
       style={{
         display: "flex",
         justifyContent: "flex-end",
+        minWidth: 200,
         userSelect: "none",
         width: `${width}`,
+        paddingBottom: 24,
       }}
     >
       <Image preview={false} width={"100%"} src="/images/register-bg.png" />

@@ -8,7 +8,6 @@ export const getUserById = async (id: string) => {
 };
 
 export const getUserByServices = async (services: string[]) => {
-  console.log(services);
   if (services.length > 1) {
     const query = services
       .reduce((queryString, service) => {
@@ -19,11 +18,13 @@ export const getUserByServices = async (services: string[]) => {
     return await fetchWithToken(`/users/services${query}`);
   }
 
-  console.log(`/search/users/${services[0]}`);
   return await fetchWithToken(`/search/users/${services[0]}`);
 };
 
-export const updateUserById = async (id: string, data: IProvider) => {
+export const updateUserById = async (
+  id: string | undefined,
+  data: IProvider
+) => {
   const result = await fetchWithToken(`/users/${id}`, data, "PUT");
 
   return result;

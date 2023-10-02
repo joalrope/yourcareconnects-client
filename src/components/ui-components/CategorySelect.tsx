@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { ServiceForm } from "../forms/service/ServiceForm";
 import { useDispatch /*useSelector*/, useSelector } from "react-redux";
 import {
+  setLoading,
   setNewService,
   setPathNewService,
   setServiceFormVisible,
@@ -20,14 +21,9 @@ export interface IItem {
   children?: Children[];
   selectable?: boolean;
   icon?: React.ReactNode;
-  tagColor: Colors;
+  tagColor?: string;
   title: string | React.ReactNode;
   value: string | React.ReactNode;
-}
-
-interface Colors {
-  bgc: string;
-  frc: string;
 }
 
 interface Props {
@@ -41,7 +37,7 @@ interface Props {
 interface Children {
   value: string | React.ReactNode;
   title: string | React.ReactNode;
-  tagColor: Colors;
+  tagColor: string;
   children?: Children[];
 }
 
@@ -55,18 +51,27 @@ export const CategorySelect = ({
   //const { newService } = useSelector((state: RootState) => state.service);
   const { t } = useTranslation();
   const { language } = useSelector((state: RootState) => state.i18n);
+  const { pathNewService } = useSelector((state: RootState) => state.service);
   const [open, setOpen] = useState(false);
   const [data, setData] = useState<IItem[] | undefined>();
-  const [value, setValue] = useState<string[]>();
-  const [messageApi] = message.useMessage();
+
+  const initValServForm = form.getFieldValue("services");
+
+  const servs = initValServForm ? initValServForm : [];
+
+  const services = servs.map((serv: IItem) => {
+    return { key: serv, value: serv };
+  });
+
+  const [value, setValue] = useState<IItem[]>(services);
 
   const handleClick = useCallback(
     (value: string | ReactNode) => {
       const splited = String(value).split("|");
       const len = splited.length - 1;
-      const pathNewService = splited.slice(0, len).join("|");
+      const currentPathNewService = splited.slice(0, len).join("|");
 
-      dispatch(setPathNewService(pathNewService));
+      dispatch(setPathNewService(currentPathNewService));
       setOpen(false);
       dispatch(setServiceFormVisible());
     },
@@ -91,13 +96,15 @@ export const CategorySelect = ({
 
   useEffect(() => {
     const fetchData: () => Promise<void> = async () => {
+      dispatch(setLoading(true));
       const {
         ok,
         result: { services: servicesDB },
       } = await getServices();
+      dispatch(setLoading(false));
 
       if (!ok) {
-        messageApi.open({
+        message.open({
           type: "error",
           content: "This is an error message",
         });
@@ -107,9 +114,9 @@ export const CategorySelect = ({
     };
 
     fetchData();
-  }, [customizeServices, messageApi]);
+  }, [customizeServices, dispatch, pathNewService]);
 
-  const onChange = (newValue: string[]) => {
+  const onChange = (newValue: IItem[]) => {
     setValue(newValue);
 
     form.setFieldsValue({
@@ -135,6 +142,7 @@ export const CategorySelect = ({
         switcherIcon={<PlusSquareOutlined style={{ fontSize: "14px" }} />}
         tagRender={(tag) => {
           const { label, onClose } = tag;
+
           return (
             <Tag closable onClose={onClose}>
               {label}
@@ -153,10 +161,7 @@ export const CategorySelect = ({
 
 const pushAddService = (services: IItem[], locale: string, value = "") => {
   const addCategoryItem = {
-    tagColor: {
-      bgc: "red",
-      frc: "red",
-    },
+    tagColor: "red",
     checkable: false,
     selectable: false,
     value: `${value}|${"Add new service"}`,

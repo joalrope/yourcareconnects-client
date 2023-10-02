@@ -9,7 +9,6 @@ export const loginUser = async (userData: ILoginData) => {
 
 export const forgotPassword = async (email: string) => {
   //
-  console.log(email);
 
   const result = await fetchWithoutToken(
     "/auth/forgotPassword",

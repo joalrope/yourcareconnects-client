@@ -1,31 +1,52 @@
-import { Card } from "antd";
+import { Card, Rate } from "antd";
 
 const { Meta } = Card;
 
-export interface Props {
+const baseUrl = import.meta.env.VITE_URL_BASE;
+
+export interface IProvider {
   id: string;
-  address: string;
-  picture: string;
+  services: string[];
   lastName: string;
   names: string;
-  ratings: string;
+  ratings: number;
 }
 
 export const ProviderCard = ({
-  address,
-  picture,
+  id,
   lastName,
   names,
+  services,
   ratings,
-}: Props) => {
+}: IProvider) => {
+  const picture = `${baseUrl}/images/${id}/profile.png`;
+
+  const serv = services.map((service) => {
+    return service.split("|").pop();
+  });
+
+  const userServ = serv.join(", ");
+
   return (
     <Card
       hoverable
-      style={{ width: 240 }}
-      cover={<img alt={`Picture of ${names} ${lastName}`} src={picture} />}
+      style={{ height: 400, width: "100%" }}
+      cover={
+        <img
+          alt={`Picture of ${names} ${lastName}`}
+          src={picture}
+          height={240}
+        />
+      }
     >
-      <Meta title={`${names} ${lastName}`} description={address} />
-      {ratings}
+      <Meta title={`${names} ${lastName}`} />
+      <p>
+        <span>
+          <b>{"Servicios: "}</b>
+          {userServ}
+        </span>
+      </p>
+      <Rate disabled allowHalf defaultValue={ratings} />
     </Card>
   );
 };

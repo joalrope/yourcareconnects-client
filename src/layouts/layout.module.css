@@ -1,0 +1,16 @@
+.logoContainer {
+  align-items: center;
+  border-bottom: 1px solid #e8e8e8;
+  display: flex;
+  height: 64px;
+  justify-content: center;
+}
+
+.widthBlock {
+  width: 100%;
+}
+
+.wrapperRow {
+  flex-grow: 1;
+  justify-content: flex-end;
+}

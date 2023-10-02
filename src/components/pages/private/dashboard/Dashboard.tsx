@@ -1,29 +1,42 @@
 import { Card, Col, Row, theme } from "antd";
 import Title from "antd/es/typography/Title";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { ProviderSelectorCard } from "../../../ui-components/ProvSelCard";
 import { useLocale } from "../../../../hooks/useLocale";
+import { getServicesWithColor } from "../../../../services";
+import { useEffect, useState } from "react";
+import { IRes } from "../../../../services/serviceService";
+import { setLoading } from "../../../../store/slices";
 
 const { useToken } = theme;
 const Dashboard = () => {
-  const { names, balance, points } = useSelector(
+  const dispatch = useDispatch();
+  const { names, balance, biography, points, services } = useSelector(
     (state: RootState) => state.user
   );
   const { t } = useTranslation();
   const { token } = useToken();
 
+  const [providerCard, setProviderCard] = useState<IRes[]>([]);
+
   const gutter = 32;
 
-  const providerCard = [
-    { service: "Clinical Services", color: "#FCCA3E" },
-    { service: "Holistic & Palliative Services", color: "#4762EE" },
-    { service: "Domestic Services", color: "#31E59A" },
-    { service: "Legal & Translation Services", color: "#F35050" },
-    { service: "Pet Care Services", color: "#DD50F3" },
-    { service: "Meal Prep & Nutritional Services", color: "#47BCEE" },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        dispatch(setLoading(true));
+        const data = await getServicesWithColor(services);
+        dispatch(setLoading(false));
+        setProviderCard(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch, services]);
 
   return (
     <Col span={24} style={{ maxWidth: "96%", margin: "auto" }}>
@@ -39,18 +52,13 @@ const Dashboard = () => {
       >
         <Col xs={24} xl={12}>
           <Card title={`${t("Welcome")}, ${names}`}>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-              dolorem, illo mollitia quae dicta odio iste vel nam. Aliquid
-              voluptatem magni praesentium natus dicta quam perferendis placeat
-              voluptatum velit qui.
-            </p>
+            <p>{biography}</p>
           </Card>
         </Col>
         <Col xs={24} xl={12}>
           <Card title="Balance" style={{ height: "100%" }}>
             <Title level={4} style={{ marginBottom: 0, textAlign: "center" }}>
-              {useLocale(balance)}
+              {useLocale(balance)}{" "}
             </Title>
             <Title
               level={5}
@@ -67,19 +75,21 @@ const Dashboard = () => {
           </Card>
         </Col>
       </Row>
-      <Row justify="space-around" style={{ paddingInline: gutter }}>
-        <Card title={t("Favorite Services")} style={{ width: "100%" }}>
-          <Row justify="space-around" style={{ width: "100%" }}>
-            {providerCard.map((item) => (
-              <ProviderSelectorCard
-                key={item.service}
-                service={item.service}
-                color={item.color}
-              />
-            ))}
-          </Row>
-        </Card>
-      </Row>
+      {providerCard.length > 0 && (
+        <Row justify="space-around" style={{ paddingInline: gutter }}>
+          <Card title={t("Favorite Services")} style={{ width: "100%" }}>
+            <Row justify="space-around" style={{ width: "100%" }}>
+              {providerCard.map((item: { service: string; color: string }) => (
+                <ProviderSelectorCard
+                  key={item.service}
+                  service={item.service}
+                  tagColor={item.color}
+                />
+              ))}
+            </Row>
+          </Card>
+        </Row>
+      )}
     </Col>
   );
 };

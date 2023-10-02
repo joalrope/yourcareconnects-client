@@ -5,8 +5,8 @@ import { UploadOutlined, ProfileOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store";
-import { setLocationPath } from "../store/slices/router/routerSlice";
+import { RootState } from "../../store";
+import { setLocationPath } from "../../store/slices/router/routerSlice";
 
 export interface INav {
   key: string;

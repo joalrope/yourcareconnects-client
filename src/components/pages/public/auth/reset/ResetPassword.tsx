@@ -16,8 +16,6 @@ export const ResetPassword = () => {
 
     const { ok } = await forgotPassword(email);
 
-    console.log({ ok });
-
     if (ok) {
       message.success(t(`Please check your email, to reset your password`));
       navigate("/");

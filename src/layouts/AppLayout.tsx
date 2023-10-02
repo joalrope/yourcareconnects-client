@@ -1,8 +1,8 @@
 import { ReactNode, useState } from "react";
-import { Layout } from "antd";
+import { Layout, Spin } from "antd";
 import { FooterContent } from "./FooterContent";
 import { HeaderContent } from "./HeaderContent";
-import { SiderContent } from "./SiderContent";
+import { SiderContent } from "./sider/SiderContent";
 
 import "./app-layout.css";
 import { useSelector } from "react-redux";
@@ -13,6 +13,7 @@ const { Header, Footer, Sider, Content } = Layout;
 export const AppLayout = ({ children }: { children: ReactNode }) => {
   const [collapsed, setCollapsed] = useState(false);
   const { isLoggedIn } = useSelector((state: RootState) => state.user);
+  const { loading } = useSelector((state: RootState) => state.ui);
 
   const hScreen = isLoggedIn ? "83.5vh" : "86.7vh";
 
@@ -20,7 +21,17 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
     setCollapsed(!collapsed);
   };
   return (
-    <Layout>
+    <Layout style={{ height: "100vh" }}>
+      <Spin
+        size="large"
+        spinning={loading}
+        style={{
+          position: "absolute",
+          top: screen.availHeight / 3,
+          left: screen.availWidth / 2,
+          zIndex: 100,
+        }}
+      />
       {isLoggedIn && (
         <Sider
           breakpoint="xs"
@@ -28,11 +39,11 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
           collapsed={collapsed}
           onCollapse={onCollapse}
         >
-          <SiderContent />
+          <SiderContent collapsed={collapsed} />
         </Sider>
       )}
       <Layout>
-        <Header>
+        <Header style={{ paddingLeft: 0, paddingRight: 12 }}>
           <HeaderContent />
         </Header>
         <Content
@@ -41,6 +52,7 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
             maxWidth: "100vw",
             overflowY: "scroll",
             overflowX: "hidden",
+            padding: 24,
           }}
         >
           {children}

@@ -23,8 +23,7 @@ export const fetchWithoutToken = (
   data?: unknown,
   method = "GET"
 ) => {
-  const url = `${baseUrl}${endpoint}`;
-  console.log(url);
+  const url = `${baseUrl}/api${endpoint}`;
   if (method === "GET") {
     response = fetch(url)
       .then((resp) => {
@@ -81,7 +80,7 @@ export const fetchWithToken = (
   method = "GET",
   header?: object
 ) => {
-  const url = `${baseUrl}${endpoint}`;
+  const url = `${baseUrl}/api${endpoint}`;
   const role = parseJwt();
   const token = sessionStorage.token;
 
