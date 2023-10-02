@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { useEffect, useState } from "react";
 
-export const useLocale = (value: number) => {
+export const useLocale = (value: number | undefined) => {
   const { language } = useSelector((state: RootState) => state.i18n);
   const [local, setLocal] = useState<string>("en-US");
 
