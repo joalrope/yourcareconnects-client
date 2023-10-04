@@ -10,3 +10,18 @@ export const servicesSort = (services: IItem[]) => {
     return 0;
   });
 };
+
+export const getServicesToSearch = (services: string[]) => {
+  const str = services
+    .map((service) => {
+      return service.split("|").pop();
+    })
+    .join(", ")
+    .trim();
+
+  if (str[str.length - 1] === ",") {
+    return str.substring(0, str.length - 1);
+  }
+
+  return str;
+};

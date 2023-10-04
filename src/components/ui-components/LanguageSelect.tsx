@@ -28,7 +28,7 @@ export const LanguageSelect = () => {
         src={
           language === "enUS" ? "/images/US-flag.png" : "/images/ES-flag.png"
         }
-        style={{ cursor: "pointer", marginLeft: "30px" }}
+        style={{ cursor: "pointer", marginInline: 30 }}
       />
     </Tooltip>
   );

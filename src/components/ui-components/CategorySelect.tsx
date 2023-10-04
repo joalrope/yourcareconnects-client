@@ -12,7 +12,7 @@ import {
   setPathNewService,
   setServiceFormVisible,
 } from "../../store/slices";
-import { servicesSort } from "../../helpers/sort";
+import { servicesSort } from "../../helpers/services";
 import { translate } from "../../helpers/translate";
 import { RootState } from "../../store";
 

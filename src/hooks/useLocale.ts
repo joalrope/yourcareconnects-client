@@ -10,11 +10,16 @@ export const useLocale = (value: number | undefined) => {
     setLocal(language === "enUS" ? "en-US" : "es-ES");
   }, [language]);
 
+  if (value === undefined) {
+    return undefined;
+  }
+
   if (typeof value === "number") {
     return Number(value).toLocaleString(local, {
       style: "currency",
       currency: "USD",
     });
   }
+
   return value;
 };

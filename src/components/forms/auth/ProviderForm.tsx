@@ -51,13 +51,21 @@ export interface IModality {
   tagColor?: string;
 }
 
+const baseUrl = import.meta.env.VITE_URL_BASE;
+
 export const ProviderForm = () => {
   const { id } = useSelector((state: RootState) => state.user);
   const { message } = App.useApp();
   const [form] = Form.useForm<IProvider>();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [fileList, setFileList] = useState<UploadFile[]>([
+    {
+      uid: "-1",
+      url: `${baseUrl}/images/${id}/profile.png`,
+      name: "profile.png",
+    },
+  ]);
   const [modalities, setModalities] = useState<IModality[]>([]);
   const [user, setUser] = useState<IUser>();
 
@@ -92,6 +100,8 @@ export const ProviderForm = () => {
         result: { modalities },
       } = await getModalities();
 
+      console.log(modalities);
+
       const data = modalities.map((modality) => {
         return {
           title: (
@@ -120,7 +130,8 @@ export const ProviderForm = () => {
   }, []);
 
   const onFinish = async (values: IProvider) => {
-    const { ok, msg } = await handleUpload(fileList, pictureName);
+    console.log({ fileList });
+    let { ok, msg } = await handleUpload(fileList, pictureName);
 
     if (!ok) {
       message.error(t(`${msg}`));
@@ -128,10 +139,14 @@ export const ProviderForm = () => {
 
     setFileList([]);
 
-    const { ok: okII, msg: msgII } = await updateUserById(id, values);
+    console.log("on finish");
 
-    if (!okII) {
-      message.error(t(`${msgII}`));
+    const result = await updateUserById(id, values);
+
+    ({ ok, msg } = result);
+
+    if (!ok) {
+      message.error(t(`${msg}`));
     }
 
     form.resetFields();
@@ -202,7 +217,7 @@ export const ProviderForm = () => {
                     name={pictureName}
                     //valuePropName="fileList"
                     //getValueFromEvent={normFile}
-                    rules={[{ required: true }]}
+                    rules={[{ required: false }]}
                     style={{
                       width: "100%",
                       marginBottom: "6px",

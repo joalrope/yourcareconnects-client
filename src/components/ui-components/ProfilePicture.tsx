@@ -77,8 +77,9 @@ export const ProfilePicture = ({
         <Upload
           accept="image/png, image/jpeg"
           name={pictureName}
+          fileList={fileList}
           listType="picture-card"
-          showUploadList={true}
+          //showUploadList={true}
           {...props}
           onPreview={handlePreview}
           onChange={handleChange}

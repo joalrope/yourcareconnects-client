@@ -4,7 +4,7 @@ import { CategorySelect } from "../../../ui-components/CategorySelect";
 import { getUserByServices } from "../../../../services/userService";
 import { IProvider, ProviderCard } from "../../../ui-components/ProviderCard";
 import { useState } from "react";
-//import { useNavigate } from "react-router-dom";
+import { getServicesToSearch } from "../../../../helpers/services";
 
 const { Title } = Typography;
 
@@ -15,25 +15,41 @@ interface Props {
 
 export const SearchServices = () => {
   const [providers, setProviders] = useState<IProvider[]>([]);
-  //const navigate = useNavigate();
+  const [areThereUsers, setAreThereUsers] = useState<boolean>(false);
+  const [searchServices, setSearchServices] = useState<string | undefined>("");
   const [form] = Form.useForm<Props>();
   const { t } = useTranslation();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
   const onFinish = async (values: Props) => {
     //
-    const { ok, msg, results } = await getUserByServices(values.services);
+    setProviders([]);
+
+    if (values.services.length === 1) {
+      values.services.push("");
+    }
+
+    const {
+      ok,
+      msg,
+      result: { users },
+    } = await getUserByServices(values.services);
+
+    const valuesToSearch = getServicesToSearch(values.services);
+
+    setSearchServices(valuesToSearch);
 
     if (!ok) {
       console.log(msg);
+      setAreThereUsers(false);
+      return;
     }
 
-    setProviders(results);
-
-    if (providers) {
-      form.resetFields();
-      //navigate("/dashboard");
+    if (users.length >= 1) {
+      setProviders(users);
+      setAreThereUsers(true);
     }
+
+    form.resetFields();
   };
 
   const onFinishFailed = (errorInfo: unknown) => {
@@ -92,15 +108,27 @@ export const SearchServices = () => {
               />
             </Form.Item>
 
-            <Col style={{ display: "flex", justifyContent: "center" }}>
-              <Button
-                type="primary"
-                htmlType="submit"
-                style={{ marginTop: 32, width: 200 }}
-              >
-                {t("Search")}
-              </Button>
-            </Col>
+            <Row style={{ alignItems: "center", flexDirection: "column" }}>
+              <Col>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  style={{ marginTop: 32, width: 200 }}
+                >
+                  {t("Search")}
+                </Button>
+              </Col>
+              {searchServices && (
+                <Col style={{ paddingTop: 32 }}>
+                  <h3>
+                    {t("Looking for providers that provide the service of:")}
+                    <u>
+                      <b style={{ color: "blue" }}> {`${searchServices}`}</b>
+                    </u>
+                  </h3>
+                </Col>
+              )}
+            </Row>
           </Form>
         </Col>
       </Row>
@@ -109,13 +137,32 @@ export const SearchServices = () => {
           { xs: 8, sm: 16, md: 24, lg: 32 },
           { xs: 8, sm: 16, md: 24, lg: 32 },
         ]}
-        style={{ marginTop: 64, padding: 24 }}
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop: 8,
+          padding: 24,
+        }}
       >
-        {providers.map((provider: IProvider) => (
-          <Col key={provider.id} xs={24} sm={12} md={8} lg={6} xl={6} xxl={43}>
-            <ProviderCard {...provider} />
-          </Col>
-        ))}
+        {!areThereUsers ? (
+          <h3 style={{ color: "red" }}>
+            {t("There are no providers that provide the requested service")}
+          </h3>
+        ) : (
+          providers.map((provider: IProvider) => (
+            <Col
+              key={provider.id}
+              xs={24}
+              sm={12}
+              md={8}
+              lg={6}
+              xl={6}
+              xxl={43}
+            >
+              <ProviderCard {...provider} />
+            </Col>
+          ))
+        )}
       </Row>
     </>
   );

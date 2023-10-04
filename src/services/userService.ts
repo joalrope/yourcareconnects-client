@@ -8,17 +8,15 @@ export const getUserById = async (id: string) => {
 };
 
 export const getUserByServices = async (services: string[]) => {
-  if (services.length > 1) {
-    const query = services
-      .reduce((queryString, service) => {
-        return queryString + `&services=${service}`;
-      }, "")
-      .replace("&", "?");
+  /*if (services.length > 1) {*/
+  const query = services.reduce((queryString, service) => {
+    return queryString + `services=${service}&`;
+  }, "");
 
-    return await fetchWithToken(`/users/services${query}`);
-  }
+  return await fetchWithToken(`/users/services?${query}`);
+  /*}
 
-  return await fetchWithToken(`/search/users/${services[0]}`);
+  return await fetchWithToken(`/search/users/${services[0]}`);*/
 };
 
 export const updateUserById = async (
