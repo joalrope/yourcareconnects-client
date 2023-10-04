@@ -15,7 +15,7 @@ interface Props {
 
 export const SearchServices = () => {
   const [providers, setProviders] = useState<IProvider[]>([]);
-  const [areThereUsers, setAreThereUsers] = useState<boolean>(false);
+  const [areThereUsers, setAreThereUsers] = useState<boolean>(true);
   const [searchServices, setSearchServices] = useState<string | undefined>("");
   const [form] = Form.useForm<Props>();
   const { t } = useTranslation();
