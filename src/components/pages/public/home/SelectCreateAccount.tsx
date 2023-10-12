@@ -1,7 +1,7 @@
 import { Col, Row } from "antd";
 import RoleCard from "../../../ui-components/RoleCard";
 
-const SelectCreateAccount = () => {
+export const SelectCreateAccount = () => {
   return (
     <Row
       style={{
@@ -23,5 +23,3 @@ const SelectCreateAccount = () => {
     </Row>
   );
 };
-
-export default SelectCreateAccount;

@@ -41,7 +41,6 @@ export const SearchServices = () => {
     if (!ok) {
       console.log(msg);
       setAreThereUsers(false);
-      return;
     }
 
     if (users.length >= 1) {

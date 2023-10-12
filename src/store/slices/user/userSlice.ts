@@ -3,17 +3,27 @@ import { RootState } from "../../store";
 import { IUser } from "../../../interface";
 
 const initialState: IUser = {
-  id: "",
-  names: "",
+  address: "",
   balance: 0.1,
   biography: "",
-  notifications: 0,
-  points: 0,
-  services: [],
-  role: "", // customer | provider | admin | superadmin
+  company: "",
   email: "",
+  faxNumber: "",
+  id: "",
   isLoggedIn: false,
+  lastName: "",
+  names: "",
+  notifications: 0,
+  owner: "",
+  phoneNumber: "",
+  pictures: {},
+  points: 0,
+  role: "", // customer | provider | admin | superadmin
+  services: [],
+  serviceModality: [],
   token: "",
+  webUrl: "",
+  zipCode: "",
 };
 
 export const userSlice = createSlice({
@@ -22,54 +32,85 @@ export const userSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       const {
-        id,
-        names,
+        address,
         balance,
         biography,
-        notifications,
-        points,
-        services,
-        role,
+        company,
         email,
-        token,
-        isLoggedIn,
+        faxNumber,
+        id,
+        lastName,
+        names,
+        notifications,
+        owner,
+        phoneNumber,
+        pictures,
+        points,
+        role,
+        services,
+        serviceModality,
+        webUrl,
+        zipCode,
       } = action.payload;
 
-      state.id = id;
-      state.names = names;
+      state.address = address;
       state.balance = balance;
       state.biography = biography;
-      state.notifications = notifications;
-      state.points = points;
-      state.services = services;
-      state.role = role;
+      state.company = company;
       state.email = email;
-      state.token = token;
-      state.isLoggedIn = isLoggedIn;
+      state.faxNumber = faxNumber;
+      state.id = id;
+      state.lastName = lastName;
+      state.names = names;
+      state.notifications = notifications;
+      state.owner = owner;
+      state.phoneNumber = phoneNumber;
+      state.pictures = pictures;
+      state.points = points;
+      state.role = role;
+      state.services = services;
+      state.serviceModality = serviceModality;
+      state.webUrl = webUrl;
+      state.zipCode = zipCode;
     },
     setLoggedIn: (state, { payload }) => {
       state.isLoggedIn = payload;
     },
-    logout: () => initialState,
+    setToken: (state, { payload }) => {
+      state.token = payload;
+    },
     setRole: (state, { payload }) => {
       state.role = payload;
     },
+    logout: () => initialState,
+
     setClearUser: (state) => {
-      state.id = "";
-      state.names = "";
+      state.address = "";
       state.balance = 0.1;
       state.biography = "";
-      state.notifications = 0;
-      state.points = 0;
-      state.services = [];
-      state.role = "";
+      state.company = "";
       state.email = "";
+      state.faxNumber = "";
+      state.id = "";
+      state.lastName = "";
+      state.names = "";
+      state.notifications = 0;
+      state.owner = "";
+      state.phoneNumber = "";
+      state.pictures = {};
+      state.points = 0;
+      state.role = "";
+      state.services = [];
+      state.serviceModality = [];
+      state.webUrl = "";
+      state.zipCode = "";
       state.isLoggedIn = false;
+      state.token = "";
     },
   },
 });
 
-export const { setUser, setLoggedIn, logout, setRole, setClearUser } =
+export const { setUser, setLoggedIn, logout, setClearUser, setRole, setToken } =
   userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user;

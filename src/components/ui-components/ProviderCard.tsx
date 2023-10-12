@@ -1,4 +1,4 @@
-import { Card, Rate } from "antd";
+import { Card, Rate, Tooltip } from "antd";
 
 const { Meta } = Card;
 
@@ -30,7 +30,7 @@ export const ProviderCard = ({
   return (
     <Card
       hoverable
-      style={{ height: 400, width: "100%" }}
+      style={{ height: "400px", width: "100%" }}
       cover={
         <img
           alt={`Picture of ${names} ${lastName}`}
@@ -40,12 +40,26 @@ export const ProviderCard = ({
       }
     >
       <Meta title={`${names} ${lastName}`} />
-      <p>
+      <p style={{ marginTop: "8px" }}>
         <span>
           <b>{"Servicios: "}</b>
-          {userServ}
+          <Tooltip placement="top" title={userServ}>
+            <span
+              style={{
+                display: "-webkit-box",
+                height: "38px",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 3,
+              }}
+            >
+              {userServ}
+            </span>
+          </Tooltip>
         </span>
       </p>
+
       <Rate disabled allowHalf defaultValue={ratings} />
     </Card>
   );

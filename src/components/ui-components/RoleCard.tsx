@@ -56,7 +56,7 @@ const RoleCard = ({ role }: { role: string }) => {
         }}
       >
         <div style={{ height: "66%", marginBottom: "10%", padding: 24 }}>
-          <Image width={80} src={image} preview={false} />
+          <Image src={image} preview={false} width={80} />
         </div>
         <h3 style={{ fontSize: 18, fontWeight: 600 }}>{curRole}</h3>
       </div>

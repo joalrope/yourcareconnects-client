@@ -3,6 +3,10 @@ interface IResetPassword {
   expires: number;
 }
 
+interface IPictures {
+  profile?: string;
+}
+
 export interface IUser {
   id?: string | undefined;
   names?: string;
@@ -20,7 +24,7 @@ export interface IUser {
   resetPassword?: IResetPassword;
   zipCode?: string;
   faxNumber?: string;
-  pictures?: string[];
+  pictures?: IPictures;
   company?: string;
   owner?: string;
   webUrl?: string;

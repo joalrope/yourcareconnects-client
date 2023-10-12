@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RouterProvider } from "react-router-dom";
+//import { RouterProvider } from "react-router-dom";
 import { App as AntdApp, ConfigProvider } from "antd";
 import { RootState } from "./store";
-import { setUser } from "./store/slices";
-import { router } from "./router/router";
+import { setLoggedIn, setUser } from "./store/slices";
+//import { router } from "./router/router";
 import enUS from "antd/locale/en_US";
 import esES from "antd/locale/es_ES";
 import "antd/dist/reset.css";
 import "./index.css";
 import { getUserById } from "./services/userService";
+import { AppLayout } from "./layouts/AppLayout";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   const dispatch = useDispatch();
@@ -41,6 +43,7 @@ function App() {
     if (ok) {
       result.token = token;
       dispatch(setUser(result));
+      dispatch(setLoggedIn(true));
       return;
     }
   };
@@ -58,7 +61,9 @@ function App() {
       locale={curLng}
     >
       <AntdApp>
-        <RouterProvider router={router} />
+        <BrowserRouter>
+          <AppLayout />
+        </BrowserRouter>
       </AntdApp>
     </ConfigProvider>
   );

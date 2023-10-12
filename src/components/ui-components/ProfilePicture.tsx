@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Modal, Upload } from "antd";
+import { Image, Modal, Upload } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
 import type { FormInstance } from "antd";
@@ -83,6 +83,7 @@ export const ProfilePicture = ({
           {...props}
           onPreview={handlePreview}
           onChange={handleChange}
+          className="avatar-uploader"
         >
           {fileList.length > 0 ? null : uploadButton}
         </Upload>
@@ -93,10 +94,10 @@ export const ProfilePicture = ({
         footer={null}
         onCancel={handleCancel}
       >
-        <img
+        <Image
           alt={`picture of ${pictureName}`}
-          style={{ width: "100%" }}
           src={previewImage}
+          fallback={previewImage}
         />
       </Modal>
     </>
@@ -130,7 +131,7 @@ export const handleUpload = async (
     `${fileName}.${"png"}`
   );
 
-  const url = `${baseUrl}/api/uploads`;
+  const url = `${baseUrl}/api/uploads/${fileName}.png`;
 
   return await fetch(url, {
     method: "POST",

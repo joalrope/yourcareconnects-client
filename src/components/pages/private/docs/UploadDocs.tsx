@@ -8,13 +8,29 @@ import {
   handleUpload,
 } from "../../../ui-components/ProfilePicture";
 import { IProvider } from "../../../forms/auth/ProviderForm";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../store";
+
+const baseUrl = import.meta.env.VITE_URL_BASE;
 
 export const UploadDocs = () => {
   const { message } = App.useApp();
   //const navigate = useNavigate();
   const [form] = Form.useForm<IProvider>();
   const { t } = useTranslation();
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const user = useSelector((state: RootState) => state.user);
+  const { id, names, pictures } = user;
+  const [picture, setPictures] = useState<string>(
+    `${baseUrl}/images/${id}/${pictures?.profile}`
+  );
+
+  const [fileList, setFileList] = useState<UploadFile[]>([
+    {
+      uid: "-1",
+      url: picture,
+      name: `${names} image`,
+    },
+  ]);
 
   const pictureName = "profile";
 
@@ -27,6 +43,7 @@ export const UploadDocs = () => {
     }
 
     setFileList([]);
+    setPictures(`${baseUrl}/images/${id}/${pictureName}`);
     form.resetFields();
     message.success(`${msg}`);
     //navigate("/dashboard");

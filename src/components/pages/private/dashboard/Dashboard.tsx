@@ -11,7 +11,7 @@ import { IRes } from "../../../../services/serviceService";
 import { setLoading } from "../../../../store/slices";
 
 const { useToken } = theme;
-const Dashboard = () => {
+export const Dashboard = () => {
   const dispatch = useDispatch();
   const { names, balance, biography, points, services } = useSelector(
     (state: RootState) => state.user
@@ -93,5 +93,3 @@ const Dashboard = () => {
     </Col>
   );
 };
-
-export default Dashboard;

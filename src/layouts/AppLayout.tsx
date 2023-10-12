@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { /* ReactNode, */ useState } from "react";
 import { Layout, Spin } from "antd";
 import { FooterContent } from "./FooterContent";
 import { HeaderContent } from "./HeaderContent";
@@ -7,10 +7,11 @@ import { SiderContent } from "./sider/SiderContent";
 import "./app-layout.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import { AppRouter } from "../router/AppRouter";
 
 const { Header, Footer, Sider, Content } = Layout;
 
-export const AppLayout = ({ children }: { children: ReactNode }) => {
+export const AppLayout = (/* { children }: { children: ReactNode } */) => {
   const [collapsed, setCollapsed] = useState(false);
   const { isLoggedIn } = useSelector((state: RootState) => state.user);
   const { loading } = useSelector((state: RootState) => state.ui);
@@ -55,7 +56,7 @@ export const AppLayout = ({ children }: { children: ReactNode }) => {
             padding: 24,
           }}
         >
-          {children}
+          <AppRouter />
         </Content>
         <Footer>
           <FooterContent />

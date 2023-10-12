@@ -56,7 +56,6 @@ export const fetchWithoutToken = (
           return resp.json();
         } else {
           return {
-            // TODO: handle response must be a json object
             ok: resp.ok,
             msg: resp.statusText,
             statuscode: resp.status,

@@ -34,7 +34,9 @@ export const InfoContent = ({ names }: Props) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { token } = useToken();
-  const { notifications = 0 } = useSelector((state: RootState) => state.user);
+  const { notifications = 0, pictures } = useSelector(
+    (state: RootState) => state.user
+  );
   const [open, setOpen] = useState<boolean>(false);
 
   const handleLogOut = (/* e: unknown */) => {
@@ -55,7 +57,7 @@ export const InfoContent = ({ names }: Props) => {
 
   const id = JSON.parse(String(sessionStorage.getItem("id")));
 
-  const pictureUrl = `${baseUrl}/images/${id}/profile.png`;
+  const pictureUrl = `${baseUrl}/images/${id}/${pictures?.profile}`;
 
   const handleOpenChange = (flag: boolean) => {
     setOpen(flag);

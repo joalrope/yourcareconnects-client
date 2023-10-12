@@ -12,7 +12,7 @@ export interface IRoute {
   type: string;
   name: React.ReactNode;
   mode: string;
-  component: () => JSX.Element;
+  element: () => JSX.Element;
   icon?: string;
   children?: Children[];
 }
@@ -26,7 +26,7 @@ export const routes: IRoute[] = [
     name: "Inicio",
     mode: "",
     icon: "HomeOutlined",
-    component: Home,
+    element: Home,
   }, */
   {
     key: "login",
@@ -36,7 +36,7 @@ export const routes: IRoute[] = [
     name: "Login",
     mode: "",
     icon: "UploadOutlined",
-    component: Login,
+    element: Login,
   },
   {
     key: "register",
@@ -46,7 +46,7 @@ export const routes: IRoute[] = [
     name: "Create account",
     mode: "",
     icon: "VideoCameraOutlined",
-    component: Register,
+    element: Register,
   },
   {
     key: "logout",
@@ -56,16 +56,16 @@ export const routes: IRoute[] = [
     name: "Log Out",
     mode: "",
     icon: "VideoCameraOutlined",
-    component: Register,
+    element: Register,
   },
   {
     key: "register",
     Pos: "sider",
     path: "/profile",
     type: "public",
-    name: "Mi Perfil",
+    name: "My Profile",
     mode: "",
     icon: "VideoCameraOutlined",
-    component: Register,
+    element: Register,
   },
 ];
