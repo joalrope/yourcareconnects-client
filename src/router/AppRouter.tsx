@@ -2,7 +2,6 @@
 
 import { Route, Routes } from "react-router-dom";
 import {
-  Blog,
   Dashboard,
   DashboardAdmin,
   Home,
@@ -11,7 +10,6 @@ import {
   NotFound,
   Profile,
   Register,
-  SearchServices,
   SelectCreateAccount,
 } from "../components/pages";
 

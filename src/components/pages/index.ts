@@ -1,15 +1,11 @@
 export { Login } from "./public/auth/login/Login";
 export { Register } from "./public/auth/register/Register";
 export { Provider } from "./public/auth/register/Provider.tsx";
-export { ChangePasword } from "./public/auth/reset/ChangePaswword";
-export { ResetPassword } from "./public/auth/reset/ResetPassword";
 export { Home } from "./public/home/Home";
 export { SelectCreateAccount } from "./public/home/SelectCreateAccount";
 export { Dashboard } from "./private/dashboard/Dashboard";
 export { ChangeProfilePicture } from "../forms/picture/ChangeProfilePicture.tsx";
-export { SearchServices } from "./private/services/SearchServices";
 export { Profile } from "./private/users/Profile";
-export { Blog } from "./private/blog/Blog";
 export { DashboardAdmin } from "./private/dashboard/DashboardAdmin";
 export { NotFound } from "./public/shared/NotFound";
 export { NotAllowed } from "./public/shared/NotAllowed";
