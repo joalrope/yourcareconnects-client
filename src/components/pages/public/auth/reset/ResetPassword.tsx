@@ -5,7 +5,7 @@ import { forgotPassword } from "../../../../../services";
 
 const { Paragraph, Title } = Typography;
 
-const ResetPassword = () => {
+export const ResetPassword = () => {
   const navigate = useNavigate();
   const { message } = App.useApp();
 
@@ -112,5 +112,3 @@ const ResetPassword = () => {
     </Row>
   );
 };
-
-export default ResetPassword;

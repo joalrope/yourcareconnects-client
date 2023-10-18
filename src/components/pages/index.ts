@@ -9,3 +9,8 @@ export { Profile } from "./private/users/Profile";
 export { DashboardAdmin } from "./private/dashboard/DashboardAdmin";
 export { NotFound } from "./public/shared/NotFound";
 export { NotAllowed } from "./public/shared/NotAllowed";
+
+export { Blog } from "./private/blog/Blog";
+export { ResetPassword } from "./public/auth/reset/ResetPassword";
+export { ChangePasword } from "./public/auth/reset/ChangePaswword";
+export { SearchServices } from "./private/services/SearchServices.tsx";

@@ -5,7 +5,7 @@ import { changePassword } from "../../../../../services";
 
 const { Paragraph, Title } = Typography;
 
-const ChangePasword = () => {
+export const ChangePasword = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { message } = App.useApp();
@@ -129,5 +129,3 @@ const ChangePasword = () => {
     </Row>
   );
 };
-
-export default ChangePasword;

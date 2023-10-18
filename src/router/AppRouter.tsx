@@ -2,6 +2,9 @@
 
 import { Route, Routes } from "react-router-dom";
 import {
+  Blog,
+  ChangePasword,
+  ChangeProfilePicture,
   Dashboard,
   DashboardAdmin,
   Home,
@@ -10,23 +13,12 @@ import {
   NotFound,
   Profile,
   Register,
+  ResetPassword,
+  SearchServices,
   SelectCreateAccount,
 } from "../components/pages";
-
-const ChangePasword = lazy(
-  () => import("../components/pages/public/auth/reset/ChangePaswword")
-);
-const ResetPassword = lazy(
-  () => import("../components/pages/public/auth/reset/ChangePaswword")
-);
-const SearchServices = lazy(
-  () => import("../components/pages/private/services/SearchServices")
-);
-const Blog = lazy(() => import("../components/pages/private/blog/Blog"));
-
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleProtectedRoute } from "./RoleProtectedRoute";
-import { Suspense, lazy } from "react";
 
 export const AppRouter = () => {
   return (
@@ -37,20 +29,12 @@ export const AppRouter = () => {
       <Route
         key="reset-password"
         path="/auth/reset-password"
-        element={
-          <Suspense fallback={<>...</>}>
-            <ResetPassword />
-          </Suspense>
-        }
+        element={<ResetPassword />}
       />
       <Route
         key="change-password"
         path="/auth/change-password/:init/:id/:code"
-        element={
-          <Suspense fallback={<>...</>}>
-            <ChangePasword />
-          </Suspense>
-        }
+        element={<ChangePasword />}
       />
 
       <Route element={<ProtectedRoute />}>
@@ -60,26 +44,11 @@ export const AppRouter = () => {
           element={<SelectCreateAccount />}
         />
 
+        <Route key="upload" path="/upload" element={<ChangeProfilePicture />} />
         <Route key="profile" path="/profile" element={<Profile />} />
         <Route key="dashboard" path="/dashboard" element={<Dashboard />} />
-        <Route
-          key="services"
-          path="/services"
-          element={
-            <Suspense fallback={<>...</>}>
-              <SearchServices />
-            </Suspense>
-          }
-        />
-        <Route
-          key="blog"
-          path="/blog"
-          element={
-            <Suspense fallback={<>...</>}>
-              <Blog />
-            </Suspense>
-          }
-        />
+        <Route key="services" path="/services" element={<SearchServices />} />
+        <Route key="blog" path="/blog" element={<Blog />} />
       </Route>
       <Route element={<RoleProtectedRoute />}>
         <Route
