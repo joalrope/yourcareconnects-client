@@ -16,7 +16,7 @@ interface Props {
   services: string[];
 }
 
-export const SearchServices = () => {
+const SearchServices = () => {
   const [providers, setProviders] = useState<IDataProvider[]>([]);
   const [areThereUsers, setAreThereUsers] = useState<boolean>(true);
   const [searchServices, setSearchServices] = useState<string | undefined>("");
@@ -169,3 +169,5 @@ export const SearchServices = () => {
     </>
   );
 };
+
+export default SearchServices;

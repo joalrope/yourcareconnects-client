@@ -44,6 +44,8 @@ export const ChangeProfilePicture = () => {
 
   const onFinish = async () => {
     pictureName = fileList[0].name;
+
+    console.log({ pictureName });
     const { ok, msg } = await handleUpload(fileList, pictureName);
 
     if (!ok) {
