@@ -1,4 +1,4 @@
-import { IItem } from "../components/ui-components/category-select/CategorySelect";
+import { IItem } from "../components/ui-components/category-select/interfaces";
 
 export const servicesSort = (services: IItem[]) => {
   services.sort((a, b) => {

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
-import { IItem } from "../../../components/ui-components/category-select/CategorySelect";
+import { IItem } from "../../../components/ui-components/category-select/interfaces";
 
 interface IUserService {
   userService: IItem[];
