@@ -1,5 +1,5 @@
 import { TFunction } from "i18next";
-import { IItem } from "../components/ui-components/CategorySelect";
+import { IItem } from "../components/ui-components/category-select/interfaces";
 
 export const translate = (
   jsonArray: IItem[],

@@ -1,4 +1,3 @@
-import { useTranslation } from "react-i18next";
 import {
   App,
   Button,
@@ -7,80 +6,37 @@ import {
   Input,
   Row,
   Select,
-  //SelectProps,
   Typography,
   Upload,
 } from "antd";
-
-import type { UploadFile, UploadProps } from "antd/es/upload/interface";
-
+import { useTranslation } from "react-i18next";
+import type { UploadProps } from "antd/es/upload/interface";
 import { UploadOutlined } from "@ant-design/icons";
-import { CategorySelect } from "../../ui-components/CategorySelect";
-import {
-  ProfilePicture,
-  //handleUpload,
-} from "../../ui-components/ProfilePicture";
+import { CategorySelect } from "../../../ui-components/category-select/CategorySelect";
 import { SetStateAction, useEffect, useState } from "react";
-import {
-  /*getUserById, */ updateUserById,
-} from "../../../services/userService";
+import { updateUserById } from "../../../../services/userService";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../store";
+import { RootState } from "../../../../store";
 import { useNavigate } from "react-router-dom";
-import { getGeolocation } from "../../../helpers/geolocation";
-import { getModalities } from "../../../services";
-import { IUser } from "../../../interface";
-import { setUser } from "../../../store/slices";
-import { setLocationPath } from "../../../store/slices/router/routerSlice";
+import { getGeolocation } from "../../../../helpers/geolocation";
+import { getModalities } from "../../../../services";
+import { setUser } from "../../../../store/slices";
+import { setLocationPath } from "../../../../store/slices/router/routerSlice";
+import { ChangeProfilePicture } from "../../picture/ChangeProfilePicture";
+import { IModality, IProvider } from "./interfaces";
 
 const { Title } = Typography;
 
-export interface IProvider {
-  id: string;
-  company: string;
-  owner: string;
-  address: string;
-  zipCode: string;
-  phoneNumber: string;
-  faxNumber: string;
-  webUrl: string;
-  services: string[];
-  certificates: string[];
-  serviceModality: string;
-}
-
-export interface IModality {
-  id: string;
-  title: string | Element;
-  value: string;
-  tagColor?: string;
-}
-
-const baseUrl = import.meta.env.VITE_URL_BASE;
-
 export const ProviderForm = () => {
   const user = useSelector((state: RootState) => state.user);
-  const { id, role, names, pictures } = user;
+  const { id, role } = user;
   const { message } = App.useApp();
   const [form] = Form.useForm<IProvider>();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [picture, setPictures] = useState<string>(
-    `${baseUrl}/images/${id}/${pictures?.profile}`
-  );
-  const [fileList, setFileList] = useState<UploadFile[]>([
-    {
-      uid: "-1",
-      url: picture,
-      name: `${names} image`,
-    },
-  ]);
 
   const [modalities, setModalities] = useState<IModality[]>([]);
-  //const [user, setUser] = useState<IUser>();
-
-  const pictureName = "profile";
 
   const uploadDocs: UploadProps = {
     onChange({ file, fileList }) {
@@ -125,36 +81,18 @@ export const ProviderForm = () => {
   }, []);
 
   const onFinish = async (values: IProvider) => {
-    let ok = false,
-      msg = "",
-      user: IUser = {};
-
-    //({ ok, msg, user } = await handleUpload(fileList, pictureName));
-
-    if (!ok) {
-      message.error(t(`${msg}`));
-    }
-
-    ({
+    const {
       ok,
       msg,
       result: { user },
-    } = await updateUserById(id, values));
+    } = await updateUserById(id, values);
 
     if (!ok) {
       message.error(t(`${msg}`));
     }
 
     dispatch(setUser(user));
-    setPictures("");
-    setPictures(`${baseUrl}/images/${user.id}/${user.pictures?.profile}`);
-    setFileList([
-      {
-        uid: "-1",
-        url: picture,
-        name: `${names} image`,
-      },
-    ]);
+
     form.resetFields();
     message.success(`${msg}`);
     dispatch(setLocationPath("dashboard"));
@@ -177,6 +115,7 @@ export const ProviderForm = () => {
             {t(`${role?.charAt(0).toUpperCase()}${role?.slice(1)} profile`)}
           </Title>
         </Row>
+
         <Row
           style={{
             width: "100%",
@@ -184,6 +123,8 @@ export const ProviderForm = () => {
             alignItems: "flex-start",
           }}
         >
+          <ChangeProfilePicture />
+
           {user && (
             <Form
               name="providerRegister"
@@ -218,32 +159,6 @@ export const ProviderForm = () => {
                   style={{
                     display: "inline",
                     paddingInline: 0,
-                  }}
-                >
-                  <Form.Item
-                    label={t("Image")}
-                    name={pictureName}
-                    //valuePropName="fileList"
-                    //getValueFromEvent={normFile}
-                    rules={[{ required: false }]}
-                    style={{
-                      width: "100%",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <ProfilePicture
-                      form={form}
-                      pictureName={pictureName}
-                      fileList={fileList}
-                      setFileList={setFileList}
-                    />
-                  </Form.Item>
-                </Col>
-
-                <Col
-                  style={{
-                    display: "inline",
-                    paddingInline: 0,
                     flexGrow: 1,
                   }}
                 >
@@ -255,49 +170,58 @@ export const ProviderForm = () => {
                       marginBottom: "6px",
                     }}
                   >
-                    <Input.TextArea rows={6} style={{ resize: "none" }} />
+                    <Input.TextArea rows={3} style={{ resize: "none" }} />
                   </Form.Item>
                 </Col>
               </Row>
 
-              {role !== "customer" && (
-                <Form.Item
-                  label={t("Company Name")}
-                  name="company"
-                  rules={[
-                    {
-                      required: false,
-                      message: `${t("Please input your company name")}`,
-                    },
-                  ]}
-                  style={{
-                    width: "100%",
-                    marginBottom: "6px",
-                  }}
-                >
-                  <Input placeholder={`${t("Company Name").toLowerCase()}`} />
-                </Form.Item>
-              )}
+              <Row gutter={16}>
+                <Col xs={24} sm={24} md={16} lg={16}>
+                  {role !== "customer" && (
+                    <Form.Item
+                      label={t("Company Name")}
+                      name="company"
+                      rules={[
+                        {
+                          required: false,
+                          message: `${t("Please input your company name")}`,
+                        },
+                      ]}
+                      style={{
+                        width: "100%",
+                        marginBottom: "6px",
+                      }}
+                    >
+                      <Input
+                        placeholder={`${t("Company Name").toLowerCase()}`}
+                      />
+                    </Form.Item>
+                  )}
+                </Col>
 
-              {role !== "customer" && (
-                <Form.Item
-                  label={t("Owner's name")}
-                  name="owner"
-                  rules={[
-                    {
-                      required: false,
-                      message: `${t("Please input Owner's name")}`,
-                    },
-                  ]}
-                  style={{
-                    width: "100%",
-                    marginBottom: "6px",
-                  }}
-                >
-                  <Input placeholder={`${t("Owner's name").toLowerCase()}`} />
-                </Form.Item>
-              )}
-
+                <Col xs={24} sm={24} md={8} lg={8}>
+                  {role !== "customer" && (
+                    <Form.Item
+                      label={t("Owner's name")}
+                      name="owner"
+                      rules={[
+                        {
+                          required: false,
+                          message: `${t("Please input Owner's name")}`,
+                        },
+                      ]}
+                      style={{
+                        width: "100%",
+                        marginBottom: "6px",
+                      }}
+                    >
+                      <Input
+                        placeholder={`${t("Owner's name").toLowerCase()}`}
+                      />
+                    </Form.Item>
+                  )}
+                </Col>
+              </Row>
               <Form.Item
                 label={t("Physical address")}
                 name="address"
@@ -318,27 +242,11 @@ export const ProviderForm = () => {
                 />
               </Form.Item>
 
-              <Row
-                gutter={24}
-                style={{
-                  gap: "8px",
-                  justifyContent: "space-between",
-                  marginInline: "0px",
-                  width: "100%",
-                }}
-              >
-                <Col style={{ flexGrow: 1, paddingInline: 0 }}>
+              <Row gutter={16}>
+                <Col xs={24} sm={24} md={8} lg={8}>
                   <Form.Item
                     label={t("Zip code")}
                     name="zipCode"
-                    /*rules={[
-                  {
-                    required: true,
-                    message: `${t(
-                      "Please input the zip code of your residence"
-                    )}`,
-                  },
-                ]}*/
                     labelCol={{
                       span: 24,
                     }}
@@ -353,17 +261,10 @@ export const ProviderForm = () => {
                     <Input placeholder={`${t("Zip code").toLowerCase()}`} />
                   </Form.Item>
                 </Col>
-
-                <Col style={{ flexGrow: 1, paddingInline: 0 }}>
+                <Col xs={24} sm={24} md={8} lg={8}>
                   <Form.Item
                     label={t("Phone number")}
                     name="phoneNumber"
-                    /*rules={[
-                  {
-                    required: true,
-                    message: `${t("Please input your phone number")}`,
-                  },
-                ]}*/
                     labelCol={{
                       span: 24,
                     }}
@@ -379,18 +280,25 @@ export const ProviderForm = () => {
                     <Input placeholder={`${t("Phone number").toLowerCase()}`} />
                   </Form.Item>
                 </Col>
+                <Col
+                  xs={24}
+                  sm={24}
+                  md={8}
+                  lg={8}
+                  style={{ flexGrow: 1, paddingInline: 0 }}
+                >
+                  <Form.Item
+                    label={t("Fax number")}
+                    name="faxNumber"
+                    style={{
+                      width: "100%",
+                      marginBottom: "6px",
+                    }}
+                  >
+                    <Input placeholder={`${t("Fax number").toLowerCase()}`} />
+                  </Form.Item>
+                </Col>
               </Row>
-
-              <Form.Item
-                label={t("Fax number")}
-                name="faxNumber"
-                style={{
-                  width: "100%",
-                  marginBottom: "6px",
-                }}
-              >
-                <Input placeholder={`${t("Fax number").toLowerCase()}`} />
-              </Form.Item>
 
               {role !== "customer" && (
                 <Form.Item

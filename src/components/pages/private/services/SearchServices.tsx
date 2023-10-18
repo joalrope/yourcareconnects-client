@@ -1,8 +1,11 @@
 import { Button, Col, Form, Row, Typography } from "antd";
 import { useTranslation } from "react-i18next";
-import { CategorySelect } from "../../../ui-components/CategorySelect";
+import { CategorySelect } from "../../../ui-components/category-select/CategorySelect";
 import { getUserByServices } from "../../../../services/userService";
-import { IProvider, ProviderCard } from "../../../ui-components/ProviderCard";
+import {
+  IDataProvider,
+  ProviderCard,
+} from "../../../ui-components/ProviderCard";
 import { useState } from "react";
 import { getServicesToSearch } from "../../../../helpers/services";
 
@@ -14,7 +17,7 @@ interface Props {
 }
 
 export const SearchServices = () => {
-  const [providers, setProviders] = useState<IProvider[]>([]);
+  const [providers, setProviders] = useState<IDataProvider[]>([]);
   const [areThereUsers, setAreThereUsers] = useState<boolean>(true);
   const [searchServices, setSearchServices] = useState<string | undefined>("");
   const [form] = Form.useForm<Props>();
@@ -148,7 +151,7 @@ export const SearchServices = () => {
             {t("There are no providers that provide the requested service")}
           </h3>
         ) : (
-          providers.map((provider: IProvider) => (
+          providers.map((provider: IDataProvider) => (
             <Col
               key={provider.id}
               xs={24}

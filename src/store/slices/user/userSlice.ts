@@ -16,7 +16,7 @@ const initialState: IUser = {
   notifications: 0,
   owner: "",
   phoneNumber: "",
-  pictures: {},
+  pictures: { profile: "" },
   points: 0,
   role: "", // customer | provider | admin | superadmin
   services: [],
@@ -82,8 +82,10 @@ export const userSlice = createSlice({
     setRole: (state, { payload }) => {
       state.role = payload;
     },
+    setProfilePicture: (state, { payload }) => {
+      state.pictures = payload;
+    },
     logout: () => initialState,
-
     setClearUser: (state) => {
       state.address = "";
       state.balance = 0.1;
@@ -97,7 +99,7 @@ export const userSlice = createSlice({
       state.notifications = 0;
       state.owner = "";
       state.phoneNumber = "";
-      state.pictures = {};
+      state.pictures = { profile: "" };
       state.points = 0;
       state.role = "";
       state.services = [];
@@ -110,7 +112,14 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setUser, setLoggedIn, logout, setClearUser, setRole, setToken } =
-  userSlice.actions;
+export const {
+  setUser,
+  setLoggedIn,
+  logout,
+  setClearUser,
+  setRole,
+  setToken,
+  setProfilePicture,
+} = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user;

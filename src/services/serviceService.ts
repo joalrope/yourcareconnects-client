@@ -1,5 +1,5 @@
 import { fetchWithToken } from "../helpers/fetch";
-import { IItem } from "../components/ui-components/CategorySelect";
+import { IItem } from "../components/ui-components/category-select/CategorySelect";
 
 export interface Result {
   ok: boolean;

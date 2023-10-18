@@ -1,45 +1,22 @@
 import { ReactNode, useCallback, useEffect, useState } from "react";
-import { Col, FormInstance, Row, Tag, TreeSelect, message } from "antd";
-import { PlusSquareOutlined, PlusCircleOutlined } from "@ant-design/icons";
-import { getServices } from "../../services/serviceService";
+import { Tag, TreeSelect, message } from "antd";
+import { PlusSquareOutlined } from "@ant-design/icons";
+import { getServices } from "../../../services/serviceService";
 import { useTranslation } from "react-i18next";
-//import { IProvider } from "../forms/auth/ProviderForm";
-import { ServiceForm } from "../forms/service/ServiceForm";
-import { useDispatch /*useSelector*/, useSelector } from "react-redux";
+import { ServiceForm } from "../../forms/service/ServiceForm";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setLoading,
   setNewService,
   setPathNewService,
   setServiceFormVisible,
-} from "../../store/slices";
-import { servicesSort } from "../../helpers/services";
-import { translate } from "../../helpers/translate";
-import { RootState } from "../../store";
-
-export interface IItem {
-  checkable?: boolean;
-  children?: Children[];
-  selectable?: boolean;
-  icon?: React.ReactNode;
-  tagColor?: string;
-  title: string | React.ReactNode;
-  value: string | React.ReactNode;
-}
-
-interface Props {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  form: FormInstance<any>;
-  formatted?: boolean;
-  editable: boolean;
-  sortable?: boolean;
-}
-
-interface Children {
-  value: string | React.ReactNode;
-  title: string | React.ReactNode;
-  tagColor: string;
-  children?: Children[];
-}
+} from "../../../store/slices";
+import { servicesSort } from "../../../helpers/services";
+import { translate } from "../../../helpers/translate";
+import { RootState } from "../../../store";
+import { pushAddService } from "./pushAddService";
+import { formatterServiceItems } from "./FormatterServiceItems";
+import { IItem, Props } from "./interfaces";
 
 export const CategorySelect = ({
   form,
@@ -48,7 +25,6 @@ export const CategorySelect = ({
   sortable,
 }: Props) => {
   const dispatch = useDispatch();
-  //const { newService } = useSelector((state: RootState) => state.service);
   const { t } = useTranslation();
   const { language } = useSelector((state: RootState) => state.i18n);
   const { pathNewService } = useSelector((state: RootState) => state.service);
@@ -157,76 +133,4 @@ export const CategorySelect = ({
       />
     </>
   );
-};
-
-const pushAddService = (services: IItem[], locale: string, value = "") => {
-  const addCategoryItem = {
-    tagColor: "red",
-    checkable: false,
-    selectable: false,
-    value: `${value}|${"Add new service"}`,
-    title: locale === "enUS" ? "Add new service" : "Agregar Nuevo Servicio",
-  };
-
-  services.push(addCategoryItem);
-
-  services.map((item) => {
-    if (item.children && item.children.length > 0) {
-      pushAddService(item.children, locale, String(item.value));
-    }
-  });
-};
-
-const formatterServiceItems = (
-  services: IItem[],
-  handleClick: (value: string | React.ReactNode) => void
-) => {
-  services.map((item) => {
-    const bgc = `${item.tagColor}20`;
-    const frc = `${item.tagColor}`;
-
-    item.title = (
-      <Row>
-        {item.checkable === false ? (
-          <Col
-            xs={24}
-            style={{
-              backgroundColor: "#fbd467",
-              border: `1px solid black`,
-              borderRadius: 4,
-              color: "black",
-              fontSize: 12,
-              paddingInline: 12,
-            }}
-            onClick={() => {
-              handleClick(item.value);
-            }}
-          >
-            <PlusCircleOutlined
-              style={{
-                marginRight: 12,
-              }}
-            />
-            <b>{item.title}</b>
-          </Col>
-        ) : (
-          <Col
-            xs={24}
-            style={{
-              backgroundColor: bgc,
-              border: `1px solid ${frc}`,
-              color: frc,
-              borderRadius: 4,
-              paddingInline: 12,
-            }}
-          >
-            {item.title}{" "}
-          </Col>
-        )}
-      </Row>
-    );
-    if (item.children && item.children.length > 0) {
-      formatterServiceItems(item.children, handleClick);
-    }
-  });
 };

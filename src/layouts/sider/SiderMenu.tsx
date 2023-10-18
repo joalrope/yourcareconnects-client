@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Menu, MenuProps } from "antd";
-import { UploadOutlined, ProfileOutlined } from "@ant-design/icons";
+import {
+  DashboardOutlined,
+  FileSearchOutlined,
+  MessageOutlined,
+  ProfileOutlined,
+} from "@ant-design/icons";
 
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -26,7 +31,7 @@ export const SiderMenu = () => {
       path: "/dashboard",
       key: "dashboard",
       role: "customer",
-      icon: <ProfileOutlined />,
+      icon: <DashboardOutlined />,
     },
     {
       label: <Link to="/profile">{t("Profile")}</Link>,
@@ -36,18 +41,18 @@ export const SiderMenu = () => {
       icon: <ProfileOutlined />,
     },
     {
-      label: <Link to="/upload">{t("Docs upload")}</Link>,
-      path: "/upload",
-      key: "upload",
-      role: "customer",
-      icon: <UploadOutlined />,
-    },
-    {
       label: <Link to="/services">{t("Services")}</Link>,
       path: "/services",
       key: "services",
       role: "customer",
-      icon: <UploadOutlined />,
+      icon: <FileSearchOutlined />,
+    },
+    {
+      label: <Link to="/blog">{t("Blog")}</Link>,
+      path: "/blog",
+      key: "blog",
+      role: "customer",
+      icon: <MessageOutlined />,
     },
   ];
 

@@ -22,7 +22,7 @@ export const ProviderSelectorCard = ({ service, tagColor }: Props) => {
         borderRadius: "8px",
         color: `${tagColor}`,
         display: "flex",
-        fontSize: "clamp(1.2rem, 4cqi, 1.2rem)",
+        fontSize: "clamp(1.5rem, 8vw-2rem, 3rem)",
         fontWeight: "bold",
         height: "14vh",
         justifyContent: "center",

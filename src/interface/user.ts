@@ -4,7 +4,7 @@ interface IResetPassword {
 }
 
 interface IPictures {
-  profile?: string;
+  profile: string;
 }
 
 export interface IUser {

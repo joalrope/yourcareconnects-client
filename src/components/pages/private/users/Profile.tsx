@@ -1,5 +1,5 @@
 import { Col, Row } from "antd";
-import { ProviderForm } from "../../../forms/auth/ProviderForm";
+import { ProviderForm } from "../../../forms/auth/provicer-form/ProviderForm";
 
 export const Profile = () => {
   return (

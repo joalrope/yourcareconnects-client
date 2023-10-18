@@ -2,7 +2,9 @@
 
 import { Route, Routes } from "react-router-dom";
 import {
+  Blog,
   ChangePasword,
+  ChangeProfilePicture,
   Dashboard,
   DashboardAdmin,
   Home,
@@ -14,7 +16,6 @@ import {
   ResetPassword,
   SearchServices,
   SelectCreateAccount,
-  UploadDocs,
 } from "../components/pages";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleProtectedRoute } from "./RoleProtectedRoute";
@@ -43,10 +44,11 @@ export const AppRouter = () => {
           element={<SelectCreateAccount />}
         />
 
-        <Route key="upload" path="/upload" element={<UploadDocs />} />
+        <Route key="upload" path="/upload" element={<ChangeProfilePicture />} />
         <Route key="profile" path="/profile" element={<Profile />} />
         <Route key="dashboard" path="/dashboard" element={<Dashboard />} />
         <Route key="services" path="/services" element={<SearchServices />} />
+        <Route key="blog" path="/blog" element={<Blog />} />
       </Route>
       <Route element={<RoleProtectedRoute />}>
         <Route

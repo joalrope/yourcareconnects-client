@@ -1,4 +1,4 @@
-import { ProviderForm } from "../../../../forms/auth/ProviderForm";
+import { ProviderForm } from "../../../../forms/auth/provicer-form/ProviderForm";
 import "./register.css";
 
 export const Provider = () => {

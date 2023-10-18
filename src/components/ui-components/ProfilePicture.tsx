@@ -5,7 +5,7 @@ import { PlusOutlined } from "@ant-design/icons";
 
 import type { FormInstance } from "antd";
 import type { RcFile, UploadFile, UploadProps } from "antd/es/upload/interface";
-import ImgCrop from "antd-img-crop";
+//import ImgCrop from "antd-img-crop";
 
 interface Props {
   form: FormInstance;
@@ -35,9 +35,9 @@ export const ProfilePicture = ({
 
     setPreviewImage(file.url || (file.preview as string));
     setPreviewOpen(true);
+    const fileUrl = file.url || (file.preview as string);
     setPreviewTitle(
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
+      file.name || fileUrl.substring(fileUrl.lastIndexOf("/") + 1)
     );
   };
 
@@ -50,6 +50,23 @@ export const ProfilePicture = ({
 
     setFileList(fileList);
   };
+
+  /* const beforeUpload = (file: Blob) => {
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      setFileList((prev) => [...prev, { url: reader.result }] as UploadFile[]);
+    };
+
+    if (fileList.length === 0) {
+      return;
+    }
+
+    form.setFieldValue(pictureName, fileList);
+
+    return false;
+  };*/
 
   const props: UploadProps = {
     onRemove: (file) => {
@@ -73,21 +90,20 @@ export const ProfilePicture = ({
 
   return (
     <>
-      <ImgCrop rotationSlider>
-        <Upload
-          accept="image/png, image/jpeg"
-          name={pictureName}
-          fileList={fileList}
-          listType="picture-card"
-          //showUploadList={true}
-          {...props}
-          onPreview={handlePreview}
-          onChange={handleChange}
-          className="avatar-uploader"
-        >
-          {fileList.length > 0 ? null : uploadButton}
-        </Upload>
-      </ImgCrop>
+      {/*  <ImgCrop rotationSlider> */}
+      <Upload
+        accept="image/png, image/jpeg"
+        name={pictureName}
+        fileList={fileList}
+        listType="picture-card"
+        {...props}
+        onPreview={handlePreview}
+        onChange={handleChange}
+        className="avatar-uploader"
+      >
+        {fileList.length > 0 ? null : uploadButton}
+      </Upload>
+      {/*  </ImgCrop> */}
       <Modal
         open={previewOpen}
         title={previewTitle}
@@ -97,7 +113,8 @@ export const ProfilePicture = ({
         <Image
           alt={`picture of ${pictureName}`}
           src={previewImage}
-          fallback={previewImage}
+          preview={false}
+          fallback={"./images/man.png"}
         />
       </Modal>
     </>
@@ -121,17 +138,11 @@ export const handleUpload = async (
   fileName: string
 ) => {
   //
-  //const ext = fileList[0].name.split(".").pop();
   const formData = new FormData();
 
-  formData.append(
-    fileName,
-    fileList[0].originFileObj as RcFile,
-    //`${fileName}.${ext}`
-    `${fileName}.${"png"}`
-  );
+  formData.append("image", fileList[0].originFileObj as RcFile, fileName);
 
-  const url = `${baseUrl}/api/uploads/${fileName}.png`;
+  const url = `${baseUrl}/api/uploads/profile/${fileName}`;
 
   return await fetch(url, {
     method: "POST",

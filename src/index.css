@@ -118,7 +118,7 @@ body {
   background-color: var(--secondary-color);
 }
 
-.avatar-uploader .ant-upload-list-item {
+/*.avatar-uploader .ant-upload-list-item {
   height: 142px !important;
   width: 142px !important;
-}
+}*/

@@ -1,4 +1,4 @@
-import { IItem } from "../components/ui-components/CategorySelect";
+import { IItem } from "../components/ui-components/category-select/CategorySelect";
 
 export const pushAddService = (services: IItem[], value: string) => {
   const addCategoryItem = {

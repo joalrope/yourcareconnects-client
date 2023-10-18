@@ -1,4 +1,4 @@
-import { IProvider } from "../components/forms/auth/ProviderForm";
+import { IProvider } from "../components/forms/auth/provicer-form/ProviderForm";
 import { fetchWithToken } from "../helpers/fetch";
 
 export const getUserById = async (id: string) => {

@@ -4,11 +4,12 @@ const { Meta } = Card;
 
 const baseUrl = import.meta.env.VITE_URL_BASE;
 
-export interface IProvider {
+export interface IDataProvider {
   id: string;
   services: string[];
   lastName: string;
   names: string;
+  pictures: { profile: string };
   ratings: number;
 }
 
@@ -17,10 +18,11 @@ export const ProviderCard = ({
   lastName,
   names,
   services,
+  pictures,
   ratings,
-}: IProvider) => {
-  const picture = `${baseUrl}/images/${id}/profile.png`;
-
+}: IDataProvider) => {
+  const { profile } = pictures;
+  const picture = `${baseUrl}/images/${id}/${profile}`;
   const serv = services.map((service) => {
     return service.split("|").pop();
   });
