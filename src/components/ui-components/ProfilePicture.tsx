@@ -114,7 +114,6 @@ export const ProfilePicture = ({
           alt={`picture of ${pictureName}`}
           src={previewImage}
           preview={false}
-          fallback={"./images/man.png"}
         />
       </Modal>
     </>

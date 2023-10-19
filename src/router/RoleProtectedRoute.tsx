@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { RootState } from "../store";
 
 interface Props {
@@ -9,8 +9,9 @@ interface Props {
 
 export const RoleProtectedRoute = ({ children }: Props) => {
   const { role } = useSelector((state: RootState) => state.user);
+  const location = useLocation();
 
-  if (role !== "admin") {
+  if (location.pathname === "/admin/dashboard" && role !== "admin") {
     return <Navigate to={"/notAllowed"} />;
   }
 

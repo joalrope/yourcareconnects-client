@@ -36,14 +36,13 @@ export const AppRouter = () => {
         path="/auth/change-password/:init/:id/:code"
         element={<ChangePasword />}
       />
+      <Route
+        key="createAccount"
+        path="/home/create-account"
+        element={<SelectCreateAccount />}
+      />
 
       <Route element={<ProtectedRoute />}>
-        <Route
-          key="createAccount"
-          path="/home/create-account"
-          element={<SelectCreateAccount />}
-        />
-
         <Route key="upload" path="/upload" element={<ChangeProfilePicture />} />
         <Route key="profile" path="/profile" element={<Profile />} />
         <Route key="dashboard" path="/dashboard" element={<Dashboard />} />

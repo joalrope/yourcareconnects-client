@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store";
-import { setProfilePicture } from "../../../store/slices";
+import { setLoading, setProfilePicture } from "../../../store/slices";
 import {
   ProfilePicture,
   handleUpload,
@@ -35,7 +35,7 @@ export const ChangeProfilePicture = () => {
   let pictureName = "";
 
   useEffect(() => {
-    if (fileList[0]?.uid === "-1") {
+    if (fileList[0]?.uid === "-1" || fileList.length === 0) {
       setIsOriginalPicture(false);
     } else {
       setIsOriginalPicture(true);
@@ -45,8 +45,9 @@ export const ChangeProfilePicture = () => {
   const onFinish = async () => {
     pictureName = fileList[0].name;
 
-    console.log({ pictureName });
+    dispatch(setLoading(true));
     const { ok, msg } = await handleUpload(fileList, pictureName);
+    dispatch(setLoading(false));
 
     if (!ok) {
       message.error(t(`${msg}`));

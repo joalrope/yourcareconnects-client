@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store";
 import { fetchWithoutToken } from "../../../helpers/fetch";
 import { useNavigate } from "react-router-dom";
-import { setUser } from "../../../store/slices";
+import { setLoggedIn, setUser } from "../../../store/slices";
 
 const { Title } = Typography;
 
@@ -101,6 +101,9 @@ export const RegisterForm = () => {
         onOk: () => {
           form.resetFields();
           dispatch(setUser(result.user));
+          dispatch(setLoggedIn(true));
+          sessionStorage.setItem("token", result.token);
+          sessionStorage.setItem("id", JSON.stringify(result.user.id));
           navigate("/dashboard");
         },
       });

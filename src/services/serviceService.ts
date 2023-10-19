@@ -43,6 +43,8 @@ export interface IRes {
   color: string;
 }
 export const getServicesWithColor = async (services: string[] | undefined) => {
+  if (!services) return;
+
   const { result } = await fetchWithToken(
     `/services/get-colors`,
     { services },
