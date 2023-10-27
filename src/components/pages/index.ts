@@ -14,3 +14,5 @@ export { Blog } from "./private/blog/Blog";
 export { ResetPassword } from "./public/auth/reset/ResetPassword";
 export { ChangePasword } from "./public/auth/reset/ChangePaswword";
 export { SearchServices } from "./private/services/SearchServices.tsx";
+export { MapView } from "./private/maps/MapView";
+export { ChatYCC } from "./private/chat/ChatYCC";

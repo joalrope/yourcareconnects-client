@@ -32,6 +32,6 @@ export interface IUser {
   services?: string[];
   serviceModality?: string[];
   certificates?: string[];
-  isLoggedIn?: false;
+  isLoggedIn?: boolean;
   token?: string;
 }

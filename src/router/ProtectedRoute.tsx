@@ -9,7 +9,7 @@ interface Props {
 export const ProtectedRoute = ({ children }: Props) => {
   const { isLoggedIn } = useSelector((state: RootState) => state.user);
 
-  if (!isLoggedIn) {
+  if (isLoggedIn === false) {
     return <Navigate to={"/notAllowed"} />;
   }
 

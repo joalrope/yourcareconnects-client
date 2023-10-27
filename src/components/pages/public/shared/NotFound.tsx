@@ -1,9 +1,14 @@
-import { Button, Col, Image, Row } from "antd";
+import { Button, Col, Image, Row, theme } from "antd";
 import Title from "antd/es/typography/Title";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+
+const { useToken } = theme;
 
 export const NotFound = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { token } = useToken();
 
   return (
     <Row
@@ -39,7 +44,16 @@ export const NotFound = () => {
             </Title>
           </Col>
           <Col>
-            <Button style={{ marginTop: "5vh", width: "25vw" }}>
+            <Button
+              type="primary"
+              onClick={() => navigate(-1)}
+              style={{
+                border: `1px solid ${token.colorPrimary}!important`,
+                fontWeight: 700,
+                marginTop: "5vh",
+                width: "100%",
+              }}
+            >
               {t("Return")}
             </Button>
           </Col>

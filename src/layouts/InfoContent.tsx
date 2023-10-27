@@ -39,10 +39,10 @@ export const InfoContent = ({ names }: Props) => {
   );
   const [open, setOpen] = useState<boolean>(false);
 
-  const handleLogOut = (/* e: unknown */) => {
-    dispatch(setLocationPath("/"));
-    dispatch(logout());
+  const handleLogOut = () => {
     sessionStorage.clear();
+    dispatch(logout());
+    dispatch(setLocationPath("/"));
   };
 
   const handleNameClick = () => {
@@ -52,7 +52,7 @@ export const InfoContent = ({ names }: Props) => {
 
   const handleNotificationsClick = () => {
     setOpen(false);
-    dispatch(setLocationPath("profile"));
+    dispatch(setLocationPath("/"));
   };
 
   const id = JSON.parse(String(sessionStorage.getItem("id")));
@@ -94,14 +94,13 @@ export const InfoContent = ({ names }: Props) => {
     },
     {
       key: "2",
-      label: notifications > 0 && (
+      label: (
         <Col>
-          <Link to="/profile" onClick={handleNotificationsClick}>
+          <Link to="/chat" onClick={handleNotificationsClick}>
             <Badge size="small" count={notifications}>
               <Avatar
                 shape="circle"
                 src="/images/bell-icon.png"
-                onClick={() => handleOpenChange(false)}
                 style={{ cursor: "pointer", marginLeft: "12px" }}
               />
             </Badge>
@@ -161,8 +160,9 @@ export const InfoContent = ({ names }: Props) => {
               style={{ cursor: "pointer", marginLeft: "12px" }}
             />
           </Col>
-          {notifications > 0 && (
-            <Col>
+
+          <Col>
+            <Link to="/chat" onClick={handleNotificationsClick}>
               <Badge size="small" count={notifications}>
                 <Avatar
                   shape="circle"
@@ -170,8 +170,9 @@ export const InfoContent = ({ names }: Props) => {
                   style={{ cursor: "pointer", marginLeft: "12px" }}
                 />
               </Badge>
-            </Col>
-          )}
+            </Link>
+          </Col>
+
           <Col>
             <Link
               to="/"

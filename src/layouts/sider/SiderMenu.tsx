@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Menu, MenuProps } from "antd";
 import {
+  CompassOutlined,
   DashboardOutlined,
   FileSearchOutlined,
   MessageOutlined,
@@ -53,6 +54,13 @@ export const SiderMenu = () => {
       key: "blog",
       role: "customer",
       icon: <MessageOutlined />,
+    },
+    {
+      label: <Link to="/map">{t("Map")}</Link>,
+      path: "/map",
+      key: "map",
+      role: "customer",
+      icon: <CompassOutlined />,
     },
   ];
 

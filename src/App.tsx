@@ -36,9 +36,7 @@ function App() {
     const token = sessionStorage.getItem("token");
 
     const id = ssId ? JSON.parse(ssId) : "";
-
     const { ok, result } = await getUserById(id);
-    //console.log({ ok, result });
 
     if (ok) {
       result.token = token;

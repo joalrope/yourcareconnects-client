@@ -1,0 +1,7 @@
+.cs-message--incoming .cs-message__content {
+  background-color: red;
+}
+
+.cs-message.cs-message--incoming.cs-message--first .cs-message__content {
+  background-color: red;
+}

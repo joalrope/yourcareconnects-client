@@ -60,7 +60,7 @@ export const NotAllowed = () => {
           <Col style={{ width: "100%" }}>
             <Button
               type="primary"
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/")}
               style={{
                 border: `1px solid ${token.colorPrimary}!important`,
                 fontWeight: 700,

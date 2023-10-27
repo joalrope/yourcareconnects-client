@@ -5,10 +5,12 @@ import {
   Blog,
   ChangePasword,
   ChangeProfilePicture,
+  ChatYCC,
   Dashboard,
   DashboardAdmin,
   Home,
   Login,
+  MapView,
   NotAllowed,
   NotFound,
   Profile,
@@ -48,6 +50,8 @@ export const AppRouter = () => {
         <Route key="dashboard" path="/dashboard" element={<Dashboard />} />
         <Route key="services" path="/services" element={<SearchServices />} />
         <Route key="blog" path="/blog" element={<Blog />} />
+        <Route key="chat" path="/chat" element={<ChatYCC />} />
+        <Route key="map" path="/map" element={<MapView />} />
       </Route>
       <Route element={<RoleProtectedRoute />}>
         <Route

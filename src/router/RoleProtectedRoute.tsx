@@ -8,10 +8,15 @@ interface Props {
 }
 
 export const RoleProtectedRoute = ({ children }: Props) => {
-  const { role } = useSelector((state: RootState) => state.user);
+  const { role, isLoggedIn } = useSelector((state: RootState) => state.user);
   const location = useLocation();
 
-  if (location.pathname === "/admin/dashboard" && role !== "admin") {
+  if (
+    isLoggedIn === false &&
+    location.pathname === "/admin/dashboard" &&
+    role !== "admin"
+  ) {
+    console.log(location.pathname);
     return <Navigate to={"/notAllowed"} />;
   }
 

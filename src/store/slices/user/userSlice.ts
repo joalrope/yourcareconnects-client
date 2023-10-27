@@ -2,6 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 import { IUser } from "../../../interface";
 
+const id = sessionStorage.getItem("id");
+
+console.log(id);
+
+const isLoggedIn = id ? true : false;
+
 const initialState: IUser = {
   address: "",
   balance: 0.1,
@@ -10,7 +16,7 @@ const initialState: IUser = {
   email: "",
   faxNumber: "",
   id: "",
-  isLoggedIn: false,
+  isLoggedIn,
   lastName: "",
   names: "",
   notifications: 0,
@@ -49,6 +55,7 @@ export const userSlice = createSlice({
         role,
         services,
         serviceModality,
+        token,
         webUrl,
         zipCode,
       } = action.payload;
@@ -70,6 +77,7 @@ export const userSlice = createSlice({
       state.role = role;
       state.services = services;
       state.serviceModality = serviceModality;
+      state.token = token;
       state.webUrl = webUrl;
       state.zipCode = zipCode;
     },
