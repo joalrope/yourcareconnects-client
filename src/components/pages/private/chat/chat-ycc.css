@@ -1,7 +1,97 @@
+.cs-message-list {
+  background-color: #ffffff;
+}
+
+.cs-message__content {
+  font-size: 13px;
+  padding: 5px;
+}
+
 .cs-message--incoming .cs-message__content {
-  background-color: red;
+  border: 1px solid #1a1a13;
+  background-color: #7c7c7b75;
+  color: #1a1a13;
 }
 
 .cs-message.cs-message--incoming.cs-message--first .cs-message__content {
-  background-color: red;
+  border: 1px solid #1a1a13;
+  background-color: #7c7c7b75;
+  color: #1a1a13;
+}
+
+.cs-message--outgoing .cs-message__content {
+  border: 1px solid #1a1a13;
+  background-color: #fbd46775;
+  color: #1a1a13;
+}
+
+.cs-message.cs-message--outgoing.cs-message--first .cs-message__content {
+  border: 1px solid #1a1a13;
+  background-color: #fbd46775;
+  color: #1a1a13;
+}
+
+.cs-conversation-header {
+  background-color: #fbd467;
+}
+
+.cs-conversation-header__content .cs-conversation-header__user-name {
+  background-color: transparent;
+}
+
+.cs-conversation-header__content .cs-conversation-header__info {
+  background-color: transparent;
+}
+
+.cs-conversation-header__actions .cs-button.cs-button--videocall,
+.cs-conversation-header__actions .cs-button.cs-button--voicecall,
+.cs-conversation-header__actions .cs-button.cs-button--ellipsis,
+.cs-message-separator {
+  color: #1a1a13;
+}
+
+.cs-message-separator::before,
+.cs-message-separator::after {
+  background-color: #1a1a13;
+}
+
+.cs-search__input {
+  background-color: transparent;
+}
+
+.cs-search {
+  background-color: #fbd467;
+}
+
+.cs-message-input__content-editor {
+  background-color: transparent !important;
+}
+
+.cs-message-input__content-editor-container,
+.cs-message-input__content-editor-wrapper {
+  background-color: #fbd467;
+}
+
+.cs-button--attachment,
+.cs-button--send {
+  color: #1a1a13;
+}
+
+.cs-typing-indicator__text {
+  color: #1a1a1375;
+}
+.cs-typing-indicator__dot {
+  background-color: #1a1a1375;
+}
+
+.cs-search__search-icon {
+  color: #1a1a13;
+}
+
+.ps__thumb-y {
+  background-color: #1a1a1375;
+}
+
+.cs-message-list .cs-typing-indicator {
+  background-color: transparent;
 }

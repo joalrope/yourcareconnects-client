@@ -55,11 +55,13 @@ export const ChatYCC = () => {
   return (
     <div
       style={{
+        fontFamily: "Roboto",
+        fontSize: "8px",
+        height: "calc(100% + 47px)",
+        left: -24,
         position: "relative",
         top: -24,
-        left: -24,
         width: "calc(100% + 48px)",
-        height: "calc(100% + 47px)",
       }}
     >
       <MainContainer responsive>
@@ -154,7 +156,7 @@ export const ChatYCC = () => {
             <MessageSeparator content="Saturday, 30 November 2019" />
             <Message
               model={{
-                message: "Hello my friend",
+                message: "Hello my friend, \nHow are you?",
                 sentTime: "15 mins ago",
                 sender: "Zoe",
                 direction: "incoming",
