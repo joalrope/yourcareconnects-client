@@ -9,8 +9,8 @@ export const MapView = () => {
   };
 
   const defaultCenter = {
-    lat: 18.392373,
-    lng: -66.133979,
+    lat: 18.4292072,
+    lng: -66.1591063,
   };
 
   console.log({ apiKey });
@@ -19,7 +19,7 @@ export const MapView = () => {
     <LoadScript googleMapsApiKey={apiKey}>
       <GoogleMap
         mapContainerStyle={mapStyles}
-        zoom={8}
+        zoom={12}
         center={defaultCenter}
       />
     </LoadScript>
