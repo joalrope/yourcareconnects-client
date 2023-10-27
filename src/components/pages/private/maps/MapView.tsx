@@ -19,7 +19,7 @@ export const MapView = () => {
     <LoadScript googleMapsApiKey={apiKey}>
       <GoogleMap
         mapContainerStyle={mapStyles}
-        zoom={16}
+        zoom={8}
         center={defaultCenter}
       />
     </LoadScript>
