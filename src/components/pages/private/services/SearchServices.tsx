@@ -68,7 +68,7 @@ export const SearchServices = () => {
         <Col xs={24} md={16} lg={12}>
           <Title level={3}>{t("Search Services")}</Title>
         </Col>
-        <Col xs={24} md={16} lg={12} style={{ width: "100%" }}>
+        <Col xs={24} md={16} lg={16} style={{ width: "100%" }}>
           <Form
             name="providerProfile"
             form={form}
@@ -125,7 +125,8 @@ export const SearchServices = () => {
                   <h3>
                     {t("Looking for providers that provide the service of:")}
                     <u>
-                      <b style={{ color: "blue" }}> {`${searchServices}`}</b>
+                      {" "}
+                      <b style={{ color: "blue" }}> {t(`${searchServices}`)}</b>
                     </u>
                   </h3>
                 </Col>
@@ -152,15 +153,7 @@ export const SearchServices = () => {
           </h3>
         ) : (
           providers.map((provider: IDataProvider) => (
-            <Col
-              key={provider.id}
-              xs={24}
-              sm={12}
-              md={8}
-              lg={6}
-              xl={6}
-              xxl={43}
-            >
+            <Col key={provider.id} xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
               <ProviderCard {...provider} />
             </Col>
           ))

@@ -4,8 +4,6 @@ import { IUser } from "../../../interface";
 
 const id = sessionStorage.getItem("id");
 
-console.log(id);
-
 const isLoggedIn = id ? true : false;
 
 const initialState: IUser = {

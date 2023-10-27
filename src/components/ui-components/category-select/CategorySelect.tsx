@@ -107,7 +107,7 @@ export const CategorySelect = ({
       <TreeSelect
         allowClear
         autoClearSearchValue={false}
-        dropdownStyle={{ maxHeight: "100%", overflow: "auto" }}
+        dropdownStyle={{ maxHeight: "300px", overflow: "auto" }}
         multiple
         onBlur={() => setOpen(false)}
         onChange={onChange}
@@ -126,6 +126,7 @@ export const CategorySelect = ({
           );
         }}
         treeCheckable
+        getPopupContainer={(triggerNode) => triggerNode.parentNode}
         treeData={data}
         treeLine={true}
         value={value}
