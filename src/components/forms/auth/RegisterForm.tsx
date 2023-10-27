@@ -165,61 +165,44 @@ export const RegisterForm = () => {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
-            <Form.Item
-              style={{
-                marginBottom: "8px",
-                display: "flex",
-                justifyContent: "space-around",
-              }}
-            >
-              <Form.Item
-                label={t("Names")}
-                name="names"
-                rules={[
-                  {
-                    required: true,
-                    message: `${t("Please input your names")}`,
-                  },
-                ]}
-                labelCol={{
-                  span: 24,
-                }}
-                wrapperCol={{
-                  span: 24,
-                }}
-                style={{
-                  display: "inline-block",
-                  width: "calc(50% - 15px)",
-                  marginBottom: "6px",
-                }}
-              >
-                <Input placeholder={`${t("Names").toLowerCase()}`} />
-              </Form.Item>
-
-              <Form.Item
-                label={t("Last Name")}
-                name="lastName"
-                rules={[
-                  {
-                    required: true,
-                    message: `${t("Please input your surnames")}`,
-                  },
-                ]}
-                labelCol={{
-                  span: 24,
-                }}
-                wrapperCol={{
-                  span: 24,
-                }}
-                style={{
-                  display: "inline-block",
-                  width: "calc(50% - 15px)",
-                  marginBottom: "6px",
-                }}
-              >
-                <Input placeholder={`${t("Last Name").toLowerCase()}`} />
-              </Form.Item>
-            </Form.Item>
+            <Row gutter={16}>
+              <Col xs={24} sm={24} md={12} lg={12}>
+                <Form.Item
+                  label={t("Names")}
+                  name="names"
+                  rules={[
+                    {
+                      required: true,
+                      message: `${t("Please input your names")}`,
+                    },
+                  ]}
+                  style={{
+                    width: "100%",
+                    marginBottom: "6px",
+                  }}
+                >
+                  <Input placeholder={`${t("Names").toLowerCase()}`} />
+                </Form.Item>
+              </Col>
+              <Col xs={24} sm={24} md={12} lg={12}>
+                <Form.Item
+                  label={t("Last Name")}
+                  name="lastName"
+                  rules={[
+                    {
+                      required: true,
+                      message: `${t("Please input your surnames")}`,
+                    },
+                  ]}
+                  style={{
+                    width: "100%",
+                    marginBottom: "6px",
+                  }}
+                >
+                  <Input placeholder={`${t("Last Name").toLowerCase()}`} />
+                </Form.Item>
+              </Col>
+            </Row>
 
             {curRole === "provider" && (
               <Form.Item
