@@ -46,7 +46,8 @@
 .cs-conversation-header__actions .cs-button.cs-button--videocall,
 .cs-conversation-header__actions .cs-button.cs-button--voicecall,
 .cs-conversation-header__actions .cs-button.cs-button--ellipsis,
-.cs-message-separator {
+.cs-message-separator,
+.cs-button--arrow {
   color: #1a1a13;
 }
 

@@ -174,7 +174,7 @@ export const ChatYCC = () => {
                 direction: "outgoing",
                 position: "single",
               }}
-              avatarSpacer
+              //avatarSpacer
             />
             <Message
               model={{
