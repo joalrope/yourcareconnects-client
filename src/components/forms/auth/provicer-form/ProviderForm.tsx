@@ -94,7 +94,7 @@ export const ProviderForm = () => {
     dispatch(setUser(user));
 
     form.resetFields();
-    message.success(`${msg}`);
+    message.success(t(`${msg}`));
     dispatch(setLocationPath("dashboard"));
     navigate("/dashboard");
   };
