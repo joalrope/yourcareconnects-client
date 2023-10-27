@@ -137,7 +137,7 @@ export const RegisterForm = () => {
       <Col style={{ width: "100%" }}>
         <Row style={{ display: "flex", flexDirection: "column" }}>
           <Title level={3} style={{ margin: "50px 0px" }}>
-            {t("Create your account")}
+            {`${t("Create your account as a")} ${t(`${curRole}`)}`}
           </Title>
         </Row>
         <Row

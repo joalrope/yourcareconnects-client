@@ -16,7 +16,7 @@ export const MapView = () => {
   console.log({ apiKey });
 
   return (
-    <LoadScript googleMapsApiKey={apiKey}>
+    <LoadScript googleMapsApiKey={String(apiKey)}>
       <GoogleMap
         mapContainerStyle={mapStyles}
         zoom={12}
