@@ -18,7 +18,6 @@ import { updateUserById } from "../../../../services/userService";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { useNavigate } from "react-router-dom";
-import { getGeolocation } from "../../../../helpers/geolocation";
 import { getModalities } from "../../../../services";
 import { setUser } from "../../../../store/slices";
 import { setLocationPath } from "../../../../store/slices/router/routerSlice";
@@ -103,8 +102,10 @@ export const ProviderForm = () => {
     console.log("Failed:", errorInfo);
   };
 
-  const getUserGeolocation = () => {
-    getGeolocation();
+  const HandleGeoloc = () => {
+    navigate("/getLatLng");
+
+    console.log("navegó a getLatLng");
   };
 
   return (
@@ -222,37 +223,53 @@ export const ProviderForm = () => {
                   )}
                 </Col>
               </Row>
-              <Form.Item
-                label={t("Physical address")}
-                name="address"
-                rules={[
-                  {
-                    required: false,
-                    message: `${t("Please input your physical address")}`,
-                  },
-                ]}
-                style={{
-                  width: "100%",
-                  marginBottom: "6px",
-                }}
-              >
-                <Input
-                  onFocus={getUserGeolocation}
-                  placeholder={`${t("Physical address").toLowerCase()}`}
-                />
-              </Form.Item>
+
+              <Row gutter={16}>
+                <Col xs={24} sm={24} md={18} lg={18}>
+                  <Form.Item
+                    label={t("Physical address")}
+                    name="address"
+                    rules={[
+                      {
+                        required: false,
+                        message: `${t("Please input your physical address")}`,
+                      },
+                    ]}
+                    style={{
+                      width: "100%",
+                      marginBottom: "6px",
+                    }}
+                  >
+                    <Input
+                      placeholder={`${t("Physical address").toLowerCase()}`}
+                    />
+                  </Form.Item>
+                </Col>
+                <Col xs={24} sm={24} md={6} lg={6}>
+                  <Form.Item
+                    label={t("GeoLoc address")}
+                    name="geoAddress"
+                    style={{
+                      width: "100%",
+                      marginBottom: "6px",
+                    }}
+                  >
+                    <Button
+                      type="primary"
+                      onClick={HandleGeoloc}
+                      style={{ width: "100%" }}
+                    >
+                      Get Geoloc
+                    </Button>
+                  </Form.Item>
+                </Col>
+              </Row>
 
               <Row gutter={16}>
                 <Col xs={24} sm={24} md={8} lg={8}>
                   <Form.Item
                     label={t("Zip code")}
                     name="zipCode"
-                    labelCol={{
-                      span: 24,
-                    }}
-                    wrapperCol={{
-                      span: 24,
-                    }}
                     style={{
                       width: "100%",
                       marginBottom: "6px",
@@ -265,14 +282,7 @@ export const ProviderForm = () => {
                   <Form.Item
                     label={t("Phone number")}
                     name="phoneNumber"
-                    labelCol={{
-                      span: 24,
-                    }}
-                    wrapperCol={{
-                      span: 24,
-                    }}
                     style={{
-                      display: "inline-block",
                       width: "100%",
                       marginBottom: "6px",
                     }}
@@ -280,13 +290,7 @@ export const ProviderForm = () => {
                     <Input placeholder={`${t("Phone number").toLowerCase()}`} />
                   </Form.Item>
                 </Col>
-                <Col
-                  xs={24}
-                  sm={24}
-                  md={8}
-                  lg={8}
-                  style={{ flexGrow: 1, paddingInline: 0 }}
-                >
+                <Col xs={24} sm={24} md={8} lg={8}>
                   <Form.Item
                     label={t("Fax number")}
                     name="faxNumber"

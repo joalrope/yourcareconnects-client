@@ -13,7 +13,7 @@ import {
 import { LogoutOutlined, MenuOutlined } from "@ant-design/icons";
 
 import { setLocationPath } from "../store/slices/router/routerSlice";
-import { logout } from "../store/slices";
+import { logout, setLoggedIn } from "../store/slices";
 import { useTranslation } from "react-i18next";
 import { LanguageSelect } from "../components/ui-components/LanguageSelect";
 import { RootState } from "../store";
@@ -42,6 +42,7 @@ export const InfoContent = ({ names }: Props) => {
   const handleLogOut = () => {
     sessionStorage.clear();
     dispatch(logout());
+    dispatch(setLoggedIn(false));
     dispatch(setLocationPath("/"));
   };
 

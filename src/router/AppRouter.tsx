@@ -10,7 +10,6 @@ import {
   DashboardAdmin,
   Home,
   Login,
-  MapView,
   NotAllowed,
   NotFound,
   Profile,
@@ -21,6 +20,7 @@ import {
 } from "../components/pages";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleProtectedRoute } from "./RoleProtectedRoute";
+import { GetLatLng } from "../components/pages/private/map/GetLatLng";
 
 export const AppRouter = () => {
   return (
@@ -51,7 +51,7 @@ export const AppRouter = () => {
         <Route key="services" path="/services" element={<SearchServices />} />
         <Route key="blog" path="/blog" element={<Blog />} />
         <Route key="chat" path="/chat" element={<ChatYCC />} />
-        <Route key="map" path="/map" element={<MapView />} />
+        <Route key="getGeoloc" path="/getLatLng" element={<GetLatLng />} />
       </Route>
       <Route element={<RoleProtectedRoute />}>
         <Route

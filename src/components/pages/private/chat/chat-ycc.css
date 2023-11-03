@@ -8,25 +8,25 @@
 }
 
 .cs-message--incoming .cs-message__content {
-  border: 1px solid #1a1a13;
+  /*border: 1px solid #1a1a13;*/
   background-color: #7c7c7b75;
   color: #1a1a13;
 }
 
 .cs-message.cs-message--incoming.cs-message--first .cs-message__content {
-  border: 1px solid #1a1a13;
+  /*border: 1px solid #1a1a13;*/
   background-color: #7c7c7b75;
   color: #1a1a13;
 }
 
 .cs-message--outgoing .cs-message__content {
-  border: 1px solid #1a1a13;
+  /*border: 1px solid #1a1a13;*/
   background-color: #fbd46775;
   color: #1a1a13;
 }
 
 .cs-message.cs-message--outgoing.cs-message--first .cs-message__content {
-  border: 1px solid #1a1a13;
+  /* border: 1px solid #1a1a13;*/
   background-color: #fbd46775;
   color: #1a1a13;
 }

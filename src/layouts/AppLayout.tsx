@@ -21,6 +21,7 @@ export const AppLayout = (/* { children }: { children: ReactNode } */) => {
   const onCollapse = () => {
     setCollapsed(!collapsed);
   };
+
   return (
     <Layout style={{ height: "100vh" }}>
       <Spin

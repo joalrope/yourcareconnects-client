@@ -5,8 +5,8 @@ import type { MenuProps } from "antd";
 import { useTranslation } from "react-i18next";
 
 import { IRoute, routes } from "../router/routes";
-import { InfoContent } from "./InfoContent";
 import { RootState } from "../store";
+import { InfoContent } from "./InfoContent";
 
 import "./app-layout.css";
 import { INav } from "./sider/SiderMenu";
@@ -37,13 +37,6 @@ export const HeaderContent = () => {
 
   const handleClick = ({ key }: INav) => {
     dispatch(setLocationPath(key));
-
-    if (key === "logout") {
-      // dispatch(startLogout());
-      // clearStore(dispatch);
-      //history.push("/home");
-      // dispatch(setCurrentPath("/home"));
-    }
   };
 
   return (

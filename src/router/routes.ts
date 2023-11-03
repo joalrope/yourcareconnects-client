@@ -58,14 +58,4 @@ export const routes: IRoute[] = [
     icon: "VideoCameraOutlined",
     element: Register,
   },
-  {
-    key: "register",
-    Pos: "sider",
-    path: "/profile",
-    type: "public",
-    name: "My Profile",
-    mode: "",
-    icon: "VideoCameraOutlined",
-    element: Register,
-  },
 ];

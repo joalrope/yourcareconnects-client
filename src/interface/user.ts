@@ -7,6 +7,11 @@ interface IPictures {
   profile: string;
 }
 
+interface ILatLng {
+  lat: number;
+  lng: number;
+}
+
 export interface IUser {
   id?: string | undefined;
   names?: string;
@@ -21,6 +26,7 @@ export interface IUser {
   isDeleted?: boolean;
   notifications?: number;
   address?: string;
+  latlng?: ILatLng;
   resetPassword?: IResetPassword;
   zipCode?: string;
   faxNumber?: string;

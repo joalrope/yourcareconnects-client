@@ -56,8 +56,8 @@ export const SiderMenu = () => {
       icon: <MessageOutlined />,
     },
     {
-      label: <Link to="/map">{t("Map")}</Link>,
-      path: "/map",
+      label: <Link to="/getLatLng">{t("Map")}</Link>,
+      path: "/getLatLng",
       key: "map",
       role: "customer",
       icon: <CompassOutlined />,
