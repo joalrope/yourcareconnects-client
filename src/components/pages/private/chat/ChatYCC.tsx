@@ -18,8 +18,8 @@ import {
   Search,
   Sidebar,
   TypingIndicator,
-  VideoCallButton,
-  VoiceCallButton,
+  //VideoCallButton,
+  //VoiceCallButton,
 } from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import "./chat-ycc.css";
@@ -33,13 +33,15 @@ import eliotIco from "/images/man.png";
 import zoeIco from "/images/woman.png";
 import patrikIco from "/images/man.png";
 
+const baseUrl = import.meta.env.VITE_URL_BASE;
+
 export const ChatYCC = () => {
   const { t } = useTranslation();
-
   const { id, token } = useSelector((state: RootState) => state.user);
+  const [messageInputValue, setMessageInputValue] = useState("");
 
   useEffect(() => {
-    const socket = io("http://localhost:5000");
+    const socket = io(baseUrl);
 
     if (!socket || !socket.connected) {
       socket.connect();
@@ -50,7 +52,17 @@ export const ChatYCC = () => {
     }
   }, [id, token]);
 
-  const [messageInputValue, setMessageInputValue] = useState("");
+  const handleOnChange = (val: string) => {
+    setMessageInputValue(val);
+  };
+
+  const handleOnSendMessage = (val: string) => {
+    console.log(val);
+  };
+
+  const handleOnAttachClick = () => {
+    console.log("attach");
+  };
 
   return (
     <div
@@ -145,9 +157,12 @@ export const ChatYCC = () => {
               info="Active 10 mins ago"
             />
             <ConversationHeader.Actions>
-              <VoiceCallButton />
-              <VideoCallButton />
-              <EllipsisButton orientation="vertical" />
+              {/*  <VoiceCallButton onClick={() => console.log("Voice Call")} />
+              <VideoCallButton onClick={() => console.log("Video Call")} /> */}
+              <EllipsisButton
+                onClick={() => console.log("Menu")}
+                orientation="horizontal"
+              />
             </ConversationHeader.Actions>
           </ConversationHeader>
           <MessageList
@@ -279,7 +294,9 @@ export const ChatYCC = () => {
           <MessageInput
             placeholder={`${t("Type message here")}`}
             value={messageInputValue}
-            onChange={(val) => setMessageInputValue(val)}
+            onChange={handleOnChange}
+            onSend={handleOnSendMessage}
+            onAttachClick={handleOnAttachClick}
           />
         </ChatContainer>
       </MainContainer>

@@ -1,4 +1,5 @@
 import { Card, Rate, Tooltip } from "antd";
+import { ILocation } from "./map/MapView";
 
 const { Meta } = Card;
 
@@ -7,16 +8,15 @@ const baseUrl = import.meta.env.VITE_URL_BASE;
 export interface IDataProvider {
   id: string;
   services: string[];
-  lastName: string;
-  names: string;
+  fullname?: string;
+  location?: ILocation;
   pictures: { profile: string };
   ratings: number;
 }
 
 export const ProviderCard = ({
   id,
-  lastName,
-  names,
+  fullname,
   services,
   pictures,
   ratings,
@@ -33,15 +33,9 @@ export const ProviderCard = ({
     <Card
       hoverable
       style={{ height: "400px", width: "100%" }}
-      cover={
-        <img
-          alt={`Picture of ${names} ${lastName}`}
-          src={picture}
-          height={240}
-        />
-      }
+      cover={<img alt={`Picture of ${fullname}`} src={picture} height={240} />}
     >
-      <Meta title={`${names} ${lastName}`} />
+      <Meta title={`${fullname}`} />
       <p style={{ marginTop: "8px" }}>
         <span>
           <b>{"Servicios: "}</b>

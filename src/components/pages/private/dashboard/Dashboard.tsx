@@ -75,7 +75,7 @@ export const Dashboard = () => {
           </Card>
         </Col>
       </Row>
-      {providerCard.length > 0 && (
+      {providerCard && providerCard.length > 0 && (
         <Row justify="space-around" style={{ paddingInline: gutter }}>
           <Card title={t("Favorite Services")} style={{ width: "100%" }}>
             <Row justify="space-around" style={{ width: "100%" }}>

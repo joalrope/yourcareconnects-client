@@ -8,6 +8,7 @@ import {
   ChatYCC,
   Dashboard,
   DashboardAdmin,
+  GetLatLng,
   Home,
   Login,
   NotAllowed,
@@ -17,10 +18,10 @@ import {
   ResetPassword,
   SearchServices,
   SelectCreateAccount,
+  ViewProviders,
 } from "../components/pages";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleProtectedRoute } from "./RoleProtectedRoute";
-import { GetLatLng } from "../components/pages/private/map/GetLatLng";
 
 export const AppRouter = () => {
   return (
@@ -52,6 +53,11 @@ export const AppRouter = () => {
         <Route key="blog" path="/blog" element={<Blog />} />
         <Route key="chat" path="/chat" element={<ChatYCC />} />
         <Route key="getGeoloc" path="/getLatLng" element={<GetLatLng />} />
+        <Route
+          key="viewProviders"
+          path="/viewProviders"
+          element={<ViewProviders />}
+        />
       </Route>
       <Route element={<RoleProtectedRoute />}>
         <Route

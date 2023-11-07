@@ -1,4 +1,12 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   GoogleMap,
   InfoWindow,
@@ -6,12 +14,17 @@ import {
   MarkerF,
   useLoadScript,
 } from "@react-google-maps/api";
-import { Modal, Typography } from "antd";
+import { Button, Modal, Typography } from "antd";
+import { useTranslation } from "react-i18next";
 import { content as modalContent } from "./content";
-import "./map.css";
-//import { ShortInfo } from "./ShortInfo";
-import styles from "./mapStyles.json";
 import { LongInfo } from "./LongInfo";
+import styles from "./mapStyles.json";
+import "./map.css";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store";
+import { IPictures } from "../../../interface/user";
+import { MarkersSort } from "../../../helpers/markers";
+
 const { Text } = Typography;
 
 const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
@@ -21,29 +34,32 @@ const mapStyles = {
   width: "100%",
 };
 
-interface ICenter {
+export interface ILocation {
   lat: number;
   lng: number;
 }
 
 export interface IMarker {
-  key: string;
-  position: ICenter;
-  title: string;
-  picture: string;
+  id: string;
+  location: ILocation;
+  fullname: string;
+  pictures: IPictures | undefined;
   services: string[];
   ratings: number;
 }
 
 interface Props {
-  getLoc?: (loc: ICenter) => object;
+  getLoc?: (loc: ILocation) => object;
+  goBack?: Dispatch<SetStateAction<boolean>>;
   markers?: IMarker[];
 }
 
-export const MapView = ({ getLoc, markers }: Props) => {
-  const [center, setCenter] = useState<ICenter>({ lat: 0, lng: 0 });
+export const MapView = ({ getLoc, goBack, markers }: Props) => {
+  const user = useSelector((state: RootState) => state.user);
+  const [center, setCenter] = useState<ILocation>({ lat: 0, lng: 0 });
   const [selectedMarker, setSelectedMarker] = useState<IMarker | null>(null);
   const libraries: Libraries = useMemo(() => ["places", "marker"], []);
+  const { t } = useTranslation();
 
   const { isLoaded } = useLoadScript({
     id: "google-map-script",
@@ -54,40 +70,36 @@ export const MapView = ({ getLoc, markers }: Props) => {
   const mapRef = useRef<google.maps.Map | null>(null);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      if (markers![0].title !== "Me") {
-        markers?.unshift({
-          key: "Me",
-          title: "Me",
-          picture: "/images/man.png",
-          position: {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          },
-          services: [],
-          ratings: 0,
-        });
-      }
+    const marker = markers?.some(
+      (marker) => marker?.fullname === user.fullname
+    );
 
-      setCenter({
-        lat: position.coords.latitude,
-        lng: position.coords.longitude,
-      });
+    setCenter({
+      lat: user.location.lat,
+      lng: user.location.lng,
     });
-  }, [markers]);
 
+    if (!marker) {
+      markers?.push(user as IMarker);
+    }
+  }, [markers, user]);
+
+  //calculate zoom so all markers fit on screen
   const onLoad = useCallback(
     (map: google.maps.Map) => {
-      const bounds = new window.google.maps.LatLngBounds(center);
+      if (markers) {
+        MarkersSort(markers);
 
-      markers?.forEach((marker) => {
-        bounds.extend(
-          new google.maps.LatLng(marker.position.lat, marker.position.lng)
-        );
-      });
+        const bounds = new window.google.maps.LatLngBounds(center);
 
-      map.fitBounds(bounds);
+        markers?.forEach((marker) => {
+          bounds.extend(
+            new google.maps.LatLng(marker.location.lat, marker.location.lng)
+          );
+        });
+
+        map.fitBounds(bounds);
+      }
 
       mapRef.current = map;
     },
@@ -102,7 +114,7 @@ export const MapView = ({ getLoc, markers }: Props) => {
     navigator.permissions.query({ name: "geolocation" }).then((result) => {
       if (result.state === "denied") {
         Modal.info({
-          title: "Please, activate Geolocalizacion permission",
+          title: t("Please, activate Geolocalizacion permission"),
           content: modalContent,
           width: "50%",
           okText: "Agreed",
@@ -113,7 +125,7 @@ export const MapView = ({ getLoc, markers }: Props) => {
         });
       }
     });
-  }, []);
+  }, [t]);
 
   const onDragEnd = (e: google.maps.MapMouseEvent) => {
     if (getLoc) {
@@ -125,12 +137,18 @@ export const MapView = ({ getLoc, markers }: Props) => {
   };
 
   const handleMarkerClick = (marker: IMarker) => {
-    if (marker.title === "Me") return;
+    if (marker.fullname === user.fullname) return;
     setSelectedMarker(marker);
   };
 
   const handleMapClick = () => {
     setSelectedMarker(null);
+  };
+
+  const handleReadyButtonClick = () => {
+    if (goBack) {
+      goBack(false);
+    }
   };
 
   return !isLoaded ? (
@@ -166,23 +184,17 @@ export const MapView = ({ getLoc, markers }: Props) => {
       {markers?.map((marker) => {
         return (
           <MarkerF
-            key={marker.title}
-            position={marker.position}
-            title={marker.title}
+            key={marker.fullname}
+            position={marker.location}
+            title={marker.fullname}
             onClick={() => handleMarkerClick(marker)}
           >
             <InfoWindow
-              position={marker.position}
+              position={marker.location}
               options={{
-                zIndex: selectedMarker?.key === marker.key ? 3 : 2,
+                zIndex: selectedMarker?.id === marker.id ? 3 : 2,
               }}
             >
-              {/*  {selectedMarker === null ? (
-                <ShortInfo
-                  marker={marker}
-                  handleMarkerClick={() => handleMarkerClick(marker)}
-                />
-              ) : ( */}
               <LongInfo
                 marker={marker}
                 selectedMarker={selectedMarker}
@@ -193,6 +205,16 @@ export const MapView = ({ getLoc, markers }: Props) => {
           </MarkerF>
         );
       })}
+
+      {getLoc && (
+        <Button
+          type="primary"
+          onClick={handleReadyButtonClick}
+          style={{ position: "absolute", top: "10px", left: "10px" }}
+        >
+          {t("Ready")}
+        </Button>
+      )}
     </GoogleMap>
   );
 };

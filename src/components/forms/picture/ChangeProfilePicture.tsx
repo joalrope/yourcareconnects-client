@@ -73,7 +73,7 @@ export const ChangeProfilePicture = () => {
   return (
     <>
       <Form
-        name="providerRegister"
+        name="providerPicture"
         form={form}
         labelCol={{
           span: 24,

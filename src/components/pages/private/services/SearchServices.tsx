@@ -8,6 +8,8 @@ import {
 } from "../../../ui-components/ProviderCard";
 import { useState } from "react";
 import { getServicesToSearch } from "../../../../helpers/services";
+import { MapView } from "../..";
+import { IMarker } from "../../../ui-components/map/MapView";
 
 const { Title } = Typography;
 
@@ -20,11 +22,12 @@ export const SearchServices = () => {
   const [providers, setProviders] = useState<IDataProvider[]>([]);
   const [areThereUsers, setAreThereUsers] = useState<boolean>(true);
   const [searchServices, setSearchServices] = useState<string | undefined>("");
+  const [viewMap, setViewMap] = useState<boolean>(false);
+
   const [form] = Form.useForm<Props>();
   const { t } = useTranslation();
 
   const onFinish = async (values: Props) => {
-    //
     setProviders([]);
 
     if (values.services.length === 1) {
@@ -58,7 +61,13 @@ export const SearchServices = () => {
     console.log("Failed:", errorInfo);
   };
 
-  return (
+  const HandleViewOnMap = () => {
+    setViewMap(true);
+  };
+
+  return viewMap ? (
+    <MapView markers={providers as IMarker[]} goBack={HandleViewOnMap} />
+  ) : (
     <>
       <Row
         align={"middle"}
@@ -115,10 +124,19 @@ export const SearchServices = () => {
                 <Button
                   type="primary"
                   htmlType="submit"
-                  style={{ marginTop: 32, width: 200 }}
+                  style={{ marginRight: 8, marginTop: 32, width: 200 }}
                 >
                   {t("Search")}
                 </Button>
+                {searchServices && (
+                  <Button
+                    type="primary"
+                    onClick={HandleViewOnMap}
+                    style={{ marginLeft: 8, marginTop: 32, width: 200 }}
+                  >
+                    {t("View on Map")}
+                  </Button>
+                )}
               </Col>
               {searchServices && (
                 <Col style={{ paddingTop: 32 }}>
@@ -152,11 +170,23 @@ export const SearchServices = () => {
             {t("There are no providers that provide the requested service")}
           </h3>
         ) : (
-          providers.map((provider: IDataProvider) => (
-            <Col key={provider.id} xs={24} sm={12} md={8} lg={6} xl={6} xxl={4}>
-              <ProviderCard {...provider} />
-            </Col>
-          ))
+          providers.map((provider: IDataProvider) => {
+            console.log({ provider });
+
+            return (
+              <Col
+                key={provider.id}
+                xs={24}
+                sm={12}
+                md={8}
+                lg={6}
+                xl={6}
+                xxl={4}
+              >
+                <ProviderCard {...provider} />
+              </Col>
+            );
+          })
         )}
       </Row>
     </>

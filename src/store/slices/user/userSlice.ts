@@ -15,8 +15,8 @@ const initialState: IUser = {
   faxNumber: "",
   id: "",
   isLoggedIn,
-  latlng: { lat: 0, lng: 0 },
   lastName: "",
+  location: { lat: 0, lng: 0 },
   names: "",
   notifications: 0,
   owner: "",
@@ -43,9 +43,10 @@ export const userSlice = createSlice({
         company,
         email,
         faxNumber,
+        fullname,
         id,
         lastName,
-        latlng,
+        location,
         names,
         notifications,
         owner,
@@ -66,9 +67,10 @@ export const userSlice = createSlice({
       state.company = company;
       state.email = email;
       state.faxNumber = faxNumber;
+      state.fullname = fullname;
       state.id = id;
       state.lastName = lastName;
-      state.latlng = latlng;
+      state.location = location;
       state.names = names;
       state.notifications = notifications;
       state.owner = owner;
@@ -91,8 +93,8 @@ export const userSlice = createSlice({
     setRole: (state, { payload }) => {
       state.role = payload;
     },
-    setLatLng: (state, { payload }) => {
-      state.latlng = payload;
+    setLocation: (state, { payload }) => {
+      state.location = payload;
     },
     setProfilePicture: (state, { payload }) => {
       state.pictures = payload;
@@ -130,7 +132,7 @@ export const {
   logout,
   setClearUser,
   setRole,
-  setLatLng,
+  setLocation: setLatLng,
   setToken,
   setProfilePicture,
 } = userSlice.actions;

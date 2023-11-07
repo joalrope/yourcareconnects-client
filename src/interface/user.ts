@@ -3,11 +3,11 @@ interface IResetPassword {
   expires: number;
 }
 
-interface IPictures {
+export interface IPictures {
   profile: string;
 }
 
-interface ILatLng {
+interface Ilocation {
   lat: number;
   lng: number;
 }
@@ -16,6 +16,7 @@ export interface IUser {
   id?: string | undefined;
   names?: string;
   lastName?: string;
+  fullname?: string;
   email?: string;
   password?: string;
   phoneNumber?: string;
@@ -26,7 +27,7 @@ export interface IUser {
   isDeleted?: boolean;
   notifications?: number;
   address?: string;
-  latlng?: ILatLng;
+  location: Ilocation;
   resetPassword?: IResetPassword;
   zipCode?: string;
   faxNumber?: string;

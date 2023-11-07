@@ -21,8 +21,11 @@ import { useNavigate } from "react-router-dom";
 import { getModalities } from "../../../../services";
 import { setUser } from "../../../../store/slices";
 import { setLocationPath } from "../../../../store/slices/router/routerSlice";
+2;
 import { ChangeProfilePicture } from "../../picture/ChangeProfilePicture";
 import { IModality, IProvider } from "./interfaces";
+import { MapView } from "../../../pages";
+import { FormItemInput } from "../../../ui-components/FormItemInput";
 
 const { Title } = Typography;
 
@@ -36,6 +39,7 @@ export const ProviderForm = () => {
   const dispatch = useDispatch();
 
   const [modalities, setModalities] = useState<IModality[]>([]);
+  const [viewMap, setViewMap] = useState<boolean>(false);
 
   const uploadDocs: UploadProps = {
     onChange({ file, fileList }) {
@@ -103,14 +107,20 @@ export const ProviderForm = () => {
   };
 
   const HandleGeoloc = () => {
-    navigate("/getLatLng");
-
-    console.log("navegó a getLatLng");
+    setViewMap(true);
   };
 
-  return (
+  const getLoc = (loc: { lat: number; lng: number }) => {
+    console.log({ loc });
+    form.setFieldValue("location", loc);
+    return loc;
+  };
+
+  return viewMap ? (
+    <MapView getLoc={getLoc} goBack={setViewMap} />
+  ) : (
     <Row justify={"center"} style={{ width: "100%" }}>
-      <Col>
+      <Col xs={24} sm={24} lg={16}>
         <Row style={{ display: "flex", flexDirection: "column" }}>
           <Title level={3} style={{ margin: "25px 0px" }}>
             {t(`${role?.charAt(0).toUpperCase()}${role?.slice(1)} profile`)}
@@ -179,76 +189,25 @@ export const ProviderForm = () => {
               <Row gutter={16}>
                 <Col xs={24} sm={24} md={16} lg={16}>
                   {role !== "customer" && (
-                    <Form.Item
-                      label={t("Company Name")}
-                      name="company"
-                      rules={[
-                        {
-                          required: false,
-                          message: `${t("Please input your company name")}`,
-                        },
-                      ]}
-                      style={{
-                        width: "100%",
-                        marginBottom: "6px",
-                      }}
-                    >
-                      <Input
-                        placeholder={`${t("Company Name").toLowerCase()}`}
-                      />
-                    </Form.Item>
+                    <FormItemInput name="company" label="Company Name" />
                   )}
                 </Col>
 
                 <Col xs={24} sm={24} md={8} lg={8}>
                   {role !== "customer" && (
-                    <Form.Item
-                      label={t("Owner's name")}
-                      name="owner"
-                      rules={[
-                        {
-                          required: false,
-                          message: `${t("Please input Owner's name")}`,
-                        },
-                      ]}
-                      style={{
-                        width: "100%",
-                        marginBottom: "6px",
-                      }}
-                    >
-                      <Input
-                        placeholder={`${t("Owner's name").toLowerCase()}`}
-                      />
-                    </Form.Item>
+                    <FormItemInput name="owner" label="Owner's name" />
                   )}
                 </Col>
               </Row>
 
               <Row gutter={16}>
                 <Col xs={24} sm={24} md={18} lg={18}>
-                  <Form.Item
-                    label={t("Physical address")}
-                    name="address"
-                    rules={[
-                      {
-                        required: false,
-                        message: `${t("Please input your physical address")}`,
-                      },
-                    ]}
-                    style={{
-                      width: "100%",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <Input
-                      placeholder={`${t("Physical address").toLowerCase()}`}
-                    />
-                  </Form.Item>
+                  <FormItemInput name="address" label="Physical address" />
                 </Col>
                 <Col xs={24} sm={24} md={6} lg={6}>
                   <Form.Item
                     label={t("GeoLoc address")}
-                    name="geoAddress"
+                    name="location"
                     style={{
                       width: "100%",
                       marginBottom: "6px",
@@ -267,54 +226,18 @@ export const ProviderForm = () => {
 
               <Row gutter={16}>
                 <Col xs={24} sm={24} md={8} lg={8}>
-                  <Form.Item
-                    label={t("Zip code")}
-                    name="zipCode"
-                    style={{
-                      width: "100%",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <Input placeholder={`${t("Zip code").toLowerCase()}`} />
-                  </Form.Item>
+                  <FormItemInput name="zipCode" label="Zip code" />
                 </Col>
                 <Col xs={24} sm={24} md={8} lg={8}>
-                  <Form.Item
-                    label={t("Phone number")}
-                    name="phoneNumber"
-                    style={{
-                      width: "100%",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <Input placeholder={`${t("Phone number").toLowerCase()}`} />
-                  </Form.Item>
+                  <FormItemInput name="phoneNumber" label="Phone number" />
                 </Col>
                 <Col xs={24} sm={24} md={8} lg={8}>
-                  <Form.Item
-                    label={t("Fax number")}
-                    name="faxNumber"
-                    style={{
-                      width: "100%",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <Input placeholder={`${t("Fax number").toLowerCase()}`} />
-                  </Form.Item>
+                  <FormItemInput name="faxNumber" label="Fax number" />
                 </Col>
               </Row>
 
               {role !== "customer" && (
-                <Form.Item
-                  label={t("Web Page")}
-                  name="webUrl"
-                  style={{
-                    width: "100%",
-                    marginBottom: "6px",
-                  }}
-                >
-                  <Input placeholder={`${t("Web Page").toLowerCase()}`} />
-                </Form.Item>
+                <FormItemInput name="webUrl" label="Web Page" />
               )}
 
               {role !== "customer" && (
@@ -347,7 +270,6 @@ export const ProviderForm = () => {
                   <Select
                     mode="tags"
                     style={{ width: "100%" }}
-                    // onChange={handleChange}
                     tokenSeparators={[","]}
                     options={modalities}
                     placeholder={`${t("Service modality").toLowerCase()}`}
