@@ -16,7 +16,6 @@ export const RoleProtectedRoute = ({ children }: Props) => {
     location.pathname === "/admin/dashboard" &&
     role !== "admin"
   ) {
-    console.log(location.pathname);
     return <Navigate to={"/notAllowed"} />;
   }
 

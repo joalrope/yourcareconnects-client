@@ -1,8 +1,8 @@
 import { Col, Image, Rate, Row, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { IMarker } from "./MapView";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../store";
+//import { useSelector } from "react-redux";
+//import { RootState } from "../../../store";
 
 const { Text } = Typography;
 
@@ -19,7 +19,7 @@ export const LongInfo = ({
   selectedMarker,
   handleMarkerClick,
 }: Props) => {
-  const user = useSelector((state: RootState) => state.user);
+  //const user = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
 
   const isLong = selectedMarker?.id === marker.id;
@@ -86,7 +86,9 @@ export const LongInfo = ({
               userSelect: "none",
             }}
           >
-            {marker.fullname !== user.fullname ? marker.fullname : t("Me")}
+            {
+              /* marker.fullname !== user.fullname ?  */ marker.fullname /* : t("Me") */
+            }
           </Text>
         </Col>
       </Row>

@@ -111,7 +111,6 @@ export const ProviderForm = () => {
   };
 
   const getLoc = (loc: { lat: number; lng: number }) => {
-    console.log({ loc });
     form.setFieldValue("location", loc);
     return loc;
   };

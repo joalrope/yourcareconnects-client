@@ -171,8 +171,6 @@ export const SearchServices = () => {
           </h3>
         ) : (
           providers.map((provider: IDataProvider) => {
-            console.log({ provider });
-
             return (
               <Col
                 key={provider.id}
