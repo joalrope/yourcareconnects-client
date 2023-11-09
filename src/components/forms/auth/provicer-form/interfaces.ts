@@ -1,6 +1,7 @@
 export interface IProvider {
   id: string;
   company: string;
+  contacts: string[];
   owner: string;
   address: string;
   zipCode: string;

@@ -206,7 +206,7 @@ export const MapView = ({ getLoc, goBack, markers }: Props) => {
         );
       })}
 
-      {getLoc && (
+      {
         <Button
           type="primary"
           onClick={handleReadyButtonClick}
@@ -214,7 +214,7 @@ export const MapView = ({ getLoc, goBack, markers }: Props) => {
         >
           {t("Ready")}
         </Button>
-      )}
+      }
     </GoogleMap>
   );
 };

@@ -9,9 +9,9 @@ import enUS from "antd/locale/en_US";
 import esES from "antd/locale/es_ES";
 import "antd/dist/reset.css";
 import "./index.css";
-import { getUserById } from "./services/userService";
 import { AppLayout } from "./layouts/AppLayout";
 import { BrowserRouter } from "react-router-dom";
+import { getUserById } from "./services";
 
 function App() {
   const dispatch = useDispatch();

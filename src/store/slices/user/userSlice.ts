@@ -11,6 +11,7 @@ const initialState: IUser = {
   balance: 0.1,
   biography: "",
   company: "",
+  contacts: [],
   email: "",
   faxNumber: "",
   id: "",
@@ -41,6 +42,7 @@ export const userSlice = createSlice({
         balance,
         biography,
         company,
+        contacts,
         email,
         faxNumber,
         fullname,
@@ -65,6 +67,7 @@ export const userSlice = createSlice({
       state.balance = balance;
       state.biography = biography;
       state.company = company;
+      state.contacts = contacts;
       state.email = email;
       state.faxNumber = faxNumber;
       state.fullname = fullname;
@@ -105,6 +108,7 @@ export const userSlice = createSlice({
       state.balance = 0.1;
       state.biography = "";
       state.company = "";
+      state.contacts = [];
       state.email = "";
       state.faxNumber = "";
       state.id = "";

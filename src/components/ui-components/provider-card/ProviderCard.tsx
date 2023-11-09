@@ -1,5 +1,8 @@
 import { Card, Rate, Tooltip } from "antd";
-import { ILocation } from "./map/MapView";
+
+import { ILocation } from "../map/MapView";
+import { UserTitle } from "./UserTitle";
+import { useTranslation } from "react-i18next";
 
 const { Meta } = Card;
 
@@ -23,8 +26,12 @@ export const ProviderCard = ({
 }: IDataProvider) => {
   const { profile } = pictures;
   const picture = `${baseUrl}/images/${id}/${profile}`;
-  const serv = services.map((service) => {
-    return service.split("|").pop();
+  const { t } = useTranslation();
+
+  const serv: string[] = [];
+
+  services.map((service) => {
+    serv.push(t(service.split("|").pop() as string));
   });
 
   const userServ = serv.join(", ");
@@ -32,13 +39,13 @@ export const ProviderCard = ({
   return (
     <Card
       hoverable
-      style={{ height: "400px", width: "100%" }}
+      style={{ height: "420px", width: "100%" }}
       cover={<img alt={`Picture of ${fullname}`} src={picture} height={240} />}
     >
-      <Meta title={`${fullname}`} />
+      <Meta title={<UserTitle fullname={fullname} id={id} />} />
       <p style={{ marginTop: "8px" }}>
         <span>
-          <b>{"Servicios: "}</b>
+          <b>{t("Services")}: </b>
           <Tooltip placement="top" title={userServ}>
             <span
               style={{

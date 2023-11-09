@@ -5,10 +5,9 @@ import {
   Blog,
   ChangePasword,
   ChangeProfilePicture,
-  ChatYCC,
+  ChatView,
   Dashboard,
   DashboardAdmin,
-  GetLatLng,
   Home,
   Login,
   NotAllowed,
@@ -18,7 +17,6 @@ import {
   ResetPassword,
   SearchServices,
   SelectCreateAccount,
-  ViewProviders,
 } from "../components/pages";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleProtectedRoute } from "./RoleProtectedRoute";
@@ -51,13 +49,7 @@ export const AppRouter = () => {
         <Route key="dashboard" path="/dashboard" element={<Dashboard />} />
         <Route key="services" path="/services" element={<SearchServices />} />
         <Route key="blog" path="/blog" element={<Blog />} />
-        <Route key="chat" path="/chat" element={<ChatYCC />} />
-        <Route key="getGeoloc" path="/getLatLng" element={<GetLatLng />} />
-        <Route
-          key="viewProviders"
-          path="/viewProviders"
-          element={<ViewProviders />}
-        />
+        <Route key="chat" path="/chat" element={<ChatView />} />
       </Route>
       <Route element={<RoleProtectedRoute />}>
         <Route

@@ -6,4 +6,9 @@ export {
   getModalities,
   updateModality,
 } from "./modalityService";
-export { getUserById } from "./userService";
+export {
+  getUserById,
+  getUserByServices,
+  updateUserById,
+  updateUserContactsById,
+} from "./userService";

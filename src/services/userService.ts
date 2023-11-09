@@ -27,3 +27,12 @@ export const updateUserById = async (
 
   return result;
 };
+
+export const updateUserContactsById = async (
+  id: string | undefined,
+  contact: { contact: string }
+) => {
+  const result = await fetchWithToken(`/users/contacts/${id}`, contact, "PUT");
+
+  return result;
+};

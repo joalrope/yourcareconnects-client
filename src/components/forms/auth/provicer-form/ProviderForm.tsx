@@ -14,11 +14,10 @@ import type { UploadProps } from "antd/es/upload/interface";
 import { UploadOutlined } from "@ant-design/icons";
 import { CategorySelect } from "../../../ui-components/category-select/CategorySelect";
 import { SetStateAction, useEffect, useState } from "react";
-import { updateUserById } from "../../../../services/userService";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { useNavigate } from "react-router-dom";
-import { getModalities } from "../../../../services";
+import { getModalities, updateUserById } from "../../../../services";
 import { setUser } from "../../../../store/slices";
 import { setLocationPath } from "../../../../store/slices/router/routerSlice";
 2;
@@ -217,7 +216,7 @@ export const ProviderForm = () => {
                       onClick={HandleGeoloc}
                       style={{ width: "100%" }}
                     >
-                      Get Geoloc
+                      {t("Get location")}
                     </Button>
                   </Form.Item>
                 </Col>

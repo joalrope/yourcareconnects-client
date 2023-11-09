@@ -1,15 +1,15 @@
 import { Button, Col, Form, Row, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { CategorySelect } from "../../../ui-components/category-select/CategorySelect";
-import { getUserByServices } from "../../../../services/userService";
 import {
   IDataProvider,
   ProviderCard,
-} from "../../../ui-components/ProviderCard";
+} from "../../../ui-components/provider-card/ProviderCard";
 import { useState } from "react";
 import { getServicesToSearch } from "../../../../helpers/services";
 import { MapView } from "../..";
 import { IMarker } from "../../../ui-components/map/MapView";
+import { getUserByServices } from "../../../../services";
 
 const { Title } = Typography;
 
@@ -66,7 +66,7 @@ export const SearchServices = () => {
   };
 
   return viewMap ? (
-    <MapView markers={providers as IMarker[]} goBack={HandleViewOnMap} />
+    <MapView markers={providers as IMarker[]} goBack={setViewMap} />
   ) : (
     <>
       <Row
@@ -144,7 +144,7 @@ export const SearchServices = () => {
                     {t("Looking for providers that provide the service of:")}
                     <u>
                       {" "}
-                      <b style={{ color: "blue" }}> {t(`${searchServices}`)}</b>
+                      <b style={{ color: "blue" }}> {searchServices}</b>
                     </u>
                   </h3>
                 </Col>
@@ -176,10 +176,10 @@ export const SearchServices = () => {
                 key={provider.id}
                 xs={24}
                 sm={12}
-                md={8}
+                md={6}
                 lg={6}
                 xl={6}
-                xxl={4}
+                xxl={6}
               >
                 <ProviderCard {...provider} />
               </Col>

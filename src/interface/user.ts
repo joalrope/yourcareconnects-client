@@ -33,6 +33,7 @@ export interface IUser {
   faxNumber?: string;
   pictures?: IPictures;
   company?: string;
+  contacts?: string[];
   owner?: string;
   webUrl?: string;
   ratings?: number;

@@ -1,8 +1,14 @@
-import { useEffect, useState } from "react";
-import io from "socket.io-client";
-import { useSelector } from "react-redux";
+import { useEffect, useRef, useState } from "react";
+import io, { Socket } from "socket.io-client";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { RootState } from "../../../../store";
+import { RootState } from "../../../store";
+import {
+  setReceiver,
+  setRoom,
+  setSender,
+  setSocketId,
+} from "../../../store/slices";
 import {
   Avatar,
   ChatContainer,
@@ -22,7 +28,7 @@ import {
   //VoiceCallButton,
 } from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
-import "./chat-ycc.css";
+import "./chat.css";
 
 import lillyIco from "/images/woman.png";
 import joeIco from "/images/man.png";
@@ -32,37 +38,82 @@ import akaneIco from "/images/man.png";
 import eliotIco from "/images/man.png";
 import zoeIco from "/images/woman.png";
 import patrikIco from "/images/man.png";
+import { DefaultEventsMap } from "@socket.io/component-emitter";
+import EmojiPicker, {
+  EmojiClickData,
+  EmojiStyle,
+  SkinTones,
+  Theme,
+  //Categories,
+  //EmojiClickData,
+  //Emoji,
+  //SuggestionMode,
+  //SkinTonePickerLocation,
+} from "emoji-picker-react";
 
 const baseUrl = import.meta.env.VITE_URL_BASE;
 
-export const ChatYCC = () => {
+export const ChatView = () => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { id, token } = useSelector((state: RootState) => state.user);
+  const { id } = useSelector((state: RootState) => state.user);
+  const { socketId, sender } = useSelector((state: RootState) => state.chat);
+
   const [messageInputValue, setMessageInputValue] = useState("");
+  //const [room, setRoom] = useState<string | undefined>("");
+  //const [receiver, setReceiver] = useState<string | undefined>("");
 
   useEffect(() => {
-    const socket = io(baseUrl);
+    dispatch(setSender(id));
+  }, [dispatch, id]);
 
-    if (!socket || !socket.connected) {
-      socket.connect();
-      socket.emit("joinRoom", {
-        socketId: socket.id,
-        socketConected: socket.connected,
+  const socketRef = useRef<Socket<DefaultEventsMap, DefaultEventsMap>>();
+
+  useEffect(() => {
+    if (sender && !socketId) {
+      socketRef.current = io(baseUrl);
+      socketRef.current.on("connect", () => {
+        dispatch(setSocketId(socketRef.current?.id));
+      });
+
+      socketRef.current.on("disconnect", () => {
+        // Reconnect to the server if it was due to a page reload
+        socketRef.current?.connect();
+      });
+
+      socketRef.current?.emit("joinRoom", {
+        socketId,
+        sender,
       });
     }
-  }, [id, token]);
+  }, [dispatch, sender, socketId]);
 
   const handleOnChange = (val: string) => {
     setMessageInputValue(val);
   };
 
   const handleOnSendMessage = (val: string) => {
-    console.log(val);
+    socketRef.current?.emit("sendMessage", {
+      sender,
+      receiver: "Lilly",
+      message: val,
+      time: new Date(),
+    });
+
+    setMessageInputValue("");
   };
 
   const handleOnAttachClick = () => {
     console.log("attach");
   };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function onEmojiClick(emojiData: EmojiClickData, _event: MouseEvent) {
+    setMessageInputValue(
+      (inputValue) =>
+        inputValue + (emojiData.isCustom ? emojiData.unified : emojiData.emoji)
+    );
+  }
 
   return (
     <div
@@ -84,6 +135,10 @@ export const ChatYCC = () => {
               name="Lilly"
               lastSenderName="Lilly"
               info="Yes i can do it for you"
+              onClick={() => {
+                dispatch(setReceiver("Lilly"));
+                dispatch(setRoom("Lilly"));
+              }}
             >
               <Avatar src={lillyIco} name="Lilly" status="available" />
             </Conversation>
@@ -300,6 +355,16 @@ export const ChatYCC = () => {
           />
         </ChatContainer>
       </MainContainer>
+      <div style={{ position: "absolute", bottom: 50, right: 50, zIndex: 2 }}>
+        <EmojiPicker
+          onEmojiClick={onEmojiClick}
+          autoFocusSearch={false}
+          emojiStyle={EmojiStyle.FACEBOOK}
+          theme={Theme.LIGHT}
+          defaultSkinTone={SkinTones.MEDIUM}
+          searchDisabled
+        />
+      </div>
     </div>
   );
 };
