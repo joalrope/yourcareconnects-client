@@ -9,7 +9,11 @@ export const Home = () => {
   const { t } = useTranslation();
 
   return (
-    <Row align={"middle"} justify={"center"} style={{ height: "100%" }}>
+    <Row
+      align={"middle"}
+      justify={"center"}
+      style={{ height: "100%", padding: 24 }}
+    >
       <Col
         style={{
           display: "flex",

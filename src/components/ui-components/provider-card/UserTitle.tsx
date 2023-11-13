@@ -16,14 +16,16 @@ export const UserTitle = ({
   id: string;
 }) => {
   const { message } = App.useApp();
-  const { id: userId } = useSelector((state: RootState) => state.user);
+  const { id: userId, contacts } = useSelector(
+    (state: RootState) => state.user
+  );
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const handleAddContact = async (id: string) => {
     const {
       ok,
-      result: { email },
+      result: { fullname },
     } = await getUserById(id);
 
     if (ok) {
@@ -31,13 +33,11 @@ export const UserTitle = ({
         ok,
         msg,
         result: { user },
-      } = await updateUserContactsById(userId, {
-        contact: email,
-      });
+      } = await updateUserContactsById(userId, id);
 
       if (ok) {
         message.success({
-          content: [<b>{email}</b>, t("was added to your contact list")],
+          content: [<b>{fullname}</b>, t("was added to your contact list")],
           duration: 4,
         });
         dispatch(setUser(user));
@@ -72,15 +72,17 @@ export const UserTitle = ({
           </Title>
         </Tooltip>
       </Col>
-      <Col xs={5}>
-        <Tooltip placement="top" title={t("Add contact")}>
-          <Button
-            icon={<UserAddOutlined />}
-            type="primary"
-            onClick={() => handleAddContact(id)}
-          />
-        </Tooltip>
-      </Col>
+      {!contacts?.includes(id) && (
+        <Col xs={5}>
+          <Tooltip placement="top" title={t("Add contact")}>
+            <Button
+              icon={<UserAddOutlined />}
+              type="primary"
+              onClick={() => handleAddContact(id)}
+            />
+          </Tooltip>
+        </Col>
+      )}
     </Row>
   );
 };

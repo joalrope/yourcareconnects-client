@@ -5,11 +5,13 @@ import {
   IDataProvider,
   ProviderCard,
 } from "../../../ui-components/provider-card/ProviderCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getServicesToSearch } from "../../../../helpers/services";
 import { MapView } from "../..";
 import { IMarker } from "../../../ui-components/map/MapView";
 import { getUserByServices } from "../../../../services";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../store";
 
 const { Title } = Typography;
 
@@ -22,13 +24,16 @@ export const SearchServices = () => {
   const [providers, setProviders] = useState<IDataProvider[]>([]);
   const [areThereUsers, setAreThereUsers] = useState<boolean>(true);
   const [searchServices, setSearchServices] = useState<string | undefined>("");
+  const [selSrvices, setSelSrvices] = useState<string[]>([]);
   const [viewMap, setViewMap] = useState<boolean>(false);
 
   const [form] = Form.useForm<Props>();
+  const { language } = useSelector((state: RootState) => state.i18n);
   const { t } = useTranslation();
 
   const onFinish = async (values: Props) => {
     setProviders([]);
+    setSelSrvices(values.services);
 
     if (values.services.length === 1) {
       values.services.push("");
@@ -39,10 +44,6 @@ export const SearchServices = () => {
       msg,
       result: { users },
     } = await getUserByServices(values.services);
-
-    const valuesToSearch = getServicesToSearch(values.services);
-
-    setSearchServices(valuesToSearch);
 
     if (!ok) {
       console.log(msg);
@@ -65,6 +66,17 @@ export const SearchServices = () => {
     setViewMap(true);
   };
 
+  useEffect(() => {
+    const valuesToSearch = getServicesToSearch(selSrvices)
+      .split(",")
+      .map((service) => {
+        return t(service.trim());
+      })
+      .join(", ");
+
+    setSearchServices(valuesToSearch);
+  }, [selSrvices, language, t]);
+
   return viewMap ? (
     <MapView markers={providers as IMarker[]} goBack={setViewMap} />
   ) : (
@@ -72,7 +84,12 @@ export const SearchServices = () => {
       <Row
         align={"middle"}
         justify={"center"}
-        style={{ display: "flex", flexDirection: "column", marginTop: "5%" }}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          marginTop: "5%",
+          padding: 24,
+        }}
       >
         <Col xs={24} md={16} lg={12}>
           <Title level={3}>{t("Search Services")}</Title>

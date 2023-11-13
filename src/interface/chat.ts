@@ -1,23 +1,39 @@
-interface IContact {
-  id: string;
-  name: string;
+export interface ISender {
+  socketId: string;
   nickname: string;
 }
 
-interface IMessage {
-  sender: string;
-  receiver: string;
+export interface IReceiver {
+  id: string;
+  socketId: string;
+  fullname: string;
+  nickname: string;
+  picture: string;
+  info: string;
+}
+
+export interface IMessage {
+  senderId: string;
+  receiverId: string;
   type: string;
-  payload: object;
-  sentTime: Date;
+  content: object;
+  sentTime: string;
+  readTime: string;
+  direction: string;
+  position: string;
+}
+
+export interface IConversation {
+  id: string;
+  name: string;
+  picture: string;
+  info: string;
 }
 
 export interface IChat {
-  socketId: string;
-  sender: string;
-  receiver: string;
-  message: string;
+  sender: ISender;
+  receiver: IReceiver;
   room: string;
-  contacts: IContact[];
+  conversations: IConversation[];
   messages: IMessage[];
 }

@@ -1,3 +1,7 @@
+.EmojiPickerReact {
+  --epr-bg-color: #1a1a13 !important;
+}
+
 .cs-message-list {
   background-color: #ffffff;
 }
@@ -29,6 +33,14 @@
   /* border: 1px solid #1a1a13;*/
   background-color: #fbd46775;
   color: #1a1a13;
+}
+
+.cs-conversation:hover {
+  background-color: #7c7c7b75;
+}
+
+.cs-conversation.cs-conversation:active {
+  background-color: #fbd467;
 }
 
 .cs-conversation-header {

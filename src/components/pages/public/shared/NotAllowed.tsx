@@ -19,6 +19,7 @@ export const NotAllowed = () => {
         position: "relative",
         backgroundColor: "white",
         height: "100%",
+        padding: 24,
         top: -20,
       }}
     >

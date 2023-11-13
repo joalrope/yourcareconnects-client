@@ -1,2 +1,8 @@
 export type { IUser } from "./user";
-export type { IChat } from "./chat";
+export type {
+  IChat,
+  IConversation,
+  IMessage,
+  IReceiver,
+  ISender,
+} from "./chat";

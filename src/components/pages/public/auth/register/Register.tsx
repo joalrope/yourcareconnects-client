@@ -1,12 +1,13 @@
+import { Col, Row } from "antd";
 import { RegisterForm } from "../../../../forms/auth/RegisterForm";
 import "./register.css";
 
 export const Register = () => {
   return (
-    <div className="--register__container">
-      <div className="--register__form">
+    <Row>
+      <Col style={{ margin: "auto", padding: 24, maxWidth: 500 }}>
         <RegisterForm />
-      </div>
-    </div>
+      </Col>
+    </Row>
   );
 };

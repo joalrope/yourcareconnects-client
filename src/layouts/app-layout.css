@@ -27,12 +27,12 @@
   line-height: 30px;
 }
 
-.ant-menu-overflow {
+/* .ant-menu-overflow {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   margin-top: 15px;
-}
+} */
 
 .--footer__avatar {
   margin-right: 10px;

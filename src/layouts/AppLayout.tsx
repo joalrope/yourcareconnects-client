@@ -52,9 +52,7 @@ export const AppLayout = (/* { children }: { children: ReactNode } */) => {
           style={{
             height: hScreen,
             maxWidth: "100vw",
-            overflowY: "scroll",
             overflowX: "hidden",
-            padding: 24,
           }}
         >
           <AppRouter />
