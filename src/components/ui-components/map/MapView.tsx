@@ -16,7 +16,6 @@ import {
 } from "@react-google-maps/api";
 import { Button, Modal, Typography } from "antd";
 import { useTranslation } from "react-i18next";
-import { content as modalContent } from "./content";
 import { LongInfo } from "./LongInfo";
 import styles from "./mapStyles.json";
 import "./map.css";
@@ -24,13 +23,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store";
 import { IPictures } from "../../../interface/user";
 import { MarkersSort } from "../../../helpers/markers";
+import { useContent } from "../../../hooks/useContent";
 
 const { Text } = Typography;
 
 const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 const mapStyles = {
-  height: "78.5vh",
+  height: "86.5vh",
   width: "100%",
 };
 
@@ -60,6 +60,7 @@ export const MapView = ({ getLoc, goBack, markers }: Props) => {
   const [selectedMarker, setSelectedMarker] = useState<IMarker | null>(null);
   const libraries: Libraries = useMemo(() => ["places", "marker"], []);
   const { t } = useTranslation();
+  const content = useContent();
 
   const { isLoaded } = useLoadScript({
     id: "google-map-script",
@@ -114,18 +115,20 @@ export const MapView = ({ getLoc, goBack, markers }: Props) => {
     navigator.permissions.query({ name: "geolocation" }).then((result) => {
       if (result.state === "denied") {
         Modal.info({
-          title: t("Please, activate Geolocalizacion permission"),
-          content: modalContent,
+          title: t("Please activate Geolocation permission"),
+          content: content,
           width: "50%",
-          okText: "Agreed",
+          okText: t("Agreed"),
           autoFocusButton: "ok",
           onOk() {
-            console.log("Ok Modal Info");
+            if (goBack) {
+              goBack(false);
+            }
           },
         });
       }
     });
-  }, [t]);
+  }, [content, goBack, t]);
 
   const onDragEnd = (e: google.maps.MapMouseEvent) => {
     if (getLoc) {

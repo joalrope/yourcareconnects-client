@@ -1,15 +1,15 @@
 export interface ISender {
-  socketId: string;
   nickname: string;
+  socketId: string;
 }
 
 export interface IReceiver {
   id: string;
-  socketId: string;
-  fullname: string;
+  info: string;
+  names: string;
   nickname: string;
   picture: string;
-  info: string;
+  socketId: string;
 }
 
 export interface IMessage {
@@ -25,15 +25,24 @@ export interface IMessage {
 
 export interface IConversation {
   id: string;
-  name: string;
+  names: string;
   picture: string;
   info: string;
+  socketId: string;
+}
+
+export interface IConnectedUsers {
+  [key: string]: {
+    names: string;
+    socketId: string;
+  };
 }
 
 export interface IChat {
+  conversations: IConversation[];
+  connectedUsers: IConnectedUsers;
   sender: ISender;
   receiver: IReceiver;
   room: string;
-  conversations: IConversation[];
   messages: IMessage[];
 }

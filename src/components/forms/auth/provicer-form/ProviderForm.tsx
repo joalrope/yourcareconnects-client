@@ -4,6 +4,7 @@ import {
   Col,
   Form,
   Input,
+  Modal,
   Row,
   Select,
   Typography,
@@ -25,6 +26,7 @@ import { ChangeProfilePicture } from "../../picture/ChangeProfilePicture";
 import { IModality, IProvider } from "./interfaces";
 import { MapView } from "../../../pages";
 import { FormItemInput } from "../../../ui-components/FormItemInput";
+import { useContent } from "../../../../hooks/useContent";
 
 const { Title } = Typography;
 
@@ -36,6 +38,7 @@ export const ProviderForm = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const content = useContent();
 
   const [modalities, setModalities] = useState<IModality[]>([]);
   const [viewMap, setViewMap] = useState<boolean>(false);
@@ -106,7 +109,22 @@ export const ProviderForm = () => {
   };
 
   const HandleGeoloc = () => {
-    setViewMap(true);
+    navigator.permissions.query({ name: "geolocation" }).then((result) => {
+      if (result.state === "denied") {
+        Modal.info({
+          title: t("Please activate Geolocation permission"),
+          content,
+          width: "50%",
+          okText: t("Agreed"),
+          autoFocusButton: "ok",
+          onOk() {
+            setViewMap(false);
+          },
+        });
+        return;
+      }
+      setViewMap(true);
+    });
   };
 
   const getLoc = (loc: { lat: number; lng: number }) => {

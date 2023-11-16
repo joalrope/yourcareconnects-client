@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import io, { Socket } from "socket.io-client";
+import io from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { RootState } from "../../../store";
@@ -8,6 +8,8 @@ import {
   setSender,
   setConversations,
   setSenderSocketId,
+  //setReceiver,
+  setConnectedUsers,
   setReceiver,
 } from "../../../store/slices";
 import {
@@ -30,8 +32,7 @@ import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import "./chat.css";
 
 import emilyIco from "/images/woman.png";
-import zoeIco from "/images/woman.png";
-import { DefaultEventsMap } from "@socket.io/component-emitter";
+//import zoeIco from "/images/woman.png";
 import EmojiPicker, {
   EmojiClickData,
   EmojiStyle,
@@ -44,23 +45,29 @@ import EmojiPicker, {
   //SkinTonePickerLocation,
 } from "emoji-picker-react";
 import { getUserById } from "../../../services";
-import { IConversation } from "../../../interface";
+import { IConnectedUsers, IConversation } from "../../../interface";
 
 const baseUrl = import.meta.env.VITE_URL_BASE;
+
+const socket = io(baseUrl, {
+  reconnection: true,
+  reconnectionDelay: 500,
+  reconnectionAttempts: 10,
+});
 
 export const ChatView = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  //const [conversations, setConversations] = useState<IConversation[]>([]);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const { id, contacts, names } = useSelector((state: RootState) => state.user);
-  const { conversations } = useSelector((state: RootState) => state.chat);
-  const { sender, receiver, room } = useSelector(
+  const { receiver, room } = useSelector((state: RootState) => state.chat);
+  const { conversations, connectedUsers, sender } = useSelector(
     (state: RootState) => state.chat
   );
-
+  const { id, contacts, names, pictures } = useSelector(
+    (state: RootState) => state.user
+  );
   const [messageInputValue, setMessageInputValue] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -76,23 +83,30 @@ export const ChatView = () => {
         contacts!.map(async (contact: string) => {
           const {
             ok,
-            result: { id, fullname, info, pictures },
+            result: {
+              id,
+              fullname: names,
+              info,
+              pictures: { profile: picture },
+            },
           } = await getUserById(contact);
 
           if (ok) {
             return {
               id,
-              name: fullname,
-              picture: pictures?.profile,
+              names,
+              picture,
               info,
+              socketId: "",
             };
           }
 
           return {
             id: "",
-            name: "",
+            names: "",
             picture: "",
             info: "",
+            socketId: "",
           };
         })
       );
@@ -103,39 +117,105 @@ export const ChatView = () => {
     fetchData();
   }, [contacts, dispatch]);
 
-  const socketRef = useRef<Socket<DefaultEventsMap, DefaultEventsMap>>();
+  /*  useEffect(() => {
+    socket.on("connection", (socket) => {
+      socket.on("requestInfo", () => {
+        // Responde con la información requerida
+        console.log("Sending data from client to server");
+        const info = {
+          id,
+          names,
+          socketId: socket.id,
+        };
+        socket.emit("signIn", info);
+      });
+    });
+  }, [id, names]); */
 
-  useEffect(() => {
-    if (!sender.socketId) {
-      socketRef.current = io(baseUrl, {
-        query: { id, names }, // Additional data sent on connection
+  /* useEffect(() => {
+    console.log("sign in on server at startup2");
+
+    console.log({
+      id,
+      names,
+    });
+    socket.emit("signIn", {
+      id,
+      names,
+      socketId: socket.id,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); */
+
+  if (!sender.socketId) {
+    socket.on("connect", () => {
+      dispatch(setSenderSocketId(socket.id));
+      socket.emit("signIn", {
+        id,
+        names,
+        socketId: socket.id,
       });
-      socketRef.current.on("connect", () => {
-        dispatch(setSenderSocketId(socketRef.current?.id));
+    });
+
+    socket.on("disconnect", () => {
+      //
+    });
+
+    socket.on("sendMessage", (message: string) => {
+      console.log(message);
+    });
+
+    socket.on("receiveMessage", (message: string) => {
+      console.log({ receiveMessage: message });
+    });
+
+    socket.on("requestInfo", (socketId) => {
+      // Responde con la información requerida
+      console.log("Sending data from client to server");
+
+      const info = {
+        id,
+        names,
+        socketId,
+      };
+      socket.emit("signIn", info);
+      // Respond to the request here
+      socket.emit("sendData", info);
+    });
+
+    socket.on("connectedUsers", (connectedUsers: IConnectedUsers) => {
+      console.log({ usersConnected: connectedUsers });
+      dispatch(setConnectedUsers(connectedUsers));
+      conversations.map((conversation) => {
+        if (connectedUsers[conversation.id]) {
+          conversation.socketId = connectedUsers[conversation.id].socketId;
+        }
       });
 
-      socketRef.current.on("disconnect", () => {
-        // Reconnect to the server if it was due to a page reload
-        socketRef.current?.connect();
-      });
-    }
-  }, [dispatch, id, names, sender.socketId]);
+      // actualizar conversaciones
+    });
+  }
 
   useEffect(() => {
     dispatch(
       setSender({
-        nickname: names,
-        socketId: socketRef.current?.id,
+        id,
+        info: "",
+        names,
+        picture: pictures?.profile,
+        socketId: socket.id,
       })
     );
-  }, [dispatch, names]);
+  }, [dispatch, id, names, pictures]);
 
   const handleOnChange = (val: string) => {
     setMessageInputValue(val);
   };
 
   const handleOnSendMessage = (val: string) => {
-    socketRef.current?.emit("sendMessage", {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
+    socket.emit("sendMessage", {
       sender,
       receiver,
       room,
@@ -159,6 +239,7 @@ export const ChatView = () => {
   }
 
   const idRef = useRef(contacts?.length);
+
   useEffect(() => {
     if (loadingMore === true) {
       setTimeout(() => {
@@ -168,9 +249,10 @@ export const ChatView = () => {
           newConversations.push({
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             id: String(++idRef.current!),
-            name: `Emily ${idRef.current}`,
+            names: `Emily ${idRef.current}`,
             picture: emilyIco,
             info: "none",
+            socketId: "",
           });
         }
 
@@ -180,21 +262,33 @@ export const ChatView = () => {
     }
   }, [conversations, loadingMore]);
 
+  /*  useEffect(() => {
+    return () => {
+      console.log("disconnecting...");
+      socket.disconnect();
+      console.log("connected", socket.connected);
+    };
+  }, []); */
+
   //const onYReachEnd = () => setLoadingMore(true);
 
   const handleConvesationClick = async (id: string) => {
-    const { ok, result } = await getUserById(id);
+    const data = conversations.find((c) => c.id === id);
 
-    if (ok) {
-      dispatch(
-        setReceiver({
-          id: result.id,
-          fullname: result.fullname,
-          picture: result.pictures?.profile,
-          info: result.info,
-        })
-      );
-    }
+    console.log({
+      id,
+      socketId: connectedUsers[id] ? connectedUsers[id].socketId : "",
+    });
+
+    dispatch(
+      setReceiver({
+        id,
+        names: data?.names as string,
+        picture: data?.picture as string,
+        info: data?.info as string,
+        socketId: connectedUsers[id] ? connectedUsers[id].socketId : "",
+      } as IConversation)
+    );
   };
 
   return (
@@ -217,12 +311,12 @@ export const ChatView = () => {
             {conversations.map((c) => (
               <Conversation
                 key={c.id}
-                name={c.name}
+                name={c.names}
                 info={c.info}
                 onClick={() => handleConvesationClick(c.id)}
               >
                 <Avatar
-                  name={c.name}
+                  name={c.names}
                   src={`${baseUrl}/images/${c.id}/${c.picture}`}
                 />
               </Conversation>
@@ -242,8 +336,8 @@ export const ChatView = () => {
               name={receiver.nickname}
             />
             <ConversationHeader.Content
-              userName={receiver.fullname}
-              info={receiver.fullname}
+              userName={receiver.names}
+              info={"last time online"}
             />
             <ConversationHeader.Actions>
               <EllipsisButton
@@ -256,22 +350,10 @@ export const ChatView = () => {
             typingIndicator={<TypingIndicator content="Zoe is typing" />}
             onClick={() => setShowEmojiPicker(false)}
           >
-            <MessageSeparator content="Saturday, 30 November 2019" />
+            <MessageSeparator content="Monday, 13 November 2023" />
             <Message
               model={{
-                message: "Hello my friend, \nHow are you?",
-                sentTime: "15 mins ago",
-                sender: "Zoe",
-                direction: "incoming",
-                position: "single",
-              }}
-              className="ycc-message"
-            >
-              <Avatar src={zoeIco} name="Zoe" />
-            </Message>
-            <Message
-              model={{
-                message: "Hello my friend",
+                message: `Hello Michelle, How are you my friend\nYou could come to my house and\nprovide me some food`,
                 sentTime: "15 mins ago",
                 sender: "Patrik",
                 direction: "outgoing",
@@ -280,6 +362,22 @@ export const ChatView = () => {
               //avatarSpacer
             />
             <Message
+              model={{
+                message: "Hello my friend, \nHow are you? \n yes, I can",
+                sentTime: "15 mins ago",
+                sender: "Zoe",
+                direction: "incoming",
+                position: "single",
+              }}
+              className="ycc-message"
+            >
+              <Avatar
+                src={`${baseUrl}/images/${receiver.id}/${receiver.picture}`}
+                name="Zoe"
+              />
+            </Message>
+
+            {/* <Message
               model={{
                 message: "Hello my friend",
                 sentTime: "15 mins ago",
@@ -377,7 +475,7 @@ export const ChatView = () => {
               }}
             >
               <Avatar src={zoeIco} name="Zoe" />
-            </Message>
+            </Message> */}
           </MessageList>
           <div as={MessageInput} style={{ position: "relative" }}>
             <MessageInput

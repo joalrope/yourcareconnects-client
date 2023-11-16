@@ -1,4 +1,4 @@
-import { Button, Col, Form, Row, Typography } from "antd";
+import { Button, Col, Form, Modal, Row, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { CategorySelect } from "../../../ui-components/category-select/CategorySelect";
 import {
@@ -12,6 +12,7 @@ import { IMarker } from "../../../ui-components/map/MapView";
 import { getUserByServices } from "../../../../services";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
+import { useContent } from "../../../../hooks/useContent";
 
 const { Title } = Typography;
 
@@ -26,6 +27,7 @@ export const SearchServices = () => {
   const [searchServices, setSearchServices] = useState<string | undefined>("");
   const [selSrvices, setSelSrvices] = useState<string[]>([]);
   const [viewMap, setViewMap] = useState<boolean>(false);
+  const content = useContent();
 
   const [form] = Form.useForm<Props>();
   const { language } = useSelector((state: RootState) => state.i18n);
@@ -63,7 +65,22 @@ export const SearchServices = () => {
   };
 
   const HandleViewOnMap = () => {
-    setViewMap(true);
+    navigator.permissions.query({ name: "geolocation" }).then((result) => {
+      if (result.state === "denied") {
+        Modal.info({
+          title: t("Please activate Geolocation permission"),
+          content,
+          width: "50%",
+          okText: t("Agreed"),
+          autoFocusButton: "ok",
+          onOk() {
+            setViewMap(false);
+          },
+        });
+        return;
+      }
+      setViewMap(true);
+    });
   };
 
   useEffect(() => {

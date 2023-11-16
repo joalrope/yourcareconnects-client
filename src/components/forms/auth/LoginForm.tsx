@@ -78,7 +78,7 @@ export const LoginForm = () => {
       <Col xs={24} sm={24} md={16} style={{ width: "100%" }}>
         <Row style={{ display: "flex", flexDirection: "column" }}>
           <Title level={3} style={{ marginBottom: "0px", width: "100%" }}>
-            {t("Login in")}
+            {t("Log in")}
           </Title>
           <Paragraph style={{ width: "100%" }} strong>
             {t("Welcome back to your account")}

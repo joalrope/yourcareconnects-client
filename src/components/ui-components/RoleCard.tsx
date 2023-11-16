@@ -15,19 +15,19 @@ const RoleCard = ({ role }: { role: string }) => {
 
   useEffect(() => {
     if (language === "esES" && role === "customer") {
-      setCurRole("Users");
-    }
-
-    if (language === "enUS" && role === "customer") {
       setCurRole("Usuarios");
     }
 
+    if (language === "enUS" && role === "customer") {
+      setCurRole("Users");
+    }
+
     if (language === "esES" && role === "provider") {
-      setCurRole("Providers");
+      setCurRole("Proveedores");
     }
 
     if (language === "enUS" && role === "provider") {
-      setCurRole("Proveedores");
+      setCurRole("Providers");
     }
   }, [language, role]);
 

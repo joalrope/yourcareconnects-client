@@ -33,7 +33,7 @@ export const routes: IRoute[] = [
     Pos: "header",
     path: "/login",
     type: "public",
-    name: "Login",
+    name: "Log in",
     mode: "",
     icon: "UploadOutlined",
     element: Login,

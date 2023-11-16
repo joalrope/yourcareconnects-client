@@ -3,23 +3,11 @@ import { RootState } from "../../store";
 import { IChat } from "../../../interface";
 
 const initialState: IChat = {
-  sender: {
-    socketId: "",
-    nickname: "",
-  },
-  receiver: {
-    id: "",
-    socketId: "",
-    fullname: "",
-    nickname: "",
-    picture: "",
-    info: "",
-  },
-  room: "",
+  connectedUsers: {},
   conversations: [
     {
       id: "",
-      name: "",
+      names: "",
       picture: "",
       info: "",
     },
@@ -36,6 +24,19 @@ const initialState: IChat = {
       position: "",
     },
   ],
+  receiver: {
+    id: "",
+    socketId: "",
+    names: "",
+    nickname: "",
+    picture: "",
+    info: "",
+  },
+  room: "",
+  sender: {
+    socketId: "",
+    nickname: "",
+  },
 };
 
 export const chatSlice = createSlice({
@@ -66,6 +67,9 @@ export const chatSlice = createSlice({
     setAddMessage: (state, { payload }) => {
       state.messages = [...state.messages, payload];
     },
+    setConnectedUsers: (state, { payload }) => {
+      state.connectedUsers = payload;
+    },
   },
 });
 
@@ -78,6 +82,7 @@ export const {
   setAddMessage,
   setConversations,
   setRoom,
+  setConnectedUsers,
 } = chatSlice.actions;
 
 export const selectChat = (state: RootState) => state.chat;
