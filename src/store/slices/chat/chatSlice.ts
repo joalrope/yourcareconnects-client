@@ -10,6 +10,7 @@ const initialState: IChat = {
       names: "",
       picture: "",
       info: "",
+      socketId: "",
     },
   ],
   messages: [
