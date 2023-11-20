@@ -25,39 +25,20 @@ const initialState: IChat = {
       position: "",
     },
   ],
-  receiver: {
-    id: "",
-    socketId: "",
-    names: "",
-    nickname: "",
-    picture: "",
-    info: "",
-  },
+  receiverId: "",
   room: "",
-  sender: {
-    socketId: "",
-    nickname: "",
-  },
+  senderId: "",
 };
 
 export const chatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {
-    setSender: (state, { payload }) => {
-      state.sender = payload;
-    },
-    setSenderSocketId: (state, { payload }) => {
-      state.sender.socketId = payload;
-    },
-    setReceiver: (state, { payload }) => {
-      state.receiver = payload;
-    },
-    setReceiverSocketId: (state, { payload }) => {
-      state.receiver.socketId = payload;
-    },
     setReceiverId: (state, { payload }) => {
-      state.receiver.id = payload;
+      state.receiverId = payload;
+    },
+    setSenderId: (state, { payload }) => {
+      state.senderId = payload;
     },
     setRoom: (state, { payload }) => {
       state.room = payload;
@@ -75,11 +56,8 @@ export const chatSlice = createSlice({
 });
 
 export const {
-  setSender,
-  setSenderSocketId,
-  setReceiver,
+  setSenderId,
   setReceiverId,
-  setReceiverSocketId,
   setAddMessage,
   setConversations,
   setRoom,

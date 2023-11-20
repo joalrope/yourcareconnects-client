@@ -1,17 +1,3 @@
-export interface ISender {
-  nickname: string;
-  socketId: string;
-}
-
-export interface IReceiver {
-  id: string;
-  info: string;
-  names: string;
-  nickname: string;
-  picture: string;
-  socketId: string;
-}
-
 export interface IMessage {
   senderId: string;
   receiverId: string;
@@ -28,7 +14,6 @@ export interface IConversation {
   names: string;
   picture: string;
   info: string;
-  socketId: string;
 }
 
 export interface IConnectedUsers {
@@ -39,10 +24,10 @@ export interface IConnectedUsers {
 }
 
 export interface IChat {
-  conversations: IConversation[];
   connectedUsers: IConnectedUsers;
-  sender: ISender;
-  receiver: IReceiver;
-  room: string;
+  conversations: IConversation[];
   messages: IMessage[];
+  receiverId: string;
+  room: string;
+  senderId: string;
 }

@@ -1,16 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import io from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { RootState } from "../../../store";
 import {
   setRoom,
-  setSender,
   setConversations,
-  setSenderSocketId,
-  //setReceiver,
   setConnectedUsers,
-  setReceiver,
+  setReceiverId,
+  setSenderId,
 } from "../../../store/slices";
 import {
   Avatar,
@@ -30,9 +27,6 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import "./chat.css";
-
-import emilyIco from "/images/woman.png";
-//import zoeIco from "/images/woman.png";
 import EmojiPicker, {
   EmojiClickData,
   EmojiStyle,
@@ -44,30 +38,37 @@ import EmojiPicker, {
   //SuggestionMode,
   //SkinTonePickerLocation,
 } from "emoji-picker-react";
-import { getUserById } from "../../../services";
 import { IConnectedUsers, IConversation } from "../../../interface";
+import { useChatSocketCtx } from "./context";
+import { getConversations } from "./helpers/conversations";
 
 const baseUrl = import.meta.env.VITE_URL_BASE;
 
-const socket = io(baseUrl, {
-  reconnection: true,
-  reconnectionDelay: 500,
-  reconnectionAttempts: 10,
-});
+const contacInit = {
+  id: "",
+  names: "",
+  picture: "",
+  info: "",
+  socketId: "",
+};
 
 export const ChatView = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { receiver, room } = useSelector((state: RootState) => state.chat);
-  const { conversations, connectedUsers, sender } = useSelector(
+  const { conversations, receiverId, room, senderId } = useSelector(
     (state: RootState) => state.chat
   );
-  const { id, contacts, names, pictures } = useSelector(
-    (state: RootState) => state.user
-  );
+  const { id, contacts, names } = useSelector((state: RootState) => state.user);
   const [messageInputValue, setMessageInputValue] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const [writer, setWriter] = useState("");
+  const [activeContact, setActiveContact] = useState<IConversation>(contacInit);
+
+  const { socket } = useChatSocketCtx();
+
+  socket.connect();
 
   useEffect(() => {
     return () => {
@@ -76,80 +77,18 @@ export const ChatView = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    let conversations: IConversation[] = [];
     const fetchData = async () => {
-      conversations = await Promise.all(
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        contacts!.map(async (contact: string) => {
-          const {
-            ok,
-            result: {
-              id,
-              fullname: names,
-              info,
-              pictures: { profile: picture },
-            },
-          } = await getUserById(contact);
-
-          if (ok) {
-            return {
-              id,
-              names,
-              picture,
-              info,
-              socketId: "",
-            };
-          }
-
-          return {
-            id: "",
-            names: "",
-            picture: "",
-            info: "",
-            socketId: "",
-          };
-        })
-      );
-
+      const conversations = await getConversations(contacts as string[]);
       dispatch(setConversations(conversations));
     };
 
     fetchData();
   }, [contacts, dispatch]);
 
-  /*  useEffect(() => {
-    socket.on("connection", (socket) => {
-      socket.on("requestInfo", () => {
-        // Responde con la información requerida
-        console.log("Sending data from client to server");
-        const info = {
-          id,
-          names,
-          socketId: socket.id,
-        };
-        socket.emit("signIn", info);
-      });
-    });
-  }, [id, names]); */
+  if (!senderId && !socket.connected) {
+    dispatch(setSenderId(id));
 
-  /* useEffect(() => {
-    console.log("sign in on server at startup2");
-
-    console.log({
-      id,
-      names,
-    });
-    socket.emit("signIn", {
-      id,
-      names,
-      socketId: socket.id,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); */
-
-  if (!sender.socketId) {
     socket.on("connect", () => {
-      dispatch(setSenderSocketId(socket.id));
       socket.emit("signIn", {
         id,
         names,
@@ -157,67 +96,36 @@ export const ChatView = () => {
       });
     });
 
-    socket.on("disconnect", () => {
-      //
-    });
-
-    socket.on("sendMessage", (message: string) => {
-      console.log(message);
-    });
-
     socket.on("receiveMessage", (message: string) => {
       console.log({ receiveMessage: message });
     });
 
-    socket.on("requestInfo", (socketId) => {
-      // Responde con la información requerida
-      console.log("Sending data from client to server");
-
-      const info = {
-        id,
-        names,
-        socketId,
-      };
-      socket.emit("signIn", info);
-      // Respond to the request here
-      socket.emit("sendData", info);
+    socket.on("unsentMessage", (message: string) => {
+      console.log({ unsentMessage: message });
     });
 
     socket.on("connectedUsers", (connectedUsers: IConnectedUsers) => {
-      console.log({ usersConnected: connectedUsers });
       dispatch(setConnectedUsers(connectedUsers));
-      conversations.map((conversation) => {
-        if (connectedUsers[conversation.id]) {
-          conversation.socketId = connectedUsers[conversation.id].socketId;
-        }
-      });
-
-      // actualizar conversaciones
     });
-  }
 
-  useEffect(() => {
-    dispatch(
-      setSender({
-        id,
-        info: "",
-        names,
-        picture: pictures?.profile,
-        socketId: socket.id,
-      })
+    socket.on(
+      "userIsTyping",
+      ({ isTyping, names }: { isTyping: boolean; names: string }) => {
+        console.log("someIsTyping", isTyping);
+        setIsTyping(isTyping);
+        setWriter(names);
+      }
     );
-  }, [dispatch, id, names, pictures]);
+  }
 
   const handleOnChange = (val: string) => {
     setMessageInputValue(val);
   };
 
   const handleOnSendMessage = (val: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-
     socket.emit("sendMessage", {
-      sender,
-      receiver,
+      senderId: String(id),
+      receiverId,
       room,
       message: val,
       time: new Date(),
@@ -250,9 +158,8 @@ export const ChatView = () => {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             id: String(++idRef.current!),
             names: `Emily ${idRef.current}`,
-            picture: emilyIco,
+            picture: "emilyIcon.png",
             info: "none",
-            socketId: "",
           });
         }
 
@@ -262,34 +169,27 @@ export const ChatView = () => {
     }
   }, [conversations, loadingMore]);
 
-  /*  useEffect(() => {
-    return () => {
-      console.log("disconnecting...");
-      socket.disconnect();
-      console.log("connected", socket.connected);
-    };
-  }, []); */
-
   //const onYReachEnd = () => setLoadingMore(true);
 
   const handleConvesationClick = async (id: string) => {
-    const data = conversations.find((c) => c.id === id);
+    const contacActive = conversations.find((c) => c.id === id);
 
-    console.log({
-      id,
-      socketId: connectedUsers[id] ? connectedUsers[id].socketId : "",
-    });
+    setActiveContact(contacActive as IConversation);
 
-    dispatch(
-      setReceiver({
-        id,
-        names: data?.names as string,
-        picture: data?.picture as string,
-        info: data?.info as string,
-        socketId: connectedUsers[id] ? connectedUsers[id].socketId : "",
-      } as IConversation)
-    );
+    dispatch(setReceiverId(id));
   };
+
+  const handleOnBlur = () => {
+    console.log("handleOnBlur");
+    socket.emit("userIsTyping", { isTyping: false, names: "" });
+  };
+
+  const handleOnFocus = () => {
+    console.log("handleOnFocus");
+    socket.emit("userIsTyping", { isTyping: true, names });
+  };
+
+  console.log({ isTyping });
 
   return (
     <div
@@ -329,14 +229,14 @@ export const ChatView = () => {
             <ConversationHeader.Back />
             <Avatar
               src={
-                receiver.picture
-                  ? `${baseUrl}/images/${receiver.id}/${receiver.picture}`
+                activeContact.picture
+                  ? `${baseUrl}/images/${activeContact.id}/${activeContact.picture}`
                   : "/images/transparent.png"
               }
-              name={receiver.nickname}
+              name={activeContact.names}
             />
             <ConversationHeader.Content
-              userName={receiver.names}
+              userName={activeContact.names}
               info={"last time online"}
             />
             <ConversationHeader.Actions>
@@ -347,7 +247,11 @@ export const ChatView = () => {
             </ConversationHeader.Actions>
           </ConversationHeader>
           <MessageList
-            typingIndicator={<TypingIndicator content="Zoe is typing" />}
+            typingIndicator={
+              isTyping && (
+                <TypingIndicator content={`${writer} ${t("is typing")}`} />
+              )
+            }
             onClick={() => setShowEmojiPicker(false)}
           >
             <MessageSeparator content="Monday, 13 November 2023" />
@@ -372,153 +276,58 @@ export const ChatView = () => {
               className="ycc-message"
             >
               <Avatar
-                src={`${baseUrl}/images/${receiver.id}/${receiver.picture}`}
+                src={`${baseUrl}/images/${activeContact.id}/${activeContact.picture}`}
                 name="Zoe"
               />
             </Message>
-
-            {/* <Message
-              model={{
-                message: "Hello my friend",
-                sentTime: "15 mins ago",
-                sender: "Zoe",
-                direction: "incoming",
-                position: "first",
-              }}
-              avatarSpacer
-            />
-            <Message
-              model={{
-                message: "Hello my friend",
-                sentTime: "15 mins ago",
-                sender: "Zoe",
-                direction: "incoming",
-                position: "normal",
-              }}
-              avatarSpacer
-            />
-            <Message
-              model={{
-                message: "Hello my friend",
-                sentTime: "15 mins ago",
-                sender: "Zoe",
-                direction: "incoming",
-                position: "normal",
-              }}
-              avatarSpacer
-            />
-            <Message
-              model={{
-                message: "Hello my friend",
-                sentTime: "15 mins ago",
-                sender: "Zoe",
-                direction: "incoming",
-                position: "last",
-              }}
-            >
-              <Avatar src={zoeIco} name="Zoe" />
-            </Message>
-            <Message
-              model={{
-                message: "Hello my friend",
-                sentTime: "15 mins ago",
-                sender: "Patrik",
-                direction: "outgoing",
-                position: "first",
-              }}
-            />
-            <Message
-              model={{
-                message: "Hello my friend",
-                sentTime: "15 mins ago",
-                sender: "Patrik",
-                direction: "outgoing",
-                position: "normal",
-              }}
-            />
-            <Message
-              model={{
-                message: "Hello my friend",
-                sentTime: "15 mins ago",
-                sender: "Patrik",
-                direction: "outgoing",
-                position: "normal",
-              }}
-            />
-            <Message
-              model={{
-                message: "Hello my friend",
-                sentTime: "15 mins ago",
-                sender: "Patrik",
-                direction: "outgoing",
-                position: "last",
-              }}
-            />
-
-            <Message
-              model={{
-                message: "Hello my friend",
-                sentTime: "15 mins ago",
-                sender: "Zoe",
-                direction: "incoming",
-                position: "first",
-              }}
-              avatarSpacer
-            />
-            <Message
-              model={{
-                message: "Hello my friend",
-                sentTime: "15 mins ago",
-                sender: "Zoe",
-                direction: "incoming",
-                position: "last",
-              }}
-            >
-              <Avatar src={zoeIco} name="Zoe" />
-            </Message> */}
           </MessageList>
-          <div as={MessageInput} style={{ position: "relative" }}>
-            <MessageInput
-              placeholder={`${t("Type message here")}`}
-              value={messageInputValue}
-              onChange={handleOnChange}
-              onSend={handleOnSendMessage}
-              onAttachClick={handleOnAttachClick}
-            />
-            <div
-              style={{
-                position: "absolute",
-                right: 50,
-                bottom: 10,
-                cursor: "pointer",
-              }}
-            >
-              <button
-                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+          {activeContact && (
+            <div as={MessageInput} style={{ position: "relative" }}>
+              <MessageInput
+                placeholder={`${t("Type message here")}`}
+                value={messageInputValue}
+                onChange={handleOnChange}
+                onSend={handleOnSendMessage}
+                onAttachClick={handleOnAttachClick}
+                onBlur={handleOnBlur}
+                onFocus={handleOnFocus}
+              />
+              <div
                 style={{
-                  backgroundColor: "transparent",
-                  border: "none",
-                  fontSize: 20,
-                  height: 20,
+                  position: "absolute",
+                  right: 50,
+                  bottom: 10,
                   cursor: "pointer",
                 }}
               >
-                &#128522;
-              </button>
+                <button
+                  onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                  style={{
+                    backgroundColor: "transparent",
+                    border: "none",
+                    fontSize: 20,
+                    height: 20,
+                    cursor: "pointer",
+                  }}
+                >
+                  &#128522;
+                </button>
+              </div>
+              <div style={{ position: "absolute", bottom: 50, right: 48 }}>
+                {showEmojiPicker && (
+                  <EmojiPicker
+                    onEmojiClick={onEmojiClick}
+                    autoFocusSearch={false}
+                    emojiStyle={EmojiStyle.FACEBOOK}
+                    defaultSkinTone={SkinTones.MEDIUM}
+                    searchDisabled
+                    lazyLoadEmojis={true}
+                    theme={Theme.DARK}
+                  />
+                )}
+              </div>
             </div>
-            <div style={{ position: "absolute", bottom: 50, right: 48 }}>
-              {showEmojiPicker && (
-                <EmojiPicker
-                  onEmojiClick={onEmojiClick}
-                  autoFocusSearch={false}
-                  emojiStyle={EmojiStyle.FACEBOOK}
-                  defaultSkinTone={SkinTones.MEDIUM}
-                  searchDisabled
-                  theme={Theme.DARK}
-                />
-              )}
-            </div>
-          </div>
+          )}
         </ChatContainer>
       </MainContainer>
     </div>

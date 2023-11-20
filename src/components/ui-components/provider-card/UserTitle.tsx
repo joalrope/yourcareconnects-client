@@ -8,13 +8,12 @@ import { setUser } from "../../../store/slices";
 
 const { Title } = Typography;
 
-export const UserTitle = ({
-  fullname,
-  id,
-}: {
+interface Props {
   fullname: string | undefined;
   id: string;
-}) => {
+}
+
+export const UserTitle = ({ fullname, id }: Props) => {
   const { message } = App.useApp();
   const { id: userId, contacts } = useSelector(
     (state: RootState) => state.user

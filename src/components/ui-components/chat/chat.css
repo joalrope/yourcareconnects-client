@@ -1,9 +1,17 @@
+:root {
+  --primary-color-75: #fbd46775;
+  --secondary-color-75: #1a1a1375;
+  --tertiary-color-75: #7c7c7b75;
+  --white-color: #ffffff;
+  --transparent-color: transparent;
+}
+
 .EmojiPickerReact {
-  --epr-bg-color: #1a1a13 !important;
+  --epr-bg-color: var(--secondary-color) !important;
 }
 
 .cs-message-list {
-  background-color: #ffffff;
+  background-color: var(--white-color);
 }
 
 .cs-message__content {
@@ -12,47 +20,43 @@
 }
 
 .cs-message--incoming .cs-message__content {
-  /*border: 1px solid #1a1a13;*/
-  background-color: #7c7c7b75;
-  color: #1a1a13;
+  background-color: var(--tertiary-color-75);
+  color: var(--secondary-color);
 }
 
-.cs-message.cs-message--incoming.cs-message--first .cs-message__content {
-  /*border: 1px solid #1a1a13;*/
-  background-color: #7c7c7b75;
-  color: #1a1a13;
+.cs-message.cs-message--incoming .cs-message--first .cs-message__content {
+  background-color: var(--tertiary-color-75);
+  color: var(--secondary-color);
 }
 
 .cs-message--outgoing .cs-message__content {
-  /*border: 1px solid #1a1a13;*/
-  background-color: #fbd46775;
-  color: #1a1a13;
+  background-color: var(--primary-color-75);
+  color: var(--secondary-color);
 }
 
-.cs-message.cs-message--outgoing.cs-message--first .cs-message__content {
-  /* border: 1px solid #1a1a13;*/
-  background-color: #fbd46775;
-  color: #1a1a13;
+.cs-message.cs-message--outgoing .cs-message--first .cs-message__content {
+  background-color: var(--primary-color-75);
+  color: var(--secondary-color);
 }
 
 .cs-conversation:hover {
-  background-color: #7c7c7b75;
+  background-color: var(--tertiary-color-75);
 }
 
-.cs-conversation.cs-conversation:active {
-  background-color: #fbd467;
+.cs-conversation .cs-conversation:active {
+  background-color: var(--primary-color);
 }
 
 .cs-conversation-header {
-  background-color: #fbd467;
+  background-color: var(--primary-color);
 }
 
 .cs-conversation-header__content .cs-conversation-header__user-name {
-  background-color: transparent;
+  background-color: var(--transparent-color);
 }
 
 .cs-conversation-header__content .cs-conversation-header__info {
-  background-color: transparent;
+  background-color: var(--transparent-color);
 }
 
 .cs-conversation-header__actions .cs-button.cs-button--videocall,
@@ -60,51 +64,51 @@
 .cs-conversation-header__actions .cs-button.cs-button--ellipsis,
 .cs-message-separator,
 .cs-button--arrow {
-  color: #1a1a13;
+  color: var(--secondary-color);
 }
 
 .cs-message-separator::before,
 .cs-message-separator::after {
-  background-color: #1a1a13;
+  background-color: var(--secondary-color);
 }
 
 .cs-search__input {
-  background-color: transparent;
+  background-color: var(--transparent-color);
 }
 
 .cs-search {
-  background-color: #fbd467;
+  background-color: var(--primary-color);
 }
 
 .cs-message-input__content-editor {
-  background-color: transparent !important;
+  background-color: var(--transparent-color) !important;
 }
 
 .cs-message-input__content-editor-container,
 .cs-message-input__content-editor-wrapper {
-  background-color: #fbd467;
+  background-color: var(--primary-color);
 }
 
 .cs-button--attachment,
 .cs-button--send {
-  color: #1a1a13;
+  color: var(--secondary-color);
 }
 
 .cs-typing-indicator__text {
-  color: #1a1a1375;
+  color: var(--secondary-color-75);
 }
 .cs-typing-indicator__dot {
-  background-color: #1a1a1375;
+  background-color: var(--secondary-color-75);
 }
 
 .cs-search__search-icon {
-  color: #1a1a13;
+  color: var(--secondary-color);
 }
 
 .ps__thumb-y {
-  background-color: #1a1a1375;
+  background-color: var(--secondary-color-75);
 }
 
 .cs-message-list .cs-typing-indicator {
-  background-color: transparent;
+  background-color: var(--transparent-color);
 }

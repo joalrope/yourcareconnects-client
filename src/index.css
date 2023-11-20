@@ -13,10 +13,8 @@ body {
 
 :root {
   --primary-color: #fbd467;
-  --primary-color-hover: rgba(245, 173, 18, 0.5);
   --secondary-color: #1a1a13;
   --height-content: 83.5vh;
-  --test: #1a1a13;
 }
 
 .ant-form-item-label {
