@@ -9,14 +9,14 @@ import {
 } from "react";
 import {
   GoogleMap,
-  InfoWindow,
+  //InfoWindow,
   Libraries,
   MarkerF,
   useLoadScript,
 } from "@react-google-maps/api";
 import { Button, Modal, Typography } from "antd";
 import { useTranslation } from "react-i18next";
-import { LongInfo } from "./LongInfo";
+//import { LongInfo } from "./LongInfo";
 import styles from "./mapStyles.json";
 import "./map.css";
 import { useSelector } from "react-redux";
@@ -24,6 +24,7 @@ import { RootState } from "../../../store";
 import { IPictures } from "../../../interface/user";
 import { MarkersSort } from "../../../helpers/markers";
 import { useContent } from "../../../hooks/useContent";
+import { Markers } from "./Markers";
 
 const { Text } = Typography;
 
@@ -76,8 +77,8 @@ export const MapView = ({ getLoc, goBack, markers }: Props) => {
     );
 
     setCenter({
-      lat: user.location.lat,
-      lng: user.location.lng,
+      lat: user.location ? user.location.lat : 0.0,
+      lng: user.location ? user.location.lng : 0.0,
     });
 
     if (!marker) {
@@ -159,7 +160,7 @@ export const MapView = ({ getLoc, goBack, markers }: Props) => {
   ) : (
     <GoogleMap
       key={"1"}
-      zoom={18}
+      zoom={user.location ? 18 : 3}
       center={center}
       mapContainerStyle={mapStyles}
       onLoad={onLoad}
@@ -186,38 +187,22 @@ export const MapView = ({ getLoc, goBack, markers }: Props) => {
 
       {markers?.map((marker) => {
         return (
-          <MarkerF
-            key={marker.fullname}
-            position={marker.location}
-            title={marker.fullname}
-            onClick={() => handleMarkerClick(marker)}
-          >
-            <InfoWindow
-              position={marker.location}
-              options={{
-                zIndex: selectedMarker?.id === marker.id ? 3 : 2,
-              }}
-            >
-              <LongInfo
-                marker={marker}
-                selectedMarker={selectedMarker}
-                handleMarkerClick={() => handleMarkerClick(marker)}
-              />
-              {/*   )} */}
-            </InfoWindow>
-          </MarkerF>
+          <Markers
+            key={marker.id}
+            marker={marker}
+            selectedMarker={selectedMarker}
+            handleMarkerClick={handleMarkerClick}
+          />
         );
       })}
 
-      {
-        <Button
-          type="primary"
-          onClick={handleReadyButtonClick}
-          style={{ position: "absolute", top: "10px", left: "10px" }}
-        >
-          {t("Ready")}
-        </Button>
-      }
+      <Button
+        type="primary"
+        onClick={handleReadyButtonClick}
+        style={{ position: "absolute", top: "10px", left: "10px" }}
+      >
+        {t("Ready")}
+      </Button>
     </GoogleMap>
   );
 };

@@ -40,3 +40,14 @@ export const updateUserContactsById = async (
 
   return result;
 };
+
+export const getUserMessagesById = async (
+  senderId: string,
+  receiverId: string
+) => {
+  const result = await fetchWithToken(
+    `/users/messages/${senderId}/${receiverId}`
+  );
+
+  return result;
+};

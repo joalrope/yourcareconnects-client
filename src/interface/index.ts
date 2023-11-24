@@ -3,7 +3,8 @@ export type {
   IChat,
   IConnectedUsers,
   IConversation,
-  IMessage,
-  IReceiver,
-  ISender,
+  IChatMessage,
+  IMessagePosition,
 } from "./chat";
+
+export { IMessageType } from "./chat";

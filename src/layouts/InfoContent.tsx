@@ -52,8 +52,8 @@ export const InfoContent = ({ names }: Props) => {
   };
 
   const handleNotificationsClick = () => {
-    setOpen(false);
-    dispatch(setLocationPath("/"));
+    //setOpen(false);
+    //dispatch(setLocationPath("/"));
   };
 
   const id = JSON.parse(String(sessionStorage.getItem("id")));

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Avatar, Col, Row, theme } from "antd";
 import {
   CopyrightOutlined,
@@ -6,7 +7,7 @@ import {
   InstagramFilled,
   TwitterCircleFilled,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import {
   ownerFacebookUrl,
@@ -18,6 +19,7 @@ const { useToken } = theme;
 
 export const FooterContent = () => {
   const { token } = useToken();
+  const { t } = useTranslation();
 
   return (
     <Row className="--layout__footer" style={{ color: token.colorPrimary }}>
@@ -25,7 +27,7 @@ export const FooterContent = () => {
         Made with <HeartFilled style={{ color: "red" }} /> by Bohiques
       </Col>
       <Col flex="1 0 auto">
-        Copyright <CopyrightOutlined /> {new Date().getFullYear()} -
+        {t("Copyright")} <CopyrightOutlined /> {new Date().getFullYear()} -
         Yourcareconnects
       </Col>
       <Col flex="1 0 auto">

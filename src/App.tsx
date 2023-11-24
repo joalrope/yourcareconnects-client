@@ -20,7 +20,8 @@ function App() {
 
   useEffect(() => {
     setCurLng(language === "esES" ? esES : enUS);
-  }, [language]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   console.log("=======Reinicio========");
 

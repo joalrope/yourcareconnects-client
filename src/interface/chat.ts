@@ -1,12 +1,33 @@
-export interface IMessage {
+import { MessageDirection } from "@chatscope/chat-ui-kit-react/src/types/unions";
+
+export enum IMessagePosition {
+  cero = 0,
+  uno = 1,
+  dos = 2,
+  tres = 3,
+  single = "single",
+  first = "first",
+  normal = "normal",
+  last = "last",
+}
+
+export enum IMessageType {
+  TEXT = "text",
+  IMAGE = "image",
+  VIDEO = "video",
+  AUDIO = "audio",
+  FILE = "file",
+}
+
+export interface IChatMessage {
+  message: string;
+  sentTime: string;
+  sender: string;
+  type: IMessageType;
+  direction: MessageDirection;
+  position: IMessagePosition;
   senderId: string;
   receiverId: string;
-  type: string;
-  content: object;
-  sentTime: string;
-  readTime: string;
-  direction: string;
-  position: string;
 }
 
 export interface IConversation {
@@ -26,7 +47,7 @@ export interface IConnectedUsers {
 export interface IChat {
   connectedUsers: IConnectedUsers;
   conversations: IConversation[];
-  messages: IMessage[];
+  chatMessages: IChatMessage[];
   receiverId: string;
   room: string;
   senderId: string;

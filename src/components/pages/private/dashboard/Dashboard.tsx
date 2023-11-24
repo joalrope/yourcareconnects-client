@@ -38,8 +38,29 @@ export const Dashboard = () => {
     fetchData();
   }, [dispatch, services]);
 
+  const setPadding = () => {
+    if (window.innerWidth > 1200) {
+      return 96;
+    }
+    if (window.innerWidth > 900 && window.innerWidth < 1200) {
+      return 48;
+    }
+    if (window.innerWidth > 600 && window.innerWidth < 900) {
+      return 24;
+    }
+    if (window.innerWidth < 600) {
+      return 4;
+    }
+  };
+
+  const mediaqueryList = window.matchMedia("(max-width: 920px)");
+  mediaqueryList.addListener(function (EventoMediaQueryList) {
+    console.log("Ejecutado el listener", EventoMediaQueryList);
+    console.log("padding", setPadding());
+  });
+
   return (
-    <Row style={{ padding: 24, width: "100%" }}>
+    <Row style={{ padding: setPadding(), width: "100%" }}>
       <Col span={24} style={{ maxWidth: "96%", margin: "auto" }}>
         <Col span={24} style={{ borderBottom: "1px solid #e8e8e8" }}>
           <Title level={3} style={{ margin: "20px", width: "100%" }}>

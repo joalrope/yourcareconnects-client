@@ -39,7 +39,12 @@ export const ProviderCard = ({
   return (
     <Card
       hoverable
-      style={{ height: "420px", width: "100%" }}
+      style={{
+        height: "420px",
+        maxWidth: "220px",
+        minWidth: "200px",
+        width: "100%",
+      }}
       cover={<img alt={`Picture of ${fullname}`} src={picture} height={240} />}
     >
       <Meta title={<UserTitle fullname={fullname} id={id} />} />

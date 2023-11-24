@@ -135,7 +135,7 @@ export const ProviderForm = () => {
   return viewMap ? (
     <MapView getLoc={getLoc} goBack={setViewMap} />
   ) : (
-    <Row justify={"center"} style={{ width: "100%" }}>
+    <Row justify={"center"} style={{ padding: 24, width: "100%" }}>
       <Col xs={24} sm={24} lg={16}>
         <Row style={{ display: "flex", flexDirection: "column" }}>
           <Title level={3} style={{ margin: "25px 0px" }}>

@@ -9,6 +9,7 @@ export {
 export {
   getUserById,
   getUserByServices,
+  getUserMessagesById,
   updateUserById,
   updateUserContactsById,
 } from "./userService";
