@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { Schema } from "mongoose";
 import { RootState } from "../../../store";
 import {
   setConversations,
@@ -9,7 +10,7 @@ import {
   setSenderId,
   setAddChatMessage,
   setChatMessages,
-  //setNotifications,
+  setUnreadCount,
 } from "../../../store/slices";
 import {
   Avatar,
@@ -42,14 +43,13 @@ import EmojiPicker, {
 } from "emoji-picker-react";
 import {
   IChatMessage,
-  //IChatMessage,
   IConnectedUsers,
   IConversation,
   IMessageType,
 } from "../../../interface";
 import { useChatSocketCtx } from "./context";
 import { getConversations } from "./helpers/conversations";
-import { getUserMessagesById } from "../../../services";
+import { clearNotificationsById, getUserMessagesById } from "../../../services";
 
 const baseUrl = import.meta.env.VITE_URL_BASE;
 
@@ -67,9 +67,10 @@ export const ChatView = () => {
   const { chatMessages, conversations, senderId } = useSelector(
     (state: RootState) => state.chat
   );
-  const { id, contacts, names } = useSelector((state: RootState) => state.user);
+  const { id, contacts, names, notifications } = useSelector(
+    (state: RootState) => state.user
+  );
   const [messageInputValue, setMessageInputValue] = useState("");
-  //const [messages, setMessages] = useState<IChatMessage[]>([]);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [showTyping, setShowTyping] = useState({ isTyping: false, writer: "" });
@@ -82,12 +83,15 @@ export const ChatView = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const conversations = await getConversations(contacts as string[]);
+      const conversations = await getConversations(
+        contacts as string[],
+        notifications as Schema.Types.Mixed
+      );
       dispatch(setConversations(conversations));
     };
 
     fetchData();
-  }, [contacts, dispatch, id]);
+  }, [contacts, dispatch, id, notifications]);
 
   useEffect(() => {
     dispatch(setSenderId(id));
@@ -104,9 +108,11 @@ export const ChatView = () => {
       dispatch(setAddChatMessage(message));
     });
 
-    /*socket.on("updateNotifications", (notifications: number) => {
-      dispatch(setNotifications(notifications));
-    });*/
+    socket.on("updateNotifications", (notifications: number) => {
+      console.log({ notiInSocket: notifications });
+
+      //dispatch(setNotifications(notifications));
+    });
 
     socket.on("unsentMessage", (message: string) => {
       console.log({ unsentMessage: message });
@@ -126,6 +132,7 @@ export const ChatView = () => {
     return () => {
       socket.off("connect");
       socket.off("receiveMessage");
+      socket.off("updateNotifications");
       socket.off("unsentMessage");
       socket.off("connectedUsers");
       socket.off("userIsTyping");
@@ -206,7 +213,7 @@ export const ChatView = () => {
 
     setActiveContact(contacActive as IConversation);
 
-    const { ok, result } = await getUserMessagesById(senderId, id);
+    let { ok, result } = await getUserMessagesById(senderId, id);
 
     if (ok) {
       dispatch(setChatMessages(result.messages));
@@ -214,13 +221,13 @@ export const ChatView = () => {
       dispatch(setChatMessages([]));
     }
 
-    /* ({ ok, result } = await clearNotificationsById(id, senderId));
+    ({ ok, result } = await clearNotificationsById(id, senderId));
 
     console.log({ ok, result });
 
     if (ok) {
-      dispatch(setNotifications(0));
-    }*/
+      dispatch(setUnreadCount(0));
+    }
   };
 
   const handleOnBlur = () => {
@@ -248,19 +255,23 @@ export const ChatView = () => {
             loadingMore={loadingMore}
             //onYReachEnd={onYReachEnd}
           >
-            {conversations.map((c) => (
-              <Conversation
-                key={c.id}
-                name={c.names}
-                info={c.info}
-                onClick={() => handleConvesationClick(c.id)}
-              >
-                <Avatar
+            {conversations.map((c) => {
+              //console.log(c);
+              return (
+                <Conversation
+                  key={c.id}
                   name={c.names}
-                  src={`${baseUrl}/images/${c.id}/${c.picture}`}
-                />
-              </Conversation>
-            ))}
+                  info={c.info}
+                  onClick={() => handleConvesationClick(c.id)}
+                  unreadCnt={c.unreadCnt}
+                >
+                  <Avatar
+                    name={c.names}
+                    src={`${baseUrl}/images/${c.id}/${c.picture}`}
+                  />
+                </Conversation>
+              );
+            })}
           </ConversationList>
         </Sidebar>
 

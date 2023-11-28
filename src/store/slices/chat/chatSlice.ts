@@ -12,7 +12,7 @@ const initialState: IChat = {
       info: "",
     },
   ],
-
+  unreadCount: 0,
   chatMessages: [],
   receiverId: "",
   room: "",
@@ -35,6 +35,9 @@ export const chatSlice = createSlice({
     setConversations: (state, { payload }) => {
       state.conversations = payload;
     },
+    setUnreadCount: (state, { payload }) => {
+      state.unreadCount = payload;
+    },
     setChatMessages: (state, { payload }) => {
       state.chatMessages = payload;
     },
@@ -52,6 +55,7 @@ export const {
   chatOffline,
   setSenderId,
   setReceiverId,
+  setUnreadCount,
   setChatMessages,
   setAddChatMessage,
   setConversations,

@@ -35,6 +35,7 @@ export interface IConversation {
   names: string;
   picture: string;
   info: string;
+  unreadCnt?: number;
 }
 
 export interface IConnectedUsers {
@@ -47,6 +48,7 @@ export interface IConnectedUsers {
 export interface IChat {
   connectedUsers: IConnectedUsers;
   conversations: IConversation[];
+  unreadCount: number;
   chatMessages: IChatMessage[];
   receiverId: string;
   room: string;

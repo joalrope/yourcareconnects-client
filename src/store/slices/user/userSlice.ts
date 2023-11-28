@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Schema } from "mongoose";
 import { RootState } from "../../store";
 import { IUser } from "../../../interface";
 
@@ -19,7 +20,7 @@ const initialState: IUser = {
   lastName: "",
   location: { lat: 0, lng: 0 },
   names: "",
-  //notifications: { id: 0 } ,
+  notifications: {} as Schema.Types.Mixed,
   owner: "",
   phoneNumber: "",
   pictures: { profile: "" },
@@ -117,7 +118,7 @@ export const userSlice = createSlice({
       state.id = "";
       state.lastName = "";
       state.names = "";
-      //state.notifications = 0;
+      //state.notifications = {["hhhh"]: "hhhh"} as Schema.Types.Mixed;
       state.owner = "";
       state.phoneNumber = "";
       state.pictures = { profile: "" };
@@ -141,7 +142,7 @@ export const {
   setRole,
   setLocation: setLatLng,
   setToken,
-  //setNotifications,
+  setNotifications,
   setProfilePicture,
 } = userSlice.actions;
 
