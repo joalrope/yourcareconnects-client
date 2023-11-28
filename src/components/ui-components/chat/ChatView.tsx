@@ -8,6 +8,8 @@ import {
   setReceiverId,
   setSenderId,
   setAddChatMessage,
+  setChatMessages,
+  //setNotifications,
 } from "../../../store/slices";
 import {
   Avatar,
@@ -101,6 +103,10 @@ export const ChatView = () => {
     socket.on("receiveMessage", (message: IChatMessage) => {
       dispatch(setAddChatMessage(message));
     });
+
+    /*socket.on("updateNotifications", (notifications: number) => {
+      dispatch(setNotifications(notifications));
+    });*/
 
     socket.on("unsentMessage", (message: string) => {
       console.log({ unsentMessage: message });
@@ -196,16 +202,25 @@ export const ChatView = () => {
   const handleConvesationClick = async (id: string) => {
     const contacActive = conversations.find((c) => c.id === id);
 
-    const {
-      ok,
-      result: { messages },
-    } = await getUserMessagesById(senderId, id);
-
-    console.log({ ok, messages });
+    dispatch(setReceiverId(id));
 
     setActiveContact(contacActive as IConversation);
 
-    dispatch(setReceiverId(id));
+    const { ok, result } = await getUserMessagesById(senderId, id);
+
+    if (ok) {
+      dispatch(setChatMessages(result.messages));
+    } else {
+      dispatch(setChatMessages([]));
+    }
+
+    /* ({ ok, result } = await clearNotificationsById(id, senderId));
+
+    console.log({ ok, result });
+
+    if (ok) {
+      dispatch(setNotifications(0));
+    }*/
   };
 
   const handleOnBlur = () => {

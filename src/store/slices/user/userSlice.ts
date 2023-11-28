@@ -19,7 +19,7 @@ const initialState: IUser = {
   lastName: "",
   location: { lat: 0, lng: 0 },
   names: "",
-  notifications: 0,
+  //notifications: { id: 0 } ,
   owner: "",
   phoneNumber: "",
   pictures: { profile: "" },
@@ -99,6 +99,9 @@ export const userSlice = createSlice({
     setLocation: (state, { payload }) => {
       state.location = payload;
     },
+    setNotifications: (state, { payload }) => {
+      state.notifications = payload;
+    },
     setProfilePicture: (state, { payload }) => {
       state.pictures = payload;
     },
@@ -114,7 +117,7 @@ export const userSlice = createSlice({
       state.id = "";
       state.lastName = "";
       state.names = "";
-      state.notifications = 0;
+      //state.notifications = 0;
       state.owner = "";
       state.phoneNumber = "";
       state.pictures = { profile: "" };
@@ -138,6 +141,7 @@ export const {
   setRole,
   setLocation: setLatLng,
   setToken,
+  //setNotifications,
   setProfilePicture,
 } = userSlice.actions;
 

@@ -44,10 +44,12 @@ export const chatSlice = createSlice({
     setConnectedUsers: (state, { payload }) => {
       state.connectedUsers = payload;
     },
+    chatOffline: () => initialState,
   },
 });
 
 export const {
+  chatOffline,
   setSenderId,
   setReceiverId,
   setChatMessages,

@@ -13,7 +13,7 @@ import {
 import { LogoutOutlined, MenuOutlined } from "@ant-design/icons";
 
 import { setLocationPath } from "../store/slices/router/routerSlice";
-import { logout, setLoggedIn } from "../store/slices";
+import { chatOffline, logout, setLoggedIn } from "../store/slices";
 import { useTranslation } from "react-i18next";
 import { LanguageSelect } from "../components/ui-components/LanguageSelect";
 import { RootState } from "../store";
@@ -34,7 +34,7 @@ export const InfoContent = ({ names }: Props) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { token } = useToken();
-  const { notifications = 0, pictures } = useSelector(
+  const { /*notifications = 0,*/ pictures } = useSelector(
     (state: RootState) => state.user
   );
   const [open, setOpen] = useState<boolean>(false);
@@ -42,6 +42,7 @@ export const InfoContent = ({ names }: Props) => {
   const handleLogOut = () => {
     sessionStorage.clear();
     dispatch(logout());
+    dispatch(chatOffline());
     dispatch(setLoggedIn(false));
     dispatch(setLocationPath("/"));
   };
@@ -98,7 +99,7 @@ export const InfoContent = ({ names }: Props) => {
       label: (
         <Col>
           <Link to="/chat" onClick={handleNotificationsClick}>
-            <Badge size="small" count={notifications}>
+            <Badge size="small" count={/*notifications*/ 100}>
               <Avatar
                 shape="circle"
                 src="/images/bell-icon.png"
@@ -164,7 +165,7 @@ export const InfoContent = ({ names }: Props) => {
 
           <Col>
             <Link to="/chat" onClick={handleNotificationsClick}>
-              <Badge size="small" count={notifications}>
+              <Badge size="small" count={/*notifications*/ 100}>
                 <Avatar
                   shape="circle"
                   src="/images/bell-icon.png"

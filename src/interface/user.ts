@@ -1,3 +1,5 @@
+import { Schema } from "mongoose";
+
 interface IResetPassword {
   token: string;
   expires: number;
@@ -25,7 +27,7 @@ export interface IUser {
   points?: number;
   role?: string;
   isDeleted?: boolean;
-  notifications?: number;
+  notifications?: Schema.Types.Mixed;
   address?: string;
   location: Ilocation;
   resetPassword?: IResetPassword;

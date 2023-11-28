@@ -25,5 +25,6 @@ declare namespace ChatSocket {
     connect: () => void;
     unsentMessage: (message: string) => void;
     userIsTyping: ({ isTyping: boolean, names: string }) => void;
+    updateNotifications: (notifications: number) => void;
   }
 }

@@ -38,6 +38,21 @@ export const updateUserContactsById = async (
     "PUT"
   );
 
+  console.log({ result });
+
+  return result;
+};
+
+export const clearNotificationsById = async (
+  receiverId: string,
+  senderId: string
+) => {
+  const result = await fetchWithToken(
+    `/users/notifications/${receiverId}/clear/${senderId}`,
+    {},
+    "PUT"
+  );
+
   return result;
 };
 
