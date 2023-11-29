@@ -14,7 +14,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 //import { fetchWithoutToken } from "../../helpers/fetch";
-import { setLoggedIn, setUser } from "../../../store/slices";
+import { setLoading, setLoggedIn, setUser } from "../../../store/slices";
 import { setLocationPath } from "../../../store/slices/router/routerSlice";
 import { loginUser } from "../../../services";
 
@@ -41,15 +41,23 @@ export const LoginForm = () => {
       password,
     };
 
-    const { ok, msg, result } = await loginUser(userData);
+    dispatch(setLoading(true));
+
+    const {
+      ok,
+      msg,
+      result: { user, token },
+    } = await loginUser(userData);
+
+    dispatch(setLoading(false));
 
     if (ok) {
       form.resetFields();
-      result.user.token = result.token;
-      dispatch(setUser(result.user));
+      user.token = token;
+      dispatch(setUser(user));
       dispatch(setLoggedIn(true));
-      sessionStorage.setItem("token", result.token);
-      sessionStorage.setItem("id", JSON.stringify(result.user.id));
+      sessionStorage.setItem("token", token);
+      sessionStorage.setItem("id", JSON.stringify(user.id));
       navigate("/dashboard");
       dispatch(setLocationPath("dashboard"));
       return;

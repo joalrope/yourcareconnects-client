@@ -223,10 +223,30 @@ export const ChatView = () => {
 
     ({ ok, result } = await clearNotificationsById(id, senderId));
 
-    console.log({ ok, result });
-
     if (ok) {
-      dispatch(setUnreadCount(0));
+      const notifications = result.user.notifications as Schema.Types.Mixed;
+      let count = 0;
+
+      if (notifications) {
+        Object.entries(notifications).map((key) => {
+          count += key[1];
+        });
+
+        dispatch(setUnreadCount(count));
+      } else {
+        dispatch(setUnreadCount(0));
+      }
+
+      const fetchData = async () => {
+        const conversations = await getConversations(
+          contacts as string[],
+          notifications as Schema.Types.Mixed
+        );
+        dispatch(setConversations(conversations));
+      };
+
+      fetchData();
+      //TODO: setNotifications(0);
     }
   };
 

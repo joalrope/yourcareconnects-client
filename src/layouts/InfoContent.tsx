@@ -55,6 +55,8 @@ export const InfoContent = ({ names }: Props) => {
       });
 
       dispatch(setUnreadCount(count));
+    } else {
+      dispatch(setUnreadCount(0));
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

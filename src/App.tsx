@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 //import { RouterProvider } from "react-router-dom";
 import { App as AntdApp, ConfigProvider } from "antd";
 import { RootState } from "./store";
-import { setLoggedIn, setUser } from "./store/slices";
+import { setLoading, setLoggedIn, setUser } from "./store/slices";
 //import { router } from "./router/router";
 import enUS from "antd/locale/en_US";
 import esES from "antd/locale/es_ES";
@@ -37,7 +37,11 @@ function App() {
     const token = sessionStorage.getItem("token");
 
     const id = ssId ? JSON.parse(ssId) : "";
+    dispatch(setLoading(true));
     const { ok, result } = await getUserById(id);
+    dispatch(setLoading(false));
+
+    console.log({ result });
 
     if (ok) {
       result.token = token;

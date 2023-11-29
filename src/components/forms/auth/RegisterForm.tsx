@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store";
 import { fetchWithoutToken } from "../../../helpers/fetch";
 import { useNavigate } from "react-router-dom";
-import { setLoggedIn, setUser } from "../../../store/slices";
+import { setLoading, setLoggedIn, setUser } from "../../../store/slices";
 
 const { Title } = Typography;
 
@@ -77,11 +77,15 @@ export const RegisterForm = () => {
 
     if (company) newUser.company = company;
 
+    dispatch(setLoading(true));
+
     const { ok, msg, result } = await fetchWithoutToken(
       "/users",
       newUser,
       "POST"
     );
+
+    dispatch(setLoading(false));
 
     if (ok) {
       modal.success({

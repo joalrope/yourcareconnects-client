@@ -6,7 +6,6 @@ export const getConversations = async (
   contacts: string[],
   notifications: Schema.Types.Mixed
 ) => {
-  console.log({ contacts, notifications });
   const data = await Promise.all(
     contacts.map(async (contact: string) => {
       const user = await getUserById(contact);
@@ -49,7 +48,6 @@ export const getConversations = async (
       Object.entries(notifications).map((entrie) => {
         if (entrie[0] === `id${conversation.id}`) {
           conversation.unreadCnt = entrie[1];
-          console.log(conversation);
         }
       });
     } else {
