@@ -1,19 +1,22 @@
 import { useDispatch, useSelector } from "react-redux";
-import { App, Button, Col, Row, Tooltip, Typography } from "antd";
+import { App, Button, Checkbox, Col, Row, Tooltip, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { UserAddOutlined } from "@ant-design/icons";
 import { RootState } from "../../../store";
 import { getUserById, updateUserContactsById } from "../../../services";
 import { setUser } from "../../../store/slices";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
 
-const { Title } = Typography;
+const { Text, Title } = Typography;
 
 interface Props {
   fullname: string | undefined;
+  email: string | undefined;
   id: string;
+  contact: boolean;
 }
 
-export const UserTitle = ({ fullname, id }: Props) => {
+export const UserTitle = ({ fullname, email, id, contact }: Props) => {
   const { message } = App.useApp();
   const { id: userId, contacts } = useSelector(
     (state: RootState) => state.user
@@ -55,31 +58,79 @@ export const UserTitle = ({ fullname, id }: Props) => {
     });
   };
 
+  const onActivateChange = (id: string, e: CheckboxChangeEvent) => {
+    console.log(
+      `the user with id ${id} will be ${
+        e.target.checked ? "activated" : "deactivated"
+      }`
+    );
+  };
+
   return (
     <Row
       style={{
         display: "flex",
-        flexDirection: "row",
+        flexDirection: contact ? "column" : "row",
         justifyContent: "space-evenly",
         width: "100%",
       }}
     >
-      <Col xs={19}>
+      <Col>
+        <Row
+          style={{
+            alignItems: "center",
+            justifyContent: "space-between",
+            paddingBottom: 12,
+            width: "100%",
+          }}
+        >
+          <Col>
+            <img
+              src="/images/logo.png"
+              alt="logo yourcareconnects.com"
+              width={60}
+            />
+          </Col>
+
+          <Col>
+            <Checkbox
+              onChange={(e) => onActivateChange(id, e)}
+              style={{ justifyContent: "flex-end", width: "100%" }}
+            >
+              {t("Activate")}
+            </Checkbox>
+          </Col>
+        </Row>
+      </Col>
+      <Col xs={!contact ? 19 : 24}>
         <Tooltip placement="top" title={fullname}>
-          <Title level={5} ellipsis={true}>
+          <Title level={5} ellipsis={true} style={{ margin: 0 }}>
             {fullname}
           </Title>
         </Tooltip>
+        {contact && (
+          <Tooltip
+            placement="leftTop"
+            title={email}
+            style={{ display: "flex", justifyContent: "flex-end" }}
+          >
+            <Text style={{ fontSize: 12 }}>
+              <a href={`mailto:${email}`}>{email}</a>
+            </Text>
+          </Tooltip>
+        )}
       </Col>
       {!contacts?.includes(id) && (
-        <Col xs={5}>
-          <Tooltip placement="top" title={t("Add contact")}>
-            <Button
-              icon={<UserAddOutlined />}
-              type="primary"
-              onClick={() => handleAddContact(id)}
-            />
-          </Tooltip>
+        <Col xs={contact ? 24 : 5} style={{ textAlign: "right" }}>
+          {!contact && (
+            <Tooltip placement="top" title={t("Add contact")}>
+              <Button
+                icon={<UserAddOutlined />}
+                type="primary"
+                onClick={() => handleAddContact(id)}
+              />
+            </Tooltip>
+          )}
         </Col>
       )}
     </Row>

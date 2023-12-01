@@ -98,6 +98,11 @@ body {
   color: var(--primary-color);
 }
 
+.ant-card .ant-card-body {
+  padding: 12px 16px 8px;
+  height: 100%;
+}
+
 .ant-tag {
   background-color: transparent !important;
   border: none !important;

@@ -32,14 +32,7 @@ export const CategorySelect = ({
   const [data, setData] = useState<IItem[] | undefined>();
 
   const initValServForm = form.getFieldValue("services");
-
-  const servs = initValServForm ? initValServForm : [];
-
-  const services = servs.map((serv: IItem) => {
-    return { key: serv, value: serv };
-  });
-
-  const [value, setValue] = useState<IItem[]>(services);
+  const [value, setValue] = useState<string[]>(initValServForm);
 
   const handleClick = useCallback(
     (value: string | ReactNode) => {
@@ -92,7 +85,7 @@ export const CategorySelect = ({
     fetchData();
   }, [customizeServices, dispatch, pathNewService]);
 
-  const onChange = (newValue: IItem[]) => {
+  const onChange = (newValue: string[]) => {
     setValue(newValue);
 
     form.setFieldsValue({

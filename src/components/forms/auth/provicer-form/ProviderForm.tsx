@@ -65,7 +65,7 @@ export const ProviderForm = () => {
               <Col
                 xs={24}
                 style={{
-                  backgroundColor: `${modality.tagColor}20`,
+                  backgroundColor: `${"red"}20`,
                   border: `1px solid ${modality.tagColor}`,
                   color: modality.tagColor,
                   borderRadius: 4,

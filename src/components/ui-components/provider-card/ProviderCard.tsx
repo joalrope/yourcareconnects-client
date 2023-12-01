@@ -1,10 +1,11 @@
-import { Card, Rate, Tooltip } from "antd";
+import { Card, Col, Rate, Row, Tooltip, Typography } from "antd";
 
 import { ILocation } from "../map/MapView";
 import { UserTitle } from "./UserTitle";
 import { useTranslation } from "react-i18next";
 
 const { Meta } = Card;
+const { Text, Title } = Typography;
 
 const baseUrl = import.meta.env.VITE_URL_BASE;
 
@@ -12,17 +13,21 @@ export interface IDataProvider {
   id: string;
   services: string[];
   fullname?: string;
+  email?: string;
   location?: ILocation;
   pictures: { profile: string };
-  ratings: number;
+  ratings?: number;
+  small?: boolean;
 }
 
 export const ProviderCard = ({
   id,
   fullname,
+  email,
   services,
   pictures,
   ratings,
+  small = false,
 }: IDataProvider) => {
   const { profile } = pictures;
   const picture = `${baseUrl}/images/${id}/${profile}`;
@@ -40,35 +45,65 @@ export const ProviderCard = ({
     <Card
       hoverable
       style={{
-        height: "420px",
+        display: "flex",
+        flexDirection: "column",
+        height: small ? 200 : 420,
         maxWidth: "220px",
         minWidth: "200px",
         width: "100%",
       }}
-      cover={<img alt={`Picture of ${fullname}`} src={picture} height={240} />}
+      cover={
+        !small && (
+          <img
+            alt={`Picture of ${fullname}`}
+            src={small ? "/images/logo.png" : picture}
+            height={240}
+          />
+        )
+      }
     >
-      <Meta title={<UserTitle fullname={fullname} id={id} />} />
-      <p style={{ marginTop: "8px" }}>
-        <span>
-          <b>{t("Services")}: </b>
+      <Row
+        style={{
+          flexDirection: "column",
+          height: "100%",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
+        <Col>
+          <Meta
+            title={
+              <UserTitle
+                fullname={fullname}
+                email={email}
+                id={id}
+                contact={small}
+              />
+            }
+          />
+        </Col>
+        <Col style={{ display: "flex", flexDirection: "column" }}>
+          <Title level={5} style={{ height: 12, marginTop: 5 }}>
+            {t("Services")}:{" "}
+          </Title>
           <Tooltip placement="top" title={userServ}>
-            <span
+            <Text
               style={{
                 display: "-webkit-box",
-                height: "38px",
+                height: "100%",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 3,
+                WebkitLineClamp: 1,
               }}
             >
               {userServ}
-            </span>
+            </Text>
           </Tooltip>
-        </span>
-      </p>
+        </Col>
 
-      <Rate disabled allowHalf defaultValue={ratings} />
+        {ratings && <Rate disabled allowHalf defaultValue={ratings} />}
+      </Row>
     </Card>
   );
 };
