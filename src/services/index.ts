@@ -9,6 +9,7 @@ export {
 export {
   clearNotificationsById,
   getUserById,
+  getInactiveUsers,
   getUserByServices,
   getUserMessagesById,
   updateUserById,

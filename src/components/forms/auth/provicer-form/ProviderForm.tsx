@@ -132,6 +132,47 @@ export const ProviderForm = () => {
     return loc;
   };
 
+  useEffect(() => {
+    const defaultValues = {
+      id: user.id,
+      address: user.address,
+      biography: user.biography,
+      certificates: user.certificates,
+      company: user.company,
+      contacts: user.contacts,
+      faxNumber: user.faxNumber,
+      owner: user.owner,
+      phoneNumber: user.phoneNumber,
+      serviceModality: user.serviceModality,
+      services: user.services,
+      webUrl: user.webUrl,
+      zipCode: user.zipCode,
+    };
+
+    form.setFieldsValue({
+      services: [],
+    });
+
+    form.setFieldsValue({
+      ...defaultValues,
+    } as unknown as IProvider);
+  }, [
+    form,
+    user.address,
+    user.biography,
+    user.certificates,
+    user.company,
+    user.contacts,
+    user.faxNumber,
+    user.id,
+    user.owner,
+    user.phoneNumber,
+    user.serviceModality,
+    user.services,
+    user.webUrl,
+    user.zipCode,
+  ]);
+
   return viewMap ? (
     <MapView getLoc={getLoc} goBack={setViewMap} />
   ) : (
@@ -152,7 +193,7 @@ export const ProviderForm = () => {
         >
           <ChangeProfilePicture />
 
-          {user && (
+          {
             <Form
               name="providerRegister"
               form={form}
@@ -164,10 +205,6 @@ export const ProviderForm = () => {
               }}
               style={{
                 width: "100%",
-              }}
-              initialValues={{
-                ...user,
-                conditions: false,
               }}
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
@@ -267,6 +304,7 @@ export const ProviderForm = () => {
                 >
                   <CategorySelect
                     form={form}
+                    initValues={user.services}
                     formatted={true}
                     editable={true}
                     sortable={true}
@@ -326,7 +364,7 @@ export const ProviderForm = () => {
                 </Button>
               </Form.Item>
             </Form>
-          )}
+          }
         </Row>
       </Col>
     </Row>

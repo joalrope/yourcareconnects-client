@@ -92,7 +92,7 @@ export const ProfilePicture = ({
     <>
       {/*  <ImgCrop rotationSlider> */}
       <Upload
-        accept="image/png, image/jpeg"
+        accept="image/png, image/jpeg, image/jpg"
         name={pictureName}
         fileList={fileList}
         listType="picture-card"

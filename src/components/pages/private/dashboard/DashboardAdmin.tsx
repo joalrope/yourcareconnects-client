@@ -9,14 +9,19 @@ export const DashboardAdmin = () => {
 
   return (
     <Row style={{ width: "100%" }}>
-      <Col span={24} style={{ maxWidth: "96%", margin: "auto" }}>
-        <Col span={24} style={{ borderBottom: "1px solid #e8e8e8" }}>
-          <Title level={3} style={{ margin: "20px", width: "100%" }}>
-            {t("Dashboard")}
-          </Title>
+      <Row>
+        <Col span={24} style={{ maxWidth: "96%", margin: "auto" }}>
+          <Col span={24} style={{ borderBottom: "1px solid #e8e8e8" }}>
+            <Title level={3} style={{ margin: "20px", width: "100%" }}>
+              {t("Dashboard")}
+            </Title>
+          </Col>
         </Col>
-      </Col>
-      <UserGrid />
+        <Row style={{ marginLeft: 48, marginRight: 24 }}>
+          <UserGrid />
+        </Row>
+      </Row>
+      <Row>Servicios</Row>
     </Row>
   );
 };

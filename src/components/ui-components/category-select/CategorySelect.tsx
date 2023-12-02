@@ -20,6 +20,7 @@ import { IItem, Props } from "./interfaces";
 
 export const CategorySelect = ({
   form,
+  initValues = [],
   formatted,
   editable,
   sortable,
@@ -31,8 +32,7 @@ export const CategorySelect = ({
   const [open, setOpen] = useState(false);
   const [data, setData] = useState<IItem[] | undefined>();
 
-  const initValServForm = form.getFieldValue("services");
-  const [value, setValue] = useState<string[]>(initValServForm);
+  const [value, setValue] = useState<string[]>([]);
 
   const handleClick = useCallback(
     (value: string | ReactNode) => {
@@ -93,6 +93,10 @@ export const CategorySelect = ({
       services: newValue,
     });
   };
+
+  useEffect(() => {
+    setValue(initValues);
+  }, [initValues]);
 
   return (
     <>

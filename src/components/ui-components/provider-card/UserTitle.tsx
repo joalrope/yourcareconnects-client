@@ -39,7 +39,10 @@ export const UserTitle = ({ fullname, email, id, contact }: Props) => {
 
       if (ok) {
         message.success({
-          content: [<b>{fullname}</b>, t("was added to your contact list")],
+          content: [
+            <b key={"1"}>{fullname}</b>,
+            t("was added to your contact list"),
+          ],
           duration: 4,
         });
         dispatch(setUser(user));

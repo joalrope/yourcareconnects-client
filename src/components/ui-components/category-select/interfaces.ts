@@ -23,4 +23,5 @@ export interface Props {
   formatted?: boolean;
   editable: boolean;
   sortable?: boolean;
+  initValues?: string[];
 }

@@ -54,13 +54,6 @@ export const ChangeProfilePicture = () => {
       return;
     }
 
-    setFileList([
-      {
-        uid: "-1",
-        url: `${baseUrl}/images/${id}/${pictureName}`,
-        name: `${names} image`,
-      },
-    ]);
     dispatch(setProfilePicture({ profile: pictureName }));
     form.resetFields();
     message.success(t(`${msg}`));
@@ -69,6 +62,20 @@ export const ChangeProfilePicture = () => {
   const onFinishFailed = (errorInfo: unknown) => {
     message.error(`${t("There are fields not supplied")}:${errorInfo}`);
   };
+
+  useEffect(() => {
+    const defaultValues = {
+      pictureName: user.pictures?.profile,
+    } as unknown as IProvider;
+    form.setFieldsValue(defaultValues);
+    setFileList([
+      {
+        uid: "-1",
+        url: `${baseUrl}/images/${id}/${pictures?.profile}`,
+        name: `${names} image`,
+      },
+    ]);
+  }, [form, id, names, pictures?.profile, user.pictures?.profile]);
 
   return (
     <>

@@ -29,15 +29,16 @@ export const ProviderCard = ({
   ratings,
   small = false,
 }: IDataProvider) => {
-  const { profile } = pictures;
+  const { profile } = !small ? pictures : { profile: "" };
   const picture = `${baseUrl}/images/${id}/${profile}`;
   const { t } = useTranslation();
 
   const serv: string[] = [];
 
-  services.map((service) => {
-    serv.push(t(service.split("|").pop() as string));
-  });
+  !small &&
+    services.map((service) => {
+      serv.push(t(service.split("|").pop() as string));
+    });
 
   const userServ = serv.join(", ");
 
@@ -48,7 +49,7 @@ export const ProviderCard = ({
         display: "flex",
         flexDirection: "column",
         height: small ? 200 : 420,
-        maxWidth: "220px",
+        maxWidth: "300px",
         minWidth: "200px",
         width: "100%",
       }}

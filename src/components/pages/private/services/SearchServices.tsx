@@ -150,6 +150,7 @@ export const SearchServices = () => {
                 formatted={true}
                 editable={false}
                 sortable={true}
+                initValues={[]}
               />
             </Form.Item>
 

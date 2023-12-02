@@ -7,6 +7,12 @@ export const getUserById = async (id: string) => {
   return result;
 };
 
+export const getInactiveUsers = async () => {
+  const result = await fetchWithToken(`/users/inactive?from=0&limit=0`);
+
+  return result;
+};
+
 export const getUserByServices = async (services: string[]) => {
   /*if (services.length > 1) {*/
   const query = services.reduce((queryString, service) => {

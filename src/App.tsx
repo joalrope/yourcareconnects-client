@@ -41,8 +41,6 @@ function App() {
     const { ok, result } = await getUserById(id);
     dispatch(setLoading(false));
 
-    console.log({ result });
-
     if (ok) {
       result.token = token;
       dispatch(setUser(result));
