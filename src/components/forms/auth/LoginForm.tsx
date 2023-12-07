@@ -51,31 +51,28 @@ export const LoginForm = () => {
 
     dispatch(setLoading(false));
 
-    if (ok) {
-      form.resetFields();
-      user.token = token;
-      dispatch(setUser(user));
-      dispatch(setLoggedIn(true));
-      sessionStorage.setItem("token", token);
-      sessionStorage.setItem("id", JSON.stringify(user.id));
-      navigate("/dashboard");
-      dispatch(setLocationPath("dashboard"));
+    if (!ok) {
+      modal.error({
+        title: t("Error login"),
+        content: <p>{t(`${msg}`)}</p>,
+        autoFocusButton: null,
+        okText: `${t("Agreed")}`,
+      });
       return;
     }
 
-    modal.error({
-      title: t("Error login"),
-      content: (
-        <>
-          <span key={1}>{t(`${msg}`)}</span>
-          <br key={2} />
-          <br key={3} />
-          <span key={4}>{t("Please try again")}</span>
-        </>
-      ),
-      autoFocusButton: null,
-      okText: `${t("Agreed")}`,
-    });
+    form.resetFields();
+
+    user.token = token;
+
+    dispatch(setUser(user));
+    dispatch(setLoggedIn(true));
+
+    sessionStorage.setItem("token", token);
+    sessionStorage.setItem("id", JSON.stringify(user.id));
+
+    navigate("/dashboard");
+    dispatch(setLocationPath("dashboard"));
   };
   const onFinishFailed = (errorInfo: unknown) => {
     console.log("Failed:", errorInfo);

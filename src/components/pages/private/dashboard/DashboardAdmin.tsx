@@ -1,11 +1,23 @@
-import { Col, Row, Typography } from "antd";
+import { Col, Radio, RadioChangeEvent, Row, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { UserGrid } from "./UserGrid";
+import { useState } from "react";
 
 const { Title } = Typography;
 
+export enum TypeActiveUserStatus {
+  ALL = "all",
+  ACTIVE = "active",
+  INACTIVE = "inactive",
+}
+
 export const DashboardAdmin = () => {
   const { t } = useTranslation();
+  const [value, setValue] = useState(TypeActiveUserStatus.ALL);
+
+  const onUserTypeChange = (e: RadioChangeEvent) => {
+    setValue(e.target.value);
+  };
 
   return (
     <Row style={{ width: "100%" }}>
@@ -17,8 +29,33 @@ export const DashboardAdmin = () => {
             </Title>
           </Col>
         </Col>
+        <Row
+          style={{
+            justifyContent: "flex-end",
+            marginRight: 24,
+            paddingTop: 48,
+            width: "100%",
+          }}
+          gutter={[24, 24]}
+        >
+          <Col>
+            <Radio.Group onChange={onUserTypeChange} value={value}>
+              <Radio value={TypeActiveUserStatus.ALL}>
+                {" "}
+                <Title level={5}>{t("All Users")}</Title>
+              </Radio>
+              <Radio value={TypeActiveUserStatus.INACTIVE}>
+                {" "}
+                <Title level={5}> {t("Inactive Users")}</Title>
+              </Radio>
+              <Radio value={TypeActiveUserStatus.ACTIVE}>
+                <Title level={5}> {t("Active Providers")}</Title>
+              </Radio>
+            </Radio.Group>
+          </Col>
+        </Row>
         <Row style={{ marginLeft: 48, marginRight: 24 }}>
-          <UserGrid />
+          <UserGrid userType={value} />
         </Row>
       </Row>
       <Row>Servicios</Row>

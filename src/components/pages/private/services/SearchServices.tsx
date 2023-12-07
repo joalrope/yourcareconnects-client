@@ -8,11 +8,12 @@ import {
 import { useEffect, useState } from "react";
 import { getServicesToSearch } from "../../../../helpers/services";
 import { MapView } from "../..";
-import { IMarker } from "../../../ui-components/map/MapView";
+import { ILocation, IMarker } from "../../../ui-components/map/MapView";
 import { getUserByServices } from "../../../../services";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { useContent } from "../../../../hooks/useContent";
+import { getLocation } from "../../../ui-components/map/utils/getLocation";
 
 const { Title } = Typography;
 
@@ -30,6 +31,7 @@ export const SearchServices = () => {
   const content = useContent();
 
   const [form] = Form.useForm<Props>();
+  const { location } = useSelector((state: RootState) => state.user);
   const { language } = useSelector((state: RootState) => state.i18n);
   const { t } = useTranslation();
 
@@ -45,7 +47,7 @@ export const SearchServices = () => {
       ok,
       msg,
       result: { users },
-    } = await getUserByServices(values.services);
+    } = await getUserByServices(values.services, location);
 
     if (!ok) {
       console.log(msg);
@@ -53,7 +55,21 @@ export const SearchServices = () => {
     }
 
     if (users.length >= 1) {
-      setProviders(users);
+      const usersMarkers = users.map((user: IDataProvider) => {
+        const userLocation = getLocation(user.location as ILocation);
+
+        return {
+          id: user.id,
+          location: userLocation,
+          fullname: user.fullname,
+          pictures: user.pictures,
+          services: user.services,
+          ratings: user.ratings,
+          role: user.role,
+        };
+      });
+
+      setProviders(usersMarkers);
       setAreThereUsers(true);
     }
 
@@ -79,6 +95,7 @@ export const SearchServices = () => {
         });
         return;
       }
+      console.log(providers);
       setViewMap(true);
     });
   };
@@ -95,7 +112,7 @@ export const SearchServices = () => {
   }, [selSrvices, language, t]);
 
   return viewMap ? (
-    <MapView markers={providers as IMarker[]} goBack={setViewMap} />
+    <MapView markers={providers as unknown as IMarker[]} goBack={setViewMap} />
   ) : (
     <>
       <Row
@@ -216,7 +233,7 @@ export const SearchServices = () => {
                 xl={6}
                 xxl={6}
               >
-                <ProviderCard {...provider} />
+                {provider.role === "provider" && <ProviderCard {...provider} />}
               </Col>
             );
           })

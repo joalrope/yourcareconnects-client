@@ -94,17 +94,19 @@ export const InfoContent = ({ names }: Props) => {
       label: (
         <Row style={{ flexDirection: "row", alignItems: "center" }}>
           <Link to="/dashboard" onClick={handleNameClick}>
-            <Title
-              style={{
-                cursor: "pointer",
-                color: token.colorTextBase,
-                paddingTop: "8px",
-                userSelect: "none",
-              }}
-              level={5}
-            >
-              {names}
-            </Title>
+            {names && (
+              <Title
+                style={{
+                  cursor: "pointer",
+                  color: token.colorTextBase,
+                  paddingTop: "8px",
+                  userSelect: "none",
+                }}
+                level={5}
+              >
+                {names}
+              </Title>
+            )}
           </Link>
           <Col>
             <Avatar
@@ -165,17 +167,19 @@ export const InfoContent = ({ names }: Props) => {
         >
           <Col>
             <Link to="/dashboard" onClick={handleNameClick}>
-              <Title
-                style={{
-                  cursor: "pointer",
-                  color: token.colorPrimary,
-                  paddingTop: "8px",
-                  userSelect: "none",
-                }}
-                level={5}
-              >
-                {names}
-              </Title>
+              {names && (
+                <Title
+                  style={{
+                    cursor: "pointer",
+                    color: token.colorPrimary,
+                    paddingTop: "8px",
+                    userSelect: "none",
+                  }}
+                  level={5}
+                >
+                  {names}
+                </Title>
+              )}
             </Link>
           </Col>
           <Col>

@@ -1,5 +1,7 @@
 import { IProvider } from "../components/forms/auth/provicer-form/interfaces";
 import { fetchWithToken } from "../helpers/fetch";
+import { ILocation } from "../components/ui-components/map/MapView";
+import { getLocation } from "../components/ui-components/map/utils/getLocation";
 
 export const getUserById = async (id: string) => {
   const result = await fetchWithToken(`/users/${id}`);
@@ -7,22 +9,31 @@ export const getUserById = async (id: string) => {
   return result;
 };
 
-export const getInactiveUsers = async () => {
-  const result = await fetchWithToken(`/users/inactive?from=0&limit=0`);
+export const getUsersByIsActive = async (userType: string) => {
+  const result = await fetchWithToken(
+    `/users/isActive/${userType}?from=0&limit=0`
+  );
 
   return result;
 };
 
-export const getUserByServices = async (services: string[]) => {
-  /*if (services.length > 1) {*/
-  const query = services.reduce((queryString, service) => {
-    return queryString + `services=${service}&`;
-  }, "");
+export const getUserByServices = async (
+  services: string[],
+  coordinates: ILocation
+) => {
+  if (services.length > 1) {
+    const query = services.reduce((queryString, service) => {
+      return queryString + `services=${service}&`;
+    }, "");
 
-  return await fetchWithToken(`/users/services?${query}`);
-  /*}
+    const location = getLocation(coordinates);
 
-  return await fetchWithToken(`/search/users/${services[0]}`);*/
+    return await fetchWithToken(
+      `/users/services/${30}/${location.lat}/${location.lng}?${query}`
+    );
+  }
+
+  return await fetchWithToken(`/search/users/${services[0]}`);
 };
 
 export const updateUserById = async (
@@ -38,13 +49,50 @@ export const updateUserContactsById = async (
   id: string | undefined,
   contact: string
 ) => {
-  const result = await fetchWithToken(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let result: any;
+
+  const result1 = await fetchWithToken(
     `/users/contacts/${id}`,
     { contact },
     "PUT"
   );
 
-  console.log({ result });
+  if (result1.ok) {
+    console.log("result1 ok");
+    const result2 = await fetchWithToken(
+      `/users/contacts/${contact}`,
+      { contact: id },
+      "PUT"
+    );
+
+    if (result2.ok) {
+      console.log("result2 ok");
+      result = {
+        ok: true,
+        msg: "Contacts was updated",
+        result: { user: result1.result.user },
+      };
+    }
+  } else {
+    result = {
+      ok: false,
+      msg: "Contacts not updated",
+      result: {},
+    };
+  }
+
+  return result;
+};
+export const updateActiveUserStatus = async (
+  id: string | undefined,
+  value: boolean
+) => {
+  const result = await fetchWithToken(
+    `/users/active/${id}/${value}`,
+    {},
+    "PUT"
+  );
 
   return result;
 };

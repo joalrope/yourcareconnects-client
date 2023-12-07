@@ -9,9 +9,10 @@ export {
 export {
   clearNotificationsById,
   getUserById,
-  getInactiveUsers,
+  getUsersByIsActive,
   getUserByServices,
   getUserMessagesById,
   updateUserById,
   updateUserContactsById,
+  updateActiveUserStatus,
 } from "./userService";

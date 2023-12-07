@@ -58,6 +58,16 @@ function App() {
           colorTextBase: "#1a1a13",
           colorWhite: "#1a1a13",
         },
+        components: {
+          Menu: {
+            colorItemTextHover: "#1a1a13",
+            colorItemText: "#1a1a13",
+            colorItemBgHover: "#fbd467",
+            colorItemBgSelected: "#fbd467",
+            colorItemTextSelected: "#1a1a13",
+            paddingContentVertical: 0,
+          },
+        },
       }}
       locale={curLng}
     >

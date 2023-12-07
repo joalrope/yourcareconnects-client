@@ -10,8 +10,8 @@ export interface IPictures {
 }
 
 interface Ilocation {
-  lat: number;
-  lng: number;
+  type: "Point";
+  coordinates: [number, number];
 }
 
 export interface IUser {

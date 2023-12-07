@@ -16,8 +16,10 @@ export interface IDataProvider {
   email?: string;
   location?: ILocation;
   pictures: { profile: string };
+  isActive?: boolean;
   ratings?: number;
   small?: boolean;
+  role?: string;
 }
 
 export const ProviderCard = ({
@@ -27,6 +29,7 @@ export const ProviderCard = ({
   services,
   pictures,
   ratings,
+  isActive,
   small = false,
 }: IDataProvider) => {
   const { profile } = !small ? pictures : { profile: "" };
@@ -48,9 +51,8 @@ export const ProviderCard = ({
       style={{
         display: "flex",
         flexDirection: "column",
-        height: small ? 200 : 420,
+        height: small ? 200 : 380,
         maxWidth: "300px",
-        minWidth: "200px",
         width: "100%",
       }}
       cover={
@@ -79,6 +81,8 @@ export const ProviderCard = ({
                 email={email}
                 id={id}
                 contact={small}
+                isActive={isActive}
+                small={small}
               />
             }
           />
@@ -103,7 +107,7 @@ export const ProviderCard = ({
           </Tooltip>
         </Col>
 
-        {ratings && <Rate disabled allowHalf defaultValue={ratings} />}
+        <Rate disabled allowHalf defaultValue={ratings} />
       </Row>
     </Card>
   );

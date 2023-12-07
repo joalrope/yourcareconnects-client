@@ -25,6 +25,7 @@ import { IPictures } from "../../../interface/user";
 import { MarkersSort } from "../../../helpers/markers";
 import { useContent } from "../../../hooks/useContent";
 import { Markers } from "./Markers";
+import { getLocation } from "./utils/getLocation";
 
 const { Text } = Typography;
 
@@ -36,28 +37,33 @@ const mapStyles = {
 };
 
 export interface ILocation {
-  lat: number;
-  lng: number;
+  type: "Point";
+  coordinates: [number, number];
 }
 
 export interface IMarker {
   id: string;
-  location: ILocation;
+  location: ICenterMap;
   fullname: string;
   pictures: IPictures | undefined;
   services: string[];
   ratings: number;
+  role?: string;
 }
 
 interface Props {
-  getLoc?: (loc: ILocation) => object;
+  getLoc?: (loc: ICenterMap) => object;
   goBack?: Dispatch<SetStateAction<boolean>>;
   markers?: IMarker[];
 }
 
+interface ICenterMap {
+  lat: number;
+  lng: number;
+}
 export const MapView = ({ getLoc, goBack, markers }: Props) => {
   const user = useSelector((state: RootState) => state.user);
-  const [center, setCenter] = useState<ILocation>({ lat: 0, lng: 0 });
+  const [center, setCenter] = useState<ICenterMap>({ lat: 0, lng: 0 });
   const [selectedMarker, setSelectedMarker] = useState<IMarker | null>(null);
   const libraries: Libraries = useMemo(() => ["places", "marker"], []);
   const { t } = useTranslation();
@@ -76,15 +82,31 @@ export const MapView = ({ getLoc, goBack, markers }: Props) => {
       (marker) => marker?.fullname === user.fullname
     );
 
+    const userLocation = getLocation(user.location);
+
     setCenter({
-      lat: user.location ? user.location.lat : 0.0,
-      lng: user.location ? user.location.lng : 0.0,
+      lat: userLocation.lat,
+      lng: userLocation.lng,
     });
 
     if (!marker) {
-      markers?.push(user as IMarker);
+      const newUser: IMarker = {
+        id: user.id as string,
+        fullname: user.fullname as string,
+        location: {
+          lat: userLocation.lat,
+          lng: userLocation.lng,
+        },
+        pictures: user.pictures,
+        services: user.services as string[],
+        ratings: user.ratings as number,
+        role: user.role as string,
+      };
+
+      markers?.push(newUser as IMarker);
     }
-  }, [markers, user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   //calculate zoom so all markers fit on screen
   const onLoad = useCallback(
@@ -160,7 +182,7 @@ export const MapView = ({ getLoc, goBack, markers }: Props) => {
   ) : (
     <GoogleMap
       key={"1"}
-      zoom={user.location ? 18 : 3}
+      zoom={user.location ? 4 : 3}
       center={center}
       mapContainerStyle={mapStyles}
       onLoad={onLoad}

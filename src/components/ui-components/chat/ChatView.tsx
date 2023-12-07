@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Schema } from "mongoose";
+
+import { Menu, type MenuProps } from "antd";
+
 import { RootState } from "../../../store";
 import {
   setConversations,
@@ -11,6 +14,7 @@ import {
   setAddChatMessage,
   setChatMessages,
   setUnreadCount,
+  setNotifications,
 } from "../../../store/slices";
 import {
   Avatar,
@@ -50,6 +54,7 @@ import {
 import { useChatSocketCtx } from "./context";
 import { getConversations } from "./helpers/conversations";
 import { clearNotificationsById, getUserMessagesById } from "../../../services";
+import { useChatMenuItems } from "./ChatMenuItems";
 
 const baseUrl = import.meta.env.VITE_URL_BASE;
 
@@ -72,6 +77,8 @@ export const ChatView = () => {
   );
   const [messageInputValue, setMessageInputValue] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const [currentPath, setCurrentPath] = useState("mail");
   const [loadingMore, setLoadingMore] = useState(false);
   const [showTyping, setShowTyping] = useState({ isTyping: false, writer: "" });
   const [activeContact, setActiveContact] = useState<IConversation>(contacInit);
@@ -80,6 +87,8 @@ export const ChatView = () => {
   const { socket } = useChatSocketCtx();
 
   socket.connect();
+
+  const items: MenuProps["items"] = useChatMenuItems();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -111,7 +120,7 @@ export const ChatView = () => {
     socket.on("updateNotifications", (notifications: number) => {
       console.log({ notiInSocket: notifications });
 
-      //dispatch(setNotifications(notifications));
+      dispatch(setNotifications(notifications));
     });
 
     socket.on("unsentMessage", (message: string) => {
@@ -119,6 +128,7 @@ export const ChatView = () => {
     });
 
     socket.on("connectedUsers", (connectedUsers: IConnectedUsers) => {
+      console.log({ connectedUsers });
       dispatch(setConnectedUsers(connectedUsers));
     });
 
@@ -160,6 +170,8 @@ export const ChatView = () => {
       receiverId: activeContact.id,
       senderId,
     };
+
+    console.log({ msgData });
 
     if (type === IMessageType.TEXT) {
       socket.emit("sendMessage", msgData);
@@ -258,6 +270,17 @@ export const ChatView = () => {
     console.log("show context menu", id);
   };
 
+  const handleonMenuClick = () => {
+    setShowMenu(!showMenu);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onClickMenu = (e: any) => {
+    console.log("click ", e);
+    setCurrentPath(e.key);
+    setShowMenu(!showMenu);
+  };
+
   return (
     <div
       style={{
@@ -312,9 +335,35 @@ export const ChatView = () => {
             />
             <ConversationHeader.Actions>
               <EllipsisButton
-                onClick={() => console.log("Menu")}
+                onClick={handleonMenuClick}
                 orientation="vertical"
               />
+              {showMenu && (
+                <div
+                  as={ConversationHeader.Actions}
+                  style={{
+                    backgroundColor: "#1a1a13",
+                    border: "solid 1px #E0E0E0",
+                    borderRadius: "8px",
+                    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                    color: "white",
+                    height: "200px",
+                    position: "absolute",
+                    top: "64px",
+                    right: "2px",
+                    width: "250px",
+                  }}
+                >
+                  <Menu
+                    onClick={onClickMenu}
+                    selectedKeys={[currentPath]}
+                    mode="vertical"
+                    items={items}
+                    style={{ fontFamily: "Inter", fontSize: "12px" }}
+                    theme="dark"
+                  />
+                </div>
+              )}
             </ConversationHeader.Actions>
           </ConversationHeader>
 

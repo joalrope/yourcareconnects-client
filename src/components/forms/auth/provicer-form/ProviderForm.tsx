@@ -128,7 +128,10 @@ export const ProviderForm = () => {
   };
 
   const getLoc = (loc: { lat: number; lng: number }) => {
-    form.setFieldValue("location", loc);
+    form.setFieldValue("location", {
+      type: "Point",
+      coordinates: [loc.lng, loc.lat],
+    });
     return loc;
   };
 

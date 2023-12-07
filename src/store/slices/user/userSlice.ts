@@ -18,7 +18,10 @@ const initialState: IUser = {
   id: "",
   isLoggedIn,
   lastName: "",
-  location: { lat: 0, lng: 0 },
+  location: {
+    type: "Point",
+    coordinates: [parseFloat(String("0.0")), parseFloat(String("0.0"))],
+  },
   names: "",
   notifications: {} as Schema.Types.Mixed,
   owner: "",
