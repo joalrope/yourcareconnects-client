@@ -22,11 +22,11 @@ import { getModalities, updateUserById } from "../../../../services";
 import { setUser } from "../../../../store/slices";
 import { setLocationPath } from "../../../../store/slices/router/routerSlice";
 2;
-import { ChangeProfilePicture } from "../../picture/ChangeProfilePicture";
 import { IModality, IProvider } from "./interfaces";
 import { MapView } from "../../../pages";
 import { FormItemInput } from "../../../ui-components/FormItemInput";
 import { useContent } from "../../../../hooks/useContent";
+import { UserProfileImage } from "../../../ui-components/user-profile-image/UserProfileImage";
 
 const { Title } = Typography;
 
@@ -86,6 +86,8 @@ export const ProviderForm = () => {
   }, []);
 
   const onFinish = async (values: IProvider) => {
+    console.log({ values });
+
     const {
       ok,
       msg,
@@ -194,180 +196,187 @@ export const ProviderForm = () => {
             alignItems: "flex-start",
           }}
         >
-          <ChangeProfilePicture />
-
-          {
-            <Form
-              name="providerRegister"
-              form={form}
-              labelCol={{
-                span: 24,
-              }}
-              wrapperCol={{
-                span: 24,
-              }}
+          <Form
+            name="providerRegister"
+            form={form}
+            labelCol={{
+              span: 24,
+            }}
+            wrapperCol={{
+              span: 24,
+            }}
+            style={{
+              width: "100%",
+            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+            <Row
+              gutter={[24, 32]}
               style={{
+                flexDirection: "row",
+                marginInline: "0px",
                 width: "100%",
+                justifyContent: "space-between",
               }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-              autoComplete="off"
             >
-              <Row
-                gutter={[24, 32]}
+              <Col>
+                <Form.Item
+                  name="pictures"
+                  style={{
+                    width: "100%",
+                    marginBottom: "0px",
+                  }}
+                >
+                  <UserProfileImage form={form} />
+                </Form.Item>
+              </Col>
+              <Col
                 style={{
-                  flexDirection: "row",
-                  marginInline: "0px",
-                  width: "100%",
-                  justifyContent: "space-between",
+                  display: "inline",
+                  paddingInline: 0,
+                  flexGrow: 1,
                 }}
               >
-                <Col
-                  style={{
-                    display: "inline",
-                    paddingInline: 0,
-                    flexGrow: 1,
-                  }}
-                >
-                  <Form.Item
-                    label={t("Biography")}
-                    name="biography"
-                    style={{
-                      width: "100%",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <Input.TextArea rows={3} style={{ resize: "none" }} />
-                  </Form.Item>
-                </Col>
-              </Row>
-
-              <Row gutter={16}>
-                <Col xs={24} sm={24} md={16} lg={16}>
-                  {role !== "customer" && (
-                    <FormItemInput name="company" label="Company Name" />
-                  )}
-                </Col>
-
-                <Col xs={24} sm={24} md={8} lg={8}>
-                  {role !== "customer" && (
-                    <FormItemInput name="owner" label="Owner's name" />
-                  )}
-                </Col>
-              </Row>
-
-              <Row gutter={16}>
-                <Col xs={24} sm={24} md={18} lg={18}>
-                  <FormItemInput name="address" label="Physical address" />
-                </Col>
-                <Col xs={24} sm={24} md={6} lg={6}>
-                  <Form.Item
-                    label={t("GeoLoc address")}
-                    name="location"
-                    style={{
-                      width: "100%",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    <Button
-                      type="primary"
-                      onClick={HandleGeoloc}
-                      style={{ width: "100%" }}
-                    >
-                      {t("Get location")}
-                    </Button>
-                  </Form.Item>
-                </Col>
-              </Row>
-
-              <Row gutter={16}>
-                <Col xs={24} sm={24} md={8} lg={8}>
-                  <FormItemInput name="zipCode" label="Zip code" />
-                </Col>
-                <Col xs={24} sm={24} md={8} lg={8}>
-                  <FormItemInput name="phoneNumber" label="Phone number" />
-                </Col>
-                <Col xs={24} sm={24} md={8} lg={8}>
-                  <FormItemInput name="faxNumber" label="Fax number" />
-                </Col>
-              </Row>
-
-              {role !== "customer" && (
-                <FormItemInput name="webUrl" label="Web Page" />
-              )}
-
-              {role !== "customer" && (
                 <Form.Item
-                  label={t("Select one or more services to provide")}
-                  name="services"
+                  label={t("Biography")}
+                  name="biography"
                   style={{
                     width: "100%",
                     marginBottom: "6px",
                   }}
                 >
-                  <CategorySelect
-                    form={form}
-                    initValues={user.services}
-                    formatted={true}
-                    editable={true}
-                    sortable={true}
-                  />
+                  <Input.TextArea rows={3} style={{ resize: "none" }} />
                 </Form.Item>
-              )}
+              </Col>
+            </Row>
 
-              {role !== "customer" && (
+            <Row gutter={16}>
+              <Col xs={24} sm={24} md={16} lg={16}>
+                {role !== "customer" && (
+                  <FormItemInput name="company" label="Company Name" />
+                )}
+              </Col>
+
+              <Col xs={24} sm={24} md={8} lg={8}>
+                {role !== "customer" && (
+                  <FormItemInput name="owner" label="Owner's name" />
+                )}
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col xs={24} sm={24} md={18} lg={18}>
+                <FormItemInput name="address" label="Physical address" />
+              </Col>
+              <Col xs={24} sm={24} md={6} lg={6}>
                 <Form.Item
-                  label={t("Service modality")}
-                  name="serviceModality"
+                  label={t("GeoLoc address")}
+                  name="location"
                   style={{
                     width: "100%",
                     marginBottom: "6px",
                   }}
                 >
-                  <Select
-                    mode="tags"
+                  <Button
+                    type="primary"
+                    onClick={HandleGeoloc}
                     style={{ width: "100%" }}
-                    tokenSeparators={[","]}
-                    options={modalities}
-                    placeholder={`${t("Service modality").toLowerCase()}`}
-                  />
+                  >
+                    {t("Get location")}
+                  </Button>
                 </Form.Item>
-              )}
+              </Col>
+            </Row>
 
-              {role !== "customer" && (
-                <Form.Item
-                  label={t("Licenses and certificates to provide services")}
-                  name="certificates"
-                  style={{
-                    width: "100%",
-                    marginBottom: "6px",
-                  }}
-                >
-                  <Upload {...uploadDocs}>
-                    <Button type="primary" icon={<UploadOutlined />}>
-                      {t("Upload")}
-                    </Button>
-                  </Upload>
-                </Form.Item>
-              )}
+            <Row gutter={16}>
+              <Col xs={24} sm={24} md={8} lg={8}>
+                <FormItemInput name="zipCode" label="Zip code" />
+              </Col>
+              <Col xs={24} sm={24} md={8} lg={8}>
+                <FormItemInput name="phoneNumber" label="Phone number" />
+              </Col>
+              <Col xs={24} sm={24} md={8} lg={8}>
+                <FormItemInput name="faxNumber" label="Fax number" />
+              </Col>
+            </Row>
 
+            {role !== "customer" && (
+              <FormItemInput name="webUrl" label="Web Page" />
+            )}
+
+            {role !== "customer" && (
               <Form.Item
-                wrapperCol={{
-                  offset: 10,
-                  span: 12,
+                label={t("Select one or more services to provide")}
+                name="services"
+                style={{
+                  width: "100%",
+                  marginBottom: "6px",
                 }}
-                style={{ display: "flex", justifyContent: "center" }}
               >
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  style={{ marginTop: "24px" }}
-                >
-                  {t("Save")}
-                </Button>
+                <CategorySelect
+                  form={form}
+                  initValues={user.services}
+                  formatted={true}
+                  editable={true}
+                  sortable={true}
+                />
               </Form.Item>
-            </Form>
-          }
+            )}
+
+            {role !== "customer" && (
+              <Form.Item
+                label={t("Service modality")}
+                name="serviceModality"
+                style={{
+                  width: "100%",
+                  marginBottom: "6px",
+                }}
+              >
+                <Select
+                  mode="tags"
+                  style={{ width: "100%" }}
+                  tokenSeparators={[","]}
+                  options={modalities}
+                  placeholder={`${t("Service modality").toLowerCase()}`}
+                />
+              </Form.Item>
+            )}
+
+            {role !== "customer" && (
+              <Form.Item
+                label={t("Licenses and certificates to provide services")}
+                name="certificates"
+                style={{
+                  width: "100%",
+                  marginBottom: "6px",
+                }}
+              >
+                <Upload {...uploadDocs}>
+                  <Button type="primary" icon={<UploadOutlined />}>
+                    {t("Upload")}
+                  </Button>
+                </Upload>
+              </Form.Item>
+            )}
+
+            <Form.Item
+              wrapperCol={{
+                offset: 10,
+                span: 12,
+              }}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <Button
+                type="primary"
+                htmlType="submit"
+                style={{ marginTop: "24px" }}
+              >
+                {t("Save")}
+              </Button>
+            </Form.Item>
+          </Form>
         </Row>
       </Col>
     </Row>

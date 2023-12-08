@@ -26,7 +26,7 @@ const initialState: IUser = {
   notifications: {} as Schema.Types.Mixed,
   owner: "",
   phoneNumber: "",
-  pictures: { profile: "" },
+  pictures: { profile: { type: "", name: "", image: "" } },
   points: 0,
   role: "", // customer | provider | admin | superadmin
   services: [],
@@ -124,7 +124,7 @@ export const userSlice = createSlice({
       //state.notifications = {["hhhh"]: "hhhh"} as Schema.Types.Mixed;
       state.owner = "";
       state.phoneNumber = "";
-      state.pictures = { profile: "" };
+      state.pictures = { profile: { type: "", name: "", image: "" } };
       state.points = 0;
       state.role = "";
       state.services = [];

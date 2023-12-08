@@ -52,12 +52,6 @@ function App() {
   return (
     <ConfigProvider
       theme={{
-        token: {
-          colorPrimary: "#fbd467", // color primario
-          colorBgBase: "#ffffff29", // body color
-          colorTextBase: "#1a1a13",
-          colorWhite: "#1a1a13",
-        },
         components: {
           Menu: {
             colorItemTextHover: "#1a1a13",
@@ -67,6 +61,13 @@ function App() {
             colorItemTextSelected: "#1a1a13",
             paddingContentVertical: 0,
           },
+        },
+        token: {
+          colorPrimary: "#fbd467", // color primario
+          colorBgBase: "#ffffff29", // body color
+          colorTextBase: "#1a1a13",
+          colorText: "#1a1a13",
+          colorWhite: "#1a1a13",
         },
       }}
       locale={curLng}

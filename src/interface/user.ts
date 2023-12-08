@@ -6,7 +6,7 @@ interface IResetPassword {
 }
 
 export interface IPictures {
-  profile: string;
+  profile: { name: string; image: string; type: string };
 }
 
 interface Ilocation {

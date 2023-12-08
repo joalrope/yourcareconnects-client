@@ -29,7 +29,7 @@ import { useEffect, useState } from "react";
 const { Title } = Typography;
 const { useToken } = theme;
 
-const baseUrl = import.meta.env.VITE_URL_BASE;
+//const baseUrl = import.meta.env.VITE_URL_BASE;
 
 interface Props {
   names: string | undefined;
@@ -80,9 +80,10 @@ export const InfoContent = ({ names }: Props) => {
     //dispatch(setLocationPath("/"));
   };
 
-  const id = JSON.parse(String(sessionStorage.getItem("id")));
+  //const id = JSON.parse(String(sessionStorage.getItem("id")));
 
-  const pictureUrl = `${baseUrl}/images/${id}/${pictures?.profile}`;
+  //const pictureUrl = `${baseUrl}/images/${id}/${pictures?.profile}`;
+  const pictureUrl = `${pictures?.profile.image}`;
 
   const handleOpenChange = (flag: boolean) => {
     setOpen(flag);
