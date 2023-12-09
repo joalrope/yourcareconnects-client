@@ -9,21 +9,34 @@ import "./user-profile-image.css";
 interface Props {
   form: FormInstance;
 }
+
 export const UserProfileImage = ({ form }: Props) => {
   const { pictures } = useSelector((state: RootState) => state.user);
 
   const [fileList, setFileList] = useState<UploadFile[]>([
     {
       uid: "-1",
-      url: `${pictures?.profile.image}`,
+      url: `${pictures?.profile.image}`
+        ? `${pictures?.profile.image}`
+        : "/images/user.png",
       name: `${pictures?.profile.name}`,
     },
   ]);
 
   const onChange: UploadProps["onChange"] = ({ fileList }) => {
     const file = fileList[0];
+    if (file) {
+      file.status = "done";
+    }
 
     if (!file) {
+      form.setFieldValue("pictures", {
+        profile: {
+          name: "",
+          type: "",
+          image: "",
+        },
+      });
       setFileList(fileList);
       return;
     }
@@ -31,18 +44,12 @@ export const UserProfileImage = ({ form }: Props) => {
 
     reader.readAsDataURL(file.originFileObj as RcFile);
     reader.onload = (e) => {
-      console.log(fileList);
-
-      console.log({
-        name: file.name,
-        type: file.type,
-        image: e.target?.result,
-      });
-
       form.setFieldValue("pictures", {
-        name: file.name,
-        type: file.type,
-        image: e.target?.result,
+        profile: {
+          name: file.name,
+          type: file.type,
+          image: e.target?.result,
+        },
       });
     };
     setFileList(fileList);

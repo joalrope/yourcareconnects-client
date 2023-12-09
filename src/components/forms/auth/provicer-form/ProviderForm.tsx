@@ -86,8 +86,6 @@ export const ProviderForm = () => {
   }, []);
 
   const onFinish = async (values: IProvider) => {
-    console.log({ values });
-
     const {
       ok,
       msg,

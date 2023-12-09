@@ -20,6 +20,8 @@ export enum IMessageType {
 }
 
 export interface IChatMessage {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [x: string]: any;
   message: string;
   sentTime: string;
   sender: string;
@@ -33,7 +35,7 @@ export interface IChatMessage {
 export interface IConversation {
   id: string;
   names: string;
-  picture: string;
+  picture: { image: string; name: string; type: string };
   info: string;
   unreadCnt?: number;
 }
@@ -49,7 +51,7 @@ export interface IChat {
   connectedUsers: IConnectedUsers;
   conversations: IConversation[];
   unreadCount: number;
-  chatMessages: IChatMessage[];
+  chatMessages: { [x: string]: IChatMessage[] };
   receiverId: string;
   room: string;
   senderId: string;

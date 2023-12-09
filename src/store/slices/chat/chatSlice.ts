@@ -8,12 +8,12 @@ const initialState: IChat = {
     {
       id: "",
       names: "",
-      picture: "",
+      picture: { image: "", name: "", type: "" },
       info: "",
     },
   ],
   unreadCount: 0,
-  chatMessages: [],
+  chatMessages: {},
   receiverId: "",
   room: "",
   senderId: "",
@@ -42,7 +42,16 @@ export const chatSlice = createSlice({
       state.chatMessages = payload;
     },
     setAddChatMessage: (state, { payload }) => {
-      state.chatMessages = [...state.chatMessages, payload];
+      const date = payload.sentTime.split("T")[0];
+      const prev = JSON.parse(JSON.stringify(state.chatMessages));
+
+      if (prev[date]) {
+        prev[date].push(payload);
+      } else {
+        prev[date] = [payload];
+      }
+
+      state.chatMessages = prev;
     },
     setConnectedUsers: (state, { payload }) => {
       state.connectedUsers = payload;

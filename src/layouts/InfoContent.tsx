@@ -83,7 +83,10 @@ export const InfoContent = ({ names }: Props) => {
   //const id = JSON.parse(String(sessionStorage.getItem("id")));
 
   //const pictureUrl = `${baseUrl}/images/${id}/${pictures?.profile}`;
-  const pictureUrl = `${pictures?.profile.image}`;
+  const pictureUrl =
+    pictures?.profile.image === ""
+      ? "/images/user.png"
+      : `${pictures?.profile.image}`;
 
   const handleOpenChange = (flag: boolean) => {
     setOpen(flag);
@@ -114,7 +117,13 @@ export const InfoContent = ({ names }: Props) => {
               shape="circle"
               src={pictureUrl}
               onClick={() => handleOpenChange(false)}
-              style={{ cursor: "pointer", marginLeft: "12px" }}
+              size={44}
+              style={{
+                backgroundColor:
+                  pictures?.profile.image === "" ? "white" : "transparent",
+                cursor: "pointer",
+                marginLeft: "12px",
+              }}
             />
           </Col>
         </Row>
@@ -187,7 +196,13 @@ export const InfoContent = ({ names }: Props) => {
             <Avatar
               shape="circle"
               src={pictureUrl}
-              style={{ cursor: "pointer", marginLeft: "12px" }}
+              size={44}
+              style={{
+                backgroundColor:
+                  pictures?.profile.image === "" ? "white" : "transparent",
+                cursor: "pointer",
+                marginLeft: "12px",
+              }}
             />
           </Col>
 

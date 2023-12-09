@@ -36,14 +36,8 @@ import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import "./chat.css";
 import EmojiPicker, {
   EmojiClickData,
-  //EmojiStyle,
   SkinTones,
   Theme,
-  //Categories,
-  //EmojiClickData,
-  //Emoji,
-  //SuggestionMode,
-  //SkinTonePickerLocation,
 } from "emoji-picker-react";
 import {
   IChatMessage,
@@ -56,12 +50,10 @@ import { getConversations } from "./helpers/conversations";
 import { clearNotificationsById, getUserMessagesById } from "../../../services";
 import { useChatMenuItems } from "./ChatMenuItems";
 
-const baseUrl = import.meta.env.VITE_URL_BASE;
-
 const contacInit = {
   id: "",
   names: "",
-  picture: "",
+  picture: { image: "", name: "", type: "" },
   info: "",
   socketId: "",
 };
@@ -78,7 +70,7 @@ export const ChatView = () => {
   const [messageInputValue, setMessageInputValue] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [currentPath, setCurrentPath] = useState("mail");
+  const [currentPath, setCurrentPath] = useState("info");
   const [loadingMore, setLoadingMore] = useState(false);
   const [showTyping, setShowTyping] = useState({ isTyping: false, writer: "" });
   const [activeContact, setActiveContact] = useState<IConversation>(contacInit);
@@ -118,8 +110,6 @@ export const ChatView = () => {
     });
 
     socket.on("updateNotifications", (notifications: number) => {
-      console.log({ notiInSocket: notifications });
-
       dispatch(setNotifications(notifications));
     });
 
@@ -171,8 +161,6 @@ export const ChatView = () => {
       senderId,
     };
 
-    console.log({ msgData });
-
     if (type === IMessageType.TEXT) {
       socket.emit("sendMessage", msgData);
     }
@@ -205,7 +193,11 @@ export const ChatView = () => {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             id: String(++idRef.current!),
             names: `Emily ${idRef.current}`,
-            picture: "emilyIcon.png",
+            picture: {
+              image: "emilyIcon.png",
+              name: "emilyIcon",
+              type: "image/png",
+            },
             info: "none",
           });
         }
@@ -228,7 +220,19 @@ export const ChatView = () => {
     let { ok, result } = await getUserMessagesById(senderId, id);
 
     if (ok) {
-      dispatch(setChatMessages(result.messages));
+      const chatMessages: { [x: string]: IChatMessage[] } = {};
+
+      result.messages.map((m: IChatMessage) => {
+        const date = m.sentTime.split("T")[0];
+
+        if (!chatMessages[date]) {
+          chatMessages[date] = [];
+        }
+        chatMessages[date].push(m);
+      });
+      console.log(chatMessages);
+
+      dispatch(setChatMessages(chatMessages));
     } else {
       dispatch(setChatMessages([]));
     }
@@ -299,7 +303,7 @@ export const ChatView = () => {
             //onYReachEnd={onYReachEnd}
           >
             {conversations.map((c) => {
-              //console.log(c);
+              console.log(c);
               return (
                 <Conversation
                   key={c.id}
@@ -308,10 +312,7 @@ export const ChatView = () => {
                   onClick={() => handleConvesationClick(c.id)}
                   unreadCnt={c.unreadCnt}
                 >
-                  <Avatar
-                    name={c.names}
-                    src={`${baseUrl}/images/${c.id}/${c.picture}`}
-                  />
+                  <Avatar name={c.names} src={`${c.picture.image}`} />
                 </Conversation>
               );
             })}
@@ -323,15 +324,15 @@ export const ChatView = () => {
             <ConversationHeader.Back />
             <Avatar
               src={
-                activeContact.picture
-                  ? `${baseUrl}/images/${activeContact.id}/${activeContact.picture}`
+                activeContact.picture.image
+                  ? `${activeContact.picture.image}`
                   : "/images/transparent.png"
               }
               name={activeContact.names}
             />
             <ConversationHeader.Content
               userName={activeContact.names}
-              info={"last time online"}
+              info={activeContact.id !== "" ? activeContact.info : ""}
             />
             <ConversationHeader.Actions>
               <EllipsisButton
@@ -379,23 +380,32 @@ export const ChatView = () => {
               }
               onClick={() => setShowEmojiPicker(false)}
             >
-              <MessageSeparator content="Monday, 13 November 2023" />
-              {chatMessages.map(
-                ({ message, sentTime, sender, direction }, i) => (
-                  <Message
-                    key={sentTime + i}
-                    model={{
-                      message,
-                      sentTime,
-                      sender,
-                      direction,
-                      position: "single",
-                    }}
-                    onAuxClick={() => onAuxClick(sentTime)}
-                    //avatarSpacer
-                  />
-                )
-              )}
+              {Object.entries(chatMessages).map((key) => (
+                <>
+                  <MessageSeparator content={key[0]} />
+                  {key[1].map(
+                    (
+                      { message, sentTime, sender, direction }: IChatMessage,
+                      i: number
+                    ) => {
+                      return (
+                        <Message
+                          key={sentTime + i}
+                          model={{
+                            message,
+                            sentTime,
+                            sender,
+                            direction,
+                            position: "single",
+                          }}
+                          onAuxClick={() => onAuxClick(sentTime)}
+                          //avatarSpacer
+                        />
+                      );
+                    }
+                  )}
+                </>
+              ))}
             </MessageList>
           )}
 
