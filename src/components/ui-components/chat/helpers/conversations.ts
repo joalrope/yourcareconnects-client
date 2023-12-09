@@ -32,7 +32,7 @@ export const getConversations = async (
       return {
         id: "",
         names: "",
-        picture: "",
+        picture: { image: "", name: "", type: "" },
         info: "",
       } as IConversation;
     })

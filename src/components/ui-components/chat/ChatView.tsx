@@ -118,7 +118,7 @@ export const ChatView = () => {
     });
 
     socket.on("connectedUsers", (connectedUsers: IConnectedUsers) => {
-      console.log({ connectedUsers });
+      //console.log({ connectedUsers });
       dispatch(setConnectedUsers(connectedUsers));
     });
 
