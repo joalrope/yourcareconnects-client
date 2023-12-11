@@ -7,15 +7,13 @@ import { useTranslation } from "react-i18next";
 const { Meta } = Card;
 const { Text, Title } = Typography;
 
-const baseUrl = import.meta.env.VITE_URL_BASE;
-
 export interface IDataProvider {
   id: string;
   services: string[];
   fullname?: string;
   email?: string;
   location?: ILocation;
-  pictures: { profile: string };
+  pictures: { profile: { name: string; image: string; type: string } };
   isActive?: boolean;
   ratings?: number;
   small?: boolean;
@@ -32,8 +30,11 @@ export const ProviderCard = ({
   isActive,
   small = false,
 }: IDataProvider) => {
-  const { profile } = !small ? pictures : { profile: "" };
-  const picture = `${baseUrl}/images/${id}/${profile}`;
+  const { profile } = !small
+    ? pictures
+    : { profile: { name: "", image: "/images/user.png", type: "" } };
+
+  const picture = `${profile.image}`;
   const { t } = useTranslation();
 
   const serv: string[] = [];

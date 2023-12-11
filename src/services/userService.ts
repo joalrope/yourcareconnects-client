@@ -29,7 +29,7 @@ export const getUserByServices = async (
     const location = getLocation(coordinates);
 
     return await fetchWithToken(
-      `/users/services/${30}/${location.lat}/${location.lng}?${query}`
+      `/users/services/${300}/${location.lat}/${location.lng}?${query}`
     );
   }
 

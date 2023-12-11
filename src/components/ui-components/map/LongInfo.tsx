@@ -12,8 +12,6 @@ interface Props {
   handleMarkerClick: (marker: IMarker) => void;
 }
 
-const baseUrl = import.meta.env.VITE_URL_BASE;
-
 export const LongInfo = ({
   marker,
   selectedMarker,
@@ -54,7 +52,7 @@ export const LongInfo = ({
         }}
       >
         <Image
-          src={`${baseUrl}/images/${marker.id}/${marker.pictures?.profile}`}
+          src={`${marker.pictures?.profile.image}`}
           width={isLong ? 180 : 24}
           preview={false}
         />
