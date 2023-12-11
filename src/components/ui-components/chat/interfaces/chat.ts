@@ -1,5 +1,20 @@
 import { MessageDirection } from "@chatscope/chat-ui-kit-react/src/types/unions";
 
+export const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 export enum IMessagePosition {
   cero = 0,
   uno = 1,

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
-import { IChat } from "../../../interface";
+import { IChat } from "../../../components/ui-components/chat/interfaces";
 
 const initialState: IChat = {
   connectedUsers: {},

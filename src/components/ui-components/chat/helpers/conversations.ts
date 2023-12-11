@@ -1,4 +1,4 @@
-import { IConversation } from "./../../../../interface/chat";
+import { IConversation } from "../interfaces/chat";
 import { Schema } from "mongoose";
 import { getUserById } from "../../../../services";
 

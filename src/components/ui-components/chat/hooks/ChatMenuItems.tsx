@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import {
-  ClearOutlined,
+  // ClearOutlined,
   ExportOutlined,
   ImportOutlined,
   InfoCircleOutlined,
@@ -27,11 +27,11 @@ export const useChatMenuItems = () => {
       key: "leave",
       icon: <ExportOutlined style={{ fontSize }} />,
     },
-    {
+    /*{
       label: t("empty chat"),
       key: "empty",
       icon: <ClearOutlined style={{ fontSize }} />,
-    },
+    },*/
     {
       label: t("Setting"),
       key: "setting",

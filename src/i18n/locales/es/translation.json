@@ -221,6 +221,7 @@
   "The Vertical bar character ( | ) is not allowed, please remove it": "El caracter barra vertical o pleca ( | ) no está permitido, por favor eliminelo.",
   "There are no providers that provide the requested service": "No hay proveedores que prestan el servicio solicitado",
   "There are fields not supplied": "No se han suministrado todos los campos",
+  "Today": "Hoy",
   "Translation": "Traducción",
   "Transportation": "Transporte",
   "Traumas": "Traumas",
@@ -240,6 +241,19 @@
   "Welcome back to your account": "Bienvenido de nuevo a su cuenta",
   "Welcome to yourcareconnects": "Bienvenido a yourcareconnects",
   "Wheelchairs": "Sillas de ruedas",
+  "Yesterday": "Ayer",
   "You can reset your password": "Puedes restablecer tu contraseña",
-  "Zip code": "Código postal"
+  "Zip code": "Código postal",
+  "January": "Enero",
+  "February": "Febrero",
+  "March": "Marzo",
+  "April": "Abril",
+  "May": "Mayo",
+  "June": "Junio",
+  "July": "Julio",
+  "August": "Agosto",
+  "September": "Septiembre",
+  "October": "Octubre",
+  "November": "Noviembre",
+  "December": "Deciembre"
 }

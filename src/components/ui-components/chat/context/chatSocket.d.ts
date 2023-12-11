@@ -1,4 +1,4 @@
-import { IChatMessage } from "../../../../interface";
+import { IChatMessage } from "../interfaces";
 
 declare namespace ChatSocket {
   interface EmitEvents {

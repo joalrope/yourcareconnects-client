@@ -8,13 +8,9 @@ import { Menu, type MenuProps } from "antd";
 import { RootState } from "../../../store";
 import {
   setConversations,
-  setConnectedUsers,
   setReceiverId,
-  setSenderId,
-  setAddChatMessage,
   setChatMessages,
   setUnreadCount,
-  setNotifications,
 } from "../../../store/slices";
 import {
   Avatar,
@@ -33,22 +29,21 @@ import {
   TypingIndicator,
 } from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
-import "./chat.css";
+import "./styles/chat.css";
 import EmojiPicker, {
   EmojiClickData,
   SkinTones,
   Theme,
 } from "emoji-picker-react";
-import {
-  IChatMessage,
-  IConnectedUsers,
-  IConversation,
-  IMessageType,
-} from "../../../interface";
+import { IChatMessage, IConversation, IMessageType } from "./interfaces";
 import { useChatSocketCtx } from "./context";
 import { getConversations } from "./helpers/conversations";
 import { clearNotificationsById, getUserMessagesById } from "../../../services";
-import { useChatMenuItems } from "./ChatMenuItems";
+import { useChatMenuItems } from "./hooks/ChatMenuItems";
+import { useSocket } from "./hooks/useSocket";
+import { months } from "./interfaces/chat";
+
+import styles from "./styles/chat.module.css";
 
 const contacInit = {
   id: "",
@@ -67,6 +62,8 @@ export const ChatView = () => {
   const { id, contacts, names, notifications } = useSelector(
     (state: RootState) => state.user
   );
+  const { language } = useSelector((state: RootState) => state.i18n);
+
   const [messageInputValue, setMessageInputValue] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
@@ -94,50 +91,7 @@ export const ChatView = () => {
     fetchData();
   }, [contacts, dispatch, id, notifications]);
 
-  useEffect(() => {
-    dispatch(setSenderId(id));
-
-    socket.on("connect", () => {
-      socket.emit("signIn", {
-        id,
-        names,
-        socketId: socket.id,
-      });
-    });
-
-    socket.on("receiveMessage", (message: IChatMessage) => {
-      dispatch(setAddChatMessage(message));
-    });
-
-    socket.on("updateNotifications", (notifications: number) => {
-      dispatch(setNotifications(notifications));
-    });
-
-    socket.on("unsentMessage", (message: string) => {
-      console.log({ unsentMessage: message });
-    });
-
-    socket.on("connectedUsers", (connectedUsers: IConnectedUsers) => {
-      //console.log({ connectedUsers });
-      dispatch(setConnectedUsers(connectedUsers));
-    });
-
-    socket.on(
-      "userIsTyping",
-      ({ isTyping, names }: { isTyping: boolean; names: string }) => {
-        setShowTyping({ isTyping, writer: names });
-      }
-    );
-
-    return () => {
-      socket.off("connect");
-      socket.off("receiveMessage");
-      socket.off("updateNotifications");
-      socket.off("unsentMessage");
-      socket.off("connectedUsers");
-      socket.off("userIsTyping");
-    };
-  }, [socket, dispatch, id, senderId, names]);
+  useSocket(setShowTyping);
 
   const handleOnChange = (val: string) => {
     socket.emit("userIsTyping", { isTyping: true, names });
@@ -230,7 +184,6 @@ export const ChatView = () => {
         }
         chatMessages[date].push(m);
       });
-      console.log(chatMessages);
 
       dispatch(setChatMessages(chatMessages));
     } else {
@@ -279,21 +232,35 @@ export const ChatView = () => {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onClickMenu = (e: any) => {
+  const onClickMenu: MenuProps["onClick"] = (e) => {
     console.log("click ", e);
     setCurrentPath(e.key);
     setShowMenu(!showMenu);
   };
 
+  const getDatePretty = (date: string) => {
+    const currentDate = new Date(new Date().toISOString().split("T")[0]);
+    const msgGroupDate = new Date(date);
+    const day = msgGroupDate.getDate() + 1;
+    const month = t(`${months[msgGroupDate.getMonth()]}`);
+
+    if (currentDate.getTime() - msgGroupDate.getTime() === 0) {
+      return t("Today");
+    }
+
+    if (currentDate.getTime() - msgGroupDate.getTime() === 259200000) {
+      return t("Yesterday");
+    }
+
+    if (language === "esES") {
+      return `${day} de ${month}`;
+    }
+
+    return `${month} ${day}`;
+  };
+
   return (
-    <div
-      style={{
-        fontFamily: "Inter",
-        fontSize: "8px",
-        height: "100%",
-        width: "100%",
-      }}
-    >
+    <div className={styles.chatView}>
       <MainContainer responsive>
         <Sidebar position="left" scrollable={false}>
           <Search placeholder={`${t("Search")}...`} />
@@ -303,7 +270,6 @@ export const ChatView = () => {
             //onYReachEnd={onYReachEnd}
           >
             {conversations.map((c) => {
-              console.log(c);
               return (
                 <Conversation
                   key={c.id}
@@ -341,26 +307,15 @@ export const ChatView = () => {
               />
               {showMenu && (
                 <div
+                  className={styles.conversationHeaderActions}
                   as={ConversationHeader.Actions}
-                  style={{
-                    backgroundColor: "#1a1a13",
-                    border: "solid 1px #E0E0E0",
-                    borderRadius: "8px",
-                    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-                    color: "white",
-                    height: "200px",
-                    position: "absolute",
-                    top: "64px",
-                    right: "2px",
-                    width: "250px",
-                  }}
                 >
                   <Menu
                     onClick={onClickMenu}
                     selectedKeys={[currentPath]}
                     mode="vertical"
                     items={items}
-                    style={{ fontFamily: "Inter", fontSize: "12px" }}
+                    className={styles.menu}
                     theme="dark"
                   />
                 </div>
@@ -382,7 +337,13 @@ export const ChatView = () => {
             >
               {Object.entries(chatMessages).map((key) => (
                 <>
-                  <MessageSeparator content={key[0]} />
+                  <MessageSeparator>
+                    <div className={styles.msgSepContContainer}>
+                      <div className={styles.messageSeparatorContent}>
+                        {getDatePretty(key[0])}
+                      </div>
+                    </div>
+                  </MessageSeparator>
                   {key[1].map(
                     (
                       { message, sentTime, sender, direction }: IChatMessage,
@@ -390,7 +351,7 @@ export const ChatView = () => {
                     ) => {
                       return (
                         <Message
-                          key={sentTime + i}
+                          key={`${sentTime}${i}`}
                           model={{
                             message,
                             sentTime,
@@ -421,23 +382,10 @@ export const ChatView = () => {
               onChange={handleOnChange}
               onSend={handleOnSendMessage}
             />
-            <div
-              style={{
-                position: "absolute",
-                right: 50,
-                bottom: 10,
-                cursor: "pointer",
-              }}
-            >
+            <div className={styles.emojiPickerButtonContainer}>
               <button
+                className={styles.emojiPickerButton}
                 onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                style={{
-                  backgroundColor: "transparent",
-                  border: "none",
-                  fontSize: 20,
-                  height: 20,
-                  cursor: "pointer",
-                }}
               >
                 &#128522;
               </button>

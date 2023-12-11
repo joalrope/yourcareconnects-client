@@ -95,7 +95,6 @@ export const SearchServices = () => {
         });
         return;
       }
-      console.log(providers);
       setViewMap(true);
     });
   };
