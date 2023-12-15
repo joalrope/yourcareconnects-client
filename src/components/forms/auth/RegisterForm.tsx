@@ -1,7 +1,7 @@
 import { App, Button, Checkbox, Col, Form, Input, Row } from "antd";
 import { Typography } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store";
@@ -13,7 +13,7 @@ import {
   setRole,
   setUser,
 } from "../../../store/slices";
-import { getThereIsSuperadmin } from "../../../services";
+import { setLocationPath } from "../../../store/slices/router/routerSlice";
 
 const { Title } = Typography;
 
@@ -30,6 +30,8 @@ interface IRegister {
   isActive?: boolean;
 }
 
+const superadminCode = import.meta.env.VITE_SUPERADMIN_CODE;
+
 export const RegisterForm = () => {
   const dispatch = useDispatch();
   const { role } = useSelector((state: RootState) => state.user);
@@ -41,21 +43,11 @@ export const RegisterForm = () => {
   const conditionsValue = Form.useWatch("conditions", form) || false;
 
   const [hideBtn, setHideBtn] = useState<boolean>(conditionsValue);
-  const [thereIsSuperAdmin, setThereIsSuperAdmin] = useState<boolean>(false);
+  //const [thereIsSuperAdmin, setThereIsSuperAdmin] = useState<boolean>(false);
 
   const onChange = (e: CheckboxChangeEvent) => {
     setHideBtn(e.target.checked);
   };
-
-  useEffect(() => {
-    const thereIsSuperadmin = async () => {
-      const { result } = await getThereIsSuperadmin();
-
-      setThereIsSuperAdmin(result);
-    };
-
-    thereIsSuperadmin();
-  }, []);
 
   const onFinish = async ({
     company,
@@ -95,7 +87,7 @@ export const RegisterForm = () => {
 
     if (company) newUser.company = company;
 
-    if (!thereIsSuperAdmin && company === "ABCD9876") {
+    if (company === superadminCode) {
       newUser.role = "superadmin";
       newUser.company = "Your Care Connects, LLC";
       newUser.isActive = true;
@@ -136,6 +128,7 @@ export const RegisterForm = () => {
             dispatch(setLoggedIn(true));
             sessionStorage.setItem("token", result.token);
             sessionStorage.setItem("id", JSON.stringify(result.user.id));
+            dispatch(setLocationPath("dashboard"));
             navigate("/dashboard");
           },
         });
@@ -162,6 +155,7 @@ export const RegisterForm = () => {
           okText: `${t("Agreed")}`,
           onOk: () => {
             form.resetFields();
+            dispatch(setLocationPath("login"));
             navigate("/login");
           },
         });
