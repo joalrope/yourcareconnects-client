@@ -27,6 +27,7 @@ export const ProviderCard = ({
   services,
   pictures,
   ratings,
+  role,
   isActive,
   small = false,
 }: IDataProvider) => {
@@ -52,7 +53,7 @@ export const ProviderCard = ({
       style={{
         display: "flex",
         flexDirection: "column",
-        height: small ? 200 : 380,
+        height: small ? 240 : 380,
         maxWidth: "300px",
         width: "100%",
       }}
@@ -84,6 +85,7 @@ export const ProviderCard = ({
                 contact={small}
                 isActive={isActive}
                 small={small}
+                role={role}
               />
             }
           />
@@ -108,7 +110,12 @@ export const ProviderCard = ({
           </Tooltip>
         </Col>
 
-        <Rate disabled allowHalf defaultValue={ratings} />
+        <Rate
+          disabled
+          allowHalf
+          defaultValue={ratings}
+          style={{ fontSize: 16 }}
+        />
       </Row>
     </Card>
   );

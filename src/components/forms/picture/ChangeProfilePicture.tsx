@@ -32,7 +32,7 @@ export const ChangeProfilePicture = () => {
   ]);
   const [isOriginalPicture, setIsOriginalPicture] = useState(true);
 
-  let pictureName = "";
+  let fileName = "";
 
   useEffect(() => {
     if (fileList[0]?.uid === "-1" || fileList.length === 0) {
@@ -43,10 +43,10 @@ export const ChangeProfilePicture = () => {
   }, [fileList]);
 
   const onFinish = async () => {
-    pictureName = fileList[0].name;
+    fileName = fileList[0].name;
 
     dispatch(setLoading(true));
-    const { ok, msg } = await handleUpload(fileList, pictureName);
+    const { ok, msg } = await handleUpload(fileList, fileName);
     dispatch(setLoading(false));
 
     if (!ok) {
@@ -54,7 +54,7 @@ export const ChangeProfilePicture = () => {
       return;
     }
 
-    dispatch(setProfilePicture({ profile: pictureName }));
+    dispatch(setProfilePicture({ profile: fileName }));
     form.resetFields();
     message.success(t(`${msg}`));
   };
@@ -101,13 +101,13 @@ export const ChangeProfilePicture = () => {
         >
           <Col>
             <Form.Item
-              name={pictureName}
+              name={fileName}
               rules={[{ required: true }]}
               style={{ marginBottom: 0 }}
             >
               <ProfilePicture
                 form={form}
-                pictureName={pictureName}
+                pictureName={fileName}
                 fileList={fileList}
                 setFileList={setFileList}
               />

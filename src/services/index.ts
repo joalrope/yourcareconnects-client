@@ -8,6 +8,7 @@ export {
 } from "./modalityService";
 export {
   clearNotificationsById,
+  getThereIsSuperadmin,
   getUserById,
   getUsersByIsActive,
   getUserByServices,
@@ -15,4 +16,5 @@ export {
   updateUserById,
   updateUserContactsById,
   updateActiveUserStatus,
+  updateRoleUser,
 } from "./userService";

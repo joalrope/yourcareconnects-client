@@ -3,6 +3,12 @@ import { fetchWithToken } from "../helpers/fetch";
 import { ILocation } from "../components/ui-components/map/MapView";
 import { getLocation } from "../components/ui-components/map/utils/getLocation";
 
+export const getThereIsSuperadmin = async () => {
+  const { result } = await fetchWithToken(`/users/sarole`);
+
+  return result;
+};
+
 export const getUserById = async (id: string) => {
   const result = await fetchWithToken(`/users/${id}`);
 
@@ -93,6 +99,11 @@ export const updateActiveUserStatus = async (
     {},
     "PUT"
   );
+
+  return result;
+};
+export const updateRoleUser = async (id: string | undefined, value: string) => {
+  const result = await fetchWithToken(`/users/role/${id}/${value}`, {}, "PUT");
 
   return result;
 };

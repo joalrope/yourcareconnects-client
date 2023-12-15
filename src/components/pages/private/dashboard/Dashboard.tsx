@@ -6,5 +6,11 @@ import { DashboardUser } from "./DashboardUser";
 export const Dashboard = () => {
   const { role } = useSelector((state: RootState) => state.user);
 
-  return role === "admin" ? <DashboardAdmin /> : <DashboardUser />;
+  return role === "customer" || role === "provider" ? (
+    <DashboardUser />
+  ) : role === "admin" ? (
+    <DashboardAdmin />
+  ) : (
+    <DashboardAdmin />
+  );
 };

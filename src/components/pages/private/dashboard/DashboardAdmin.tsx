@@ -20,7 +20,7 @@ export const DashboardAdmin = () => {
   };
 
   return (
-    <Row style={{ width: "100%" }}>
+    <Row>
       <Row>
         <Col span={24} style={{ maxWidth: "96%", margin: "auto" }}>
           <Col span={24} style={{ borderBottom: "1px solid #e8e8e8" }}>
@@ -39,13 +39,22 @@ export const DashboardAdmin = () => {
           gutter={[24, 24]}
         >
           <Col>
-            <Radio.Group onChange={onUserTypeChange} value={value}>
+            <Radio.Group
+              onChange={onUserTypeChange}
+              value={value}
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                flexDirection: "row",
+                flexWrap: "wrap",
+                marginLeft: 48,
+                marginRight: 24,
+              }}
+            >
               <Radio value={TypeActiveUserStatus.ALL}>
-                {" "}
                 <Title level={5}>{t("All Users")}</Title>
               </Radio>
               <Radio value={TypeActiveUserStatus.INACTIVE}>
-                {" "}
                 <Title level={5}> {t("Inactive Users")}</Title>
               </Radio>
               <Radio value={TypeActiveUserStatus.ACTIVE}>
@@ -54,11 +63,11 @@ export const DashboardAdmin = () => {
             </Radio.Group>
           </Col>
         </Row>
-        <Row style={{ marginLeft: 48, marginRight: 24 }}>
+        <Row style={{ marginLeft: 48, marginRight: 24, width: "100%" }}>
           <UserGrid userType={value} />
         </Row>
       </Row>
-      <Row>Servicios</Row>
+      {/* <Row>Servicios</Row> */}
     </Row>
   );
 };

@@ -1,11 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
-import { App, Button, Checkbox, Col, Row, Tooltip, Typography } from "antd";
+import {
+  App,
+  Button,
+  Checkbox,
+  Col,
+  Row,
+  Select,
+  Tooltip,
+  Typography,
+} from "antd";
 import { useTranslation } from "react-i18next";
 import { UserAddOutlined } from "@ant-design/icons";
 import { RootState } from "../../../store";
 import {
   getUserById,
   updateActiveUserStatus,
+  updateRoleUser,
   updateUserContactsById,
 } from "../../../services";
 import { setUser } from "../../../store/slices";
@@ -21,6 +31,7 @@ interface Props {
   contact: boolean;
   isActive: boolean | undefined;
   small: boolean;
+  role: string | undefined;
 }
 
 export const UserTitle = ({
@@ -30,6 +41,7 @@ export const UserTitle = ({
   contact,
   isActive,
   small,
+  role,
 }: Props) => {
   const { message } = App.useApp();
   const {
@@ -40,6 +52,7 @@ export const UserTitle = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [active, setActive] = useState(isActive);
+  const [userRole, setUserRole] = useState(role as string);
 
   const handleAddContact = async (id: string) => {
     const {
@@ -99,6 +112,23 @@ export const UserTitle = ({
     }
   };
 
+  const handleRoleChange = async (value: string[]) => {
+    setUserRole(value.toString());
+    const {
+      ok,
+      result: { user },
+    } = await updateRoleUser(id, value.toString());
+
+    if (ok) {
+      message.success({
+        content: t(
+          `${t("User")} ${user.fullname} ${t("now has the role: ")} ${value}`
+        ),
+        duration: 3,
+      });
+    }
+  };
+
   return (
     <Row
       style={{
@@ -118,23 +148,49 @@ export const UserTitle = ({
               width: "100%",
             }}
           >
-            <Col>
-              <img
-                src="/images/logo.png"
-                alt="logo yourcareconnects.com"
-                width={60}
-              />
-            </Col>
+            <Row style={{ justifyContent: "space-between", width: "100%" }}>
+              <Col>
+                <img
+                  src="/images/logo.png"
+                  alt="logo yourcareconnects.com"
+                  width={60}
+                />
+              </Col>
 
-            <Col>
-              <Checkbox
-                onChange={(e) => onActivateChange(id, e)}
-                style={{ justifyContent: "flex-end", width: "100%" }}
-                value={active}
-                defaultChecked={isActive}
-              >
-                {t("Activate")}
-              </Checkbox>
+              <Col style={{ display: "flex", justifyContent: "flex-end" }}>
+                <Checkbox
+                  onChange={(e) => onActivateChange(id, e)}
+                  style={{ justifyContent: "flex-end", width: "100%" }}
+                  checked={active}
+                  defaultChecked={isActive}
+                >
+                  {t("Activate")}
+                </Checkbox>
+              </Col>
+            </Row>
+            <Col style={{ width: "100%" }}>
+              <Select
+                style={{ marginTop: 12, width: "100%" }}
+                size={"small"}
+                value={[userRole]}
+                placeholder="Please select"
+                defaultValue={["customer"]}
+                onChange={handleRoleChange}
+                options={[
+                  {
+                    value: "admin",
+                    label: "Admin",
+                  },
+                  {
+                    value: "customer",
+                    label: "Customer",
+                  },
+                  {
+                    value: "provider",
+                    label: "Provider",
+                  },
+                ]}
+              />
             </Col>
           </Row>
         )}

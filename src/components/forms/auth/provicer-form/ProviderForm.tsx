@@ -11,10 +11,10 @@ import {
   Upload,
 } from "antd";
 import { useTranslation } from "react-i18next";
-import type { UploadProps } from "antd/es/upload/interface";
+import type { RcFile, UploadProps } from "antd/es/upload/interface";
 import { UploadOutlined } from "@ant-design/icons";
 import { CategorySelect } from "../../../ui-components/category-select/CategorySelect";
-import { SetStateAction, useEffect, useState } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { useNavigate } from "react-router-dom";
@@ -30,6 +30,8 @@ import { UserProfileImage } from "../../../ui-components/user-profile-image/User
 
 const { Title } = Typography;
 
+const baseUrl = import.meta.env.VITE_URL_BASE;
+
 export const ProviderForm = () => {
   const user = useSelector((state: RootState) => state.user);
   const { id, role } = user;
@@ -44,10 +46,54 @@ export const ProviderForm = () => {
   const [viewMap, setViewMap] = useState<boolean>(false);
 
   const uploadDocs: UploadProps = {
-    onChange({ file, fileList }) {
+    name: "file",
+    maxCount: 5,
+    listType: "text",
+
+    async onChange({ file, fileList }) {
       if (file.status !== "uploading") {
         console.log(file, fileList);
       }
+
+      const formData = new FormData();
+
+      formData.append("file", fileList[0].originFileObj as RcFile, file.name);
+
+      const files = fileList.map((file) => {
+        return file.originFileObj?.name;
+      });
+
+      console.log({ files });
+
+      const url = `${baseUrl}/api/uploads/docs`;
+
+      return await fetch(url, {
+        method: "POST",
+        headers: {
+          Accept: "*/*",
+          "x-token": sessionStorage.token,
+        },
+        body: formData,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          return data;
+        })
+        .catch(() => {
+          console.error("An error occurred while loading the image.");
+        });
+    },
+    beforeUpload(file) {
+      const isDocs =
+        file.type === "application/pdf" ||
+        file.type === "application/msword" ||
+        file.type ===
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+      if (!isDocs) {
+        message.error(`${file.name} is not a png file`);
+      }
+
+      return isDocs || Upload.LIST_IGNORE;
     },
   };
 
@@ -135,46 +181,34 @@ export const ProviderForm = () => {
     return loc;
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const defaultValues = useRef({
+    id: user.id,
+    address: user.address,
+    biography: user.biography,
+    certificates: user.certificates,
+    company: user.company,
+    contacts: user.contacts,
+    faxNumber: user.faxNumber,
+    owner: user.owner,
+    phoneNumber: user.phoneNumber,
+    serviceModality: user.serviceModality,
+    services: user.services,
+    webUrl: user.webUrl,
+    zipCode: user.zipCode,
+  });
+
   useEffect(() => {
-    const defaultValues = {
-      id: user.id,
-      address: user.address,
-      biography: user.biography,
-      certificates: user.certificates,
-      company: user.company,
-      contacts: user.contacts,
-      faxNumber: user.faxNumber,
-      owner: user.owner,
-      phoneNumber: user.phoneNumber,
-      serviceModality: user.serviceModality,
-      services: user.services,
-      webUrl: user.webUrl,
-      zipCode: user.zipCode,
-    };
+    const values = defaultValues.current;
 
     form.setFieldsValue({
       services: [],
     });
 
     form.setFieldsValue({
-      ...defaultValues,
+      ...values,
     } as unknown as IProvider);
-  }, [
-    form,
-    user.address,
-    user.biography,
-    user.certificates,
-    user.company,
-    user.contacts,
-    user.faxNumber,
-    user.id,
-    user.owner,
-    user.phoneNumber,
-    user.serviceModality,
-    user.services,
-    user.webUrl,
-    user.zipCode,
-  ]);
+  }, [form]);
 
   return viewMap ? (
     <MapView getLoc={getLoc} goBack={setViewMap} />

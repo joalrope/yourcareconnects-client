@@ -1,13 +1,19 @@
 import { App, Button, Checkbox, Col, Form, Input, Row } from "antd";
 import { Typography } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store";
 import { fetchWithoutToken } from "../../../helpers/fetch";
 import { useNavigate } from "react-router-dom";
-import { setLoading, setLoggedIn, setUser } from "../../../store/slices";
+import {
+  setLoading,
+  setLoggedIn,
+  setRole,
+  setUser,
+} from "../../../store/slices";
+import { getThereIsSuperadmin } from "../../../services";
 
 const { Title } = Typography;
 
@@ -21,11 +27,12 @@ interface IRegister {
   phoneNumber: string;
   lastName: string;
   role: string;
+  isActive?: boolean;
 }
 
 export const RegisterForm = () => {
   const dispatch = useDispatch();
-  const { role: curRole } = useSelector((state: RootState) => state.user);
+  const { role } = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
   const { modal } = App.useApp();
   const [form] = Form.useForm<IRegister>();
@@ -34,10 +41,21 @@ export const RegisterForm = () => {
   const conditionsValue = Form.useWatch("conditions", form) || false;
 
   const [hideBtn, setHideBtn] = useState<boolean>(conditionsValue);
+  const [thereIsSuperAdmin, setThereIsSuperAdmin] = useState<boolean>(false);
 
   const onChange = (e: CheckboxChangeEvent) => {
     setHideBtn(e.target.checked);
   };
+
+  useEffect(() => {
+    const thereIsSuperadmin = async () => {
+      const { result } = await getThereIsSuperadmin();
+
+      setThereIsSuperAdmin(result);
+    };
+
+    thereIsSuperadmin();
+  }, []);
 
   const onFinish = async ({
     company,
@@ -71,11 +89,18 @@ export const RegisterForm = () => {
       names,
       password,
       phoneNumber,
-      role: curRole ? curRole : "customer",
+      role: role ? role : "customer",
       lastName,
     };
 
     if (company) newUser.company = company;
+
+    if (!thereIsSuperAdmin && company === "ABCD9876") {
+      newUser.role = "superadmin";
+      newUser.company = "Your Care Connects, LLC";
+      newUser.isActive = true;
+      setRole("superadmin");
+    }
 
     dispatch(setLoading(true));
 
@@ -87,30 +112,60 @@ export const RegisterForm = () => {
 
     dispatch(setLoading(false));
 
+    console.log({ newUser });
+
     if (ok) {
-      modal.success({
-        title: t("Successful registration"),
-        content: (
-          <>
-            <span key={1}>
-              {t("Your account has been created successfully")}
-            </span>
-            <br key={2} />
-            <br key={3} />
-            <span key={4}>{t("Please login")}</span>
-          </>
-        ),
-        autoFocusButton: null,
-        okText: `${t("Agreed")}`,
-        onOk: () => {
-          form.resetFields();
-          dispatch(setUser(result.user));
-          dispatch(setLoggedIn(true));
-          sessionStorage.setItem("token", result.token);
-          sessionStorage.setItem("id", JSON.stringify(result.user.id));
-          navigate("/dashboard");
-        },
-      });
+      if (newUser.role === "customer" || newUser.role === "superadmin") {
+        modal.success({
+          title: t("Successful registration"),
+          content: (
+            <>
+              <span key={1}>
+                {t("Your account has been created successfully")}
+              </span>
+              <br key={2} />
+              <br key={3} />
+              <span key={4}>{t("Please start to use your account")}</span>
+            </>
+          ),
+          autoFocusButton: null,
+          okText: `${t("Agreed")}`,
+          onOk: () => {
+            form.resetFields();
+            dispatch(setUser(result.user));
+            dispatch(setLoggedIn(true));
+            sessionStorage.setItem("token", result.token);
+            sessionStorage.setItem("id", JSON.stringify(result.user.id));
+            navigate("/dashboard");
+          },
+        });
+      }
+
+      if (newUser.role === "provider") {
+        modal.success({
+          title: t("Successful registration"),
+          content: (
+            <>
+              <span key={1}>
+                {t("Your account has been created successfully")}
+              </span>
+              <br key={2} />
+              <span key={3}>
+                {t("Please wait until your account is approved")}
+              </span>
+              <br key={4} />
+              <br key={5} />
+              <span key={6}>{t("Sorry for the inconvenience")}</span>
+            </>
+          ),
+          autoFocusButton: null,
+          okText: `${t("Agreed")}`,
+          onOk: () => {
+            form.resetFields();
+            navigate("/login");
+          },
+        });
+      }
     } else {
       modal.error({
         title: t("Error registration"),
@@ -141,7 +196,7 @@ export const RegisterForm = () => {
       <Col style={{ width: "100%" }}>
         <Row style={{ display: "flex", flexDirection: "column" }}>
           <Title level={3} style={{ margin: "50px 0px" }}>
-            {`${t("Create your account as a")} ${t(`${curRole}`)}`}
+            {`${t("Create your account as a")} ${t(`${role}`)}`}
           </Title>
         </Row>
         <Row
@@ -208,7 +263,7 @@ export const RegisterForm = () => {
               </Col>
             </Row>
 
-            {curRole === "provider" && (
+            {role === "provider" && (
               <Form.Item
                 label={t("Company Name")}
                 name="company"

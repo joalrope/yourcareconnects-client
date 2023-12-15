@@ -3,7 +3,6 @@ import { Menu, MenuProps } from "antd";
 import {
   DashboardOutlined,
   FileSearchOutlined,
-  MessageOutlined,
   ProfileOutlined,
 } from "@ant-design/icons";
 
@@ -46,13 +45,6 @@ export const SiderMenu = () => {
       key: "services",
       role: "customer",
       icon: <FileSearchOutlined />,
-    },
-    {
-      label: <Link to="/blog">{t("Blog")}</Link>,
-      path: "/blog",
-      key: "blog",
-      role: "customer",
-      icon: <MessageOutlined />,
     },
   ];
 
