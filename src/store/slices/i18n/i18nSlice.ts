@@ -6,7 +6,7 @@ interface II18n {
 }
 
 const initialState: II18n = {
-  language: "enUS",
+  language: "esES",
 };
 export const i18nSlice = createSlice({
   name: "i18n",

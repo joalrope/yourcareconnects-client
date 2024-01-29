@@ -54,7 +54,15 @@ export const LoginForm = () => {
     if (!ok) {
       modal.error({
         title: t("Error login"),
-        content: <p>{t(`${msg}`)}</p>,
+        content: (
+          <p>
+            {t(`${msg}`, {
+              role: t(user.role),
+              names: user.names,
+              lastname: user.lastName,
+            })}
+          </p>
+        ),
         autoFocusButton: null,
         okText: `${t("Agreed")}`,
       });

@@ -21,7 +21,11 @@ export const UserGrid = ({ userType }: { userType: string }) => {
         const {
           result: { users },
         } = await getUsersByIsActive(userType);
-        setUsers(users);
+
+        const filteredUsers = users.filter(
+          (user: IDataProvider) => user.role !== "superadmin"
+        );
+        setUsers(filteredUsers);
       } catch (error) {
         console.log(error);
       }

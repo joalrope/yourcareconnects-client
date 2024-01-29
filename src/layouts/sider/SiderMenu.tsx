@@ -46,6 +46,13 @@ export const SiderMenu = () => {
       role: "customer",
       icon: <FileSearchOutlined />,
     },
+    {
+      label: <Link to="/chat">{t("Chat")}</Link>,
+      path: "/chat",
+      key: "chat",
+      role: "customer",
+      icon: <FileSearchOutlined />,
+    },
   ];
 
   const items: MenuProps["items"] = providerRoutes.filter(

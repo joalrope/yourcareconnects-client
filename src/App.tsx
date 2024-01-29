@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-//import { RouterProvider } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { App as AntdApp, ConfigProvider } from "antd";
-import { RootState } from "./store";
-import { setLoading, setLoggedIn, setUser } from "./store/slices";
-//import { router } from "./router/router";
+import { setES, setLoading, setLoggedIn, setUser } from "./store/slices";
 import enUS from "antd/locale/en_US";
 import esES from "antd/locale/es_ES";
 import "antd/dist/reset.css";
@@ -12,18 +9,24 @@ import "./index.css";
 import { AppLayout } from "./layouts/AppLayout";
 import { BrowserRouter } from "react-router-dom";
 import { getUserById } from "./services";
+import i18n from "./i18n/i18n";
 
 function App() {
   const dispatch = useDispatch();
-  const { language } = useSelector((state: RootState) => state.i18n);
   const [curLng, setCurLng] = useState(enUS);
 
   useEffect(() => {
-    setCurLng(language === "esES" ? esES : enUS);
+    const lang = window.navigator.language.split("-")[0];
+
+    if (lang === "es") {
+      i18n.changeLanguage("es");
+      dispatch(setES());
+    }
+
+    setCurLng(lang === "es" ? esES : enUS);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  console.log("=======Reinicio========");
 
   useEffect(() => {
     if (sessionStorage.getItem("id")) {
@@ -60,6 +63,9 @@ function App() {
             colorItemBgSelected: "#fbd467",
             colorItemTextSelected: "#1a1a13",
             paddingContentVertical: 0,
+          },
+          Select: {
+            colorBgBase: "red",
           },
         },
         token: {

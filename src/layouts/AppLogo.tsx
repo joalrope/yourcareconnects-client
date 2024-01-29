@@ -8,7 +8,6 @@ interface Props {
 const { useToken } = theme;
 
 export const AppLogo = ({ collapsed = false }: Props) => {
-  3;
   const { token } = useToken();
 
   return (

@@ -96,7 +96,13 @@ export const InfoContent = ({ names }: Props) => {
     {
       key: "1",
       label: (
-        <Row style={{ flexDirection: "row", alignItems: "center" }}>
+        <Row
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Link to="/dashboard" onClick={handleNameClick}>
             {names && (
               <Title
@@ -132,7 +138,13 @@ export const InfoContent = ({ names }: Props) => {
     {
       key: "2",
       label: (
-        <Col>
+        <Row
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Link to="/chat" onClick={handleNotificationsClick}>
             <Badge size="small" count={unreadCount}>
               <Avatar
@@ -142,24 +154,45 @@ export const InfoContent = ({ names }: Props) => {
               />
             </Badge>
           </Link>
-          <LanguageSelect />,
-        </Col>
+        </Row>
       ),
     },
     {
       key: "3",
       label: (
-        <Link
-          to="/"
-          onClick={handleLogOut}
+        <Row
           style={{
-            marginLeft: "10px",
-            userSelect: "none",
-            color: token.colorTextBase,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
-          <LogoutOutlined /> {t("Log Out")}
-        </Link>
+          <LanguageSelect />,
+        </Row>
+      ),
+    },
+    {
+      key: "4",
+      label: (
+        <Row
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Link
+            to="/"
+            onClick={handleLogOut}
+            style={{
+              margin: 20,
+              userSelect: "none",
+              color: token.colorTextBase,
+            }}
+          >
+            <LogoutOutlined /> {t("Log Out")}
+          </Link>
+        </Row>
       ),
     },
   ];
@@ -231,7 +264,7 @@ export const InfoContent = ({ names }: Props) => {
               <LogoutOutlined /> {t("Log Out")}
             </Link>
           </Col>
-          <Col>
+          <Col style={{ margin: 20 }}>
             <LanguageSelect />
           </Col>
         </Row>

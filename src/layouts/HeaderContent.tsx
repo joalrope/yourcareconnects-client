@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Menu, Row } from "antd";
+import { Col, Menu, Row } from "antd";
 import type { MenuProps } from "antd";
 import { useTranslation } from "react-i18next";
 
@@ -44,15 +44,20 @@ export const HeaderContent = () => {
       {!isLoggedIn ? (
         <>
           <AppLogo />
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            selectedKeys={[locationPath]}
-            defaultSelectedKeys={["/"]}
-            onClick={handleClick}
-            items={items}
-          />
-          <LanguageSelect />
+          <Col flex={1}></Col>
+          <Col xs={10}>
+            <Menu
+              theme="dark"
+              mode="horizontal"
+              selectedKeys={[locationPath]}
+              defaultSelectedKeys={["/"]}
+              onClick={handleClick}
+              items={items}
+            />
+          </Col>
+          <Col xs={0} sm={4}>
+            <LanguageSelect />
+          </Col>
         </>
       ) : (
         isLoggedIn && (
