@@ -25,7 +25,16 @@ export const AppRouter = () => {
     <Routes>
       <Route index element={<Home />}></Route>
       <Route key="login" path="/login" element={<Login />} />
-      <Route key="register" path="/register" element={<Register />} />
+      <Route
+        key="register-customer"
+        path="/register/customer"
+        element={<Register />}
+      />
+      <Route
+        key="register-provider"
+        path="/register/provider"
+        element={<Register />}
+      />
       <Route
         key="reset-password"
         path="/auth/reset-password"

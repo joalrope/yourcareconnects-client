@@ -3,8 +3,7 @@ import { Typography } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../store";
+import { useDispatch } from "react-redux";
 import { fetchWithoutToken } from "../../../helpers/fetch";
 import { useNavigate } from "react-router-dom";
 import {
@@ -32,9 +31,9 @@ interface IRegister {
 
 const superadminCode = import.meta.env.VITE_SUPERADMIN_CODE;
 
-export const RegisterForm = () => {
+export const RegisterForm = ({ role }: { role: string }) => {
   const dispatch = useDispatch();
-  const { role } = useSelector((state: RootState) => state.user);
+  //const { role } = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
   const { modal } = App.useApp();
   const [form] = Form.useForm<IRegister>();

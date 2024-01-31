@@ -40,7 +40,10 @@ const RoleCard = ({ role }: { role: string }) => {
   };
 
   return (
-    <Link to={"/register"} onClick={setSelectedRole}>
+    <Link
+      to={role === "customer" ? "/register/customer" : "/register/provider"}
+      onClick={setSelectedRole}
+    >
       <div
         style={{
           alignItems: "center",
