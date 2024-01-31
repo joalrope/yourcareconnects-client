@@ -16,6 +16,7 @@ import { setLocationPath } from "../store/slices/router/routerSlice";
 import {
   chatOffline,
   logout,
+  setIsOpened,
   setLoggedIn,
   setUnreadCount,
 } from "../store/slices";
@@ -24,7 +25,7 @@ import { LanguageSelect } from "../components/ui-components/LanguageSelect";
 import { RootState } from "../store";
 
 import styles from "./layout.module.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const { Title } = Typography;
 const { useToken } = theme;
@@ -43,7 +44,8 @@ export const InfoContent = ({ names }: Props) => {
     (state: RootState) => state.user
   );
   const { unreadCount } = useSelector((state: RootState) => state.chat);
-  const [open, setOpen] = useState<boolean>(false);
+  const { isOpened } = useSelector((state: RootState) => state.ui);
+  //const [open, setOpen] = useState<boolean>(false);
   //const [notification, setNotification] = useState<number>(1);
 
   useEffect(() => {
@@ -71,25 +73,22 @@ export const InfoContent = ({ names }: Props) => {
   };
 
   const handleNameClick = () => {
-    setOpen(false);
+    dispatch(setIsOpened(false));
+    //setOpen(false);
     dispatch(setLocationPath("dashboard"));
   };
 
   const handleNotificationsClick = () => {
-    //setOpen(false);
-    //dispatch(setLocationPath("/"));
+    dispatch(setIsOpened(false));
   };
 
-  //const id = JSON.parse(String(sessionStorage.getItem("id")));
-
-  //const pictureUrl = `${baseUrl}/images/${id}/${pictures?.profile}`;
   const pictureUrl =
     pictures?.profile.image === ""
       ? "/images/user.png"
       : `${pictures?.profile.image}`;
 
   const handleOpenChange = (flag: boolean) => {
-    setOpen(flag);
+    dispatch(setIsOpened(flag));
   };
 
   const items: MenuProps["items"] = [
@@ -275,7 +274,7 @@ export const InfoContent = ({ names }: Props) => {
           <Dropdown
             menu={{ items }}
             onOpenChange={handleOpenChange}
-            open={open}
+            open={isOpened}
           >
             <MenuOutlined style={{ color: "white", fontSize: "32px" }} />
           </Dropdown>

@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Col, Menu, Row } from "antd";
+import { Col, Dropdown, Menu, Row } from "antd";
 import type { MenuProps } from "antd";
+import { MenuOutlined } from "@ant-design/icons";
+
 import { useTranslation } from "react-i18next";
 
 import { IRoute, routes } from "../router/routes";
@@ -13,12 +15,14 @@ import { INav } from "./sider/SiderMenu";
 import { setLocationPath } from "../store/slices/router/routerSlice";
 import { LanguageSelect } from "../components/ui-components/LanguageSelect";
 import { AppLogo } from "./AppLogo";
+import { setIsOpened } from "../store/slices";
 
 export const HeaderContent = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { isLoggedIn, names } = useSelector((state: RootState) => state.user);
   const { locationPath } = useSelector((state: RootState) => state.router);
+  const { isOpened } = useSelector((state: RootState) => state.ui);
 
   const mode = "";
 
@@ -30,13 +34,34 @@ export const HeaderContent = () => {
           (route.type === "auth" && route.mode === mode))
     )
     .map((route: IRoute) => ({
-      label: <Link to={route.path}>{t(`${route.name}`)}</Link>,
+      label: (
+        <Link to={route.path} onClick={() => handleNameClick()}>
+          {t(`${route.name}`)}
+        </Link>
+      ),
       path: route.path,
       key: route.key,
     }));
 
+  const items2: MenuProps["items"] = [
+    ...items,
+    {
+      label: <LanguageSelect />,
+      key: "lng",
+    },
+  ];
+
   const handleClick = ({ key }: INav) => {
     dispatch(setLocationPath(key));
+  };
+
+  const handleOpenChange = (flag: boolean) => {
+    dispatch(setIsOpened(flag));
+  };
+
+  const handleNameClick = () => {
+    dispatch(setIsOpened(false));
+    dispatch(setLocationPath("dashboard"));
   };
 
   return (
@@ -45,7 +70,7 @@ export const HeaderContent = () => {
         <>
           <AppLogo />
           <Col flex={1}></Col>
-          <Col xs={10}>
+          <Col xs={0} sm={10}>
             <Menu
               theme="dark"
               mode="horizontal"
@@ -54,6 +79,17 @@ export const HeaderContent = () => {
               onClick={handleClick}
               items={items}
             />
+          </Col>
+          <Col xs={14} sm={0}>
+            <Row style={{ justifyContent: "end" }}>
+              <Dropdown
+                menu={{ items: items2 }}
+                onOpenChange={handleOpenChange}
+                open={isOpened}
+              >
+                <MenuOutlined style={{ color: "white", fontSize: "32px" }} />
+              </Dropdown>
+            </Row>
           </Col>
           <Col xs={0} sm={4}>
             <LanguageSelect />

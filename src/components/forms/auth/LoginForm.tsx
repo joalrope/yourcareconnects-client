@@ -51,18 +51,25 @@ export const LoginForm = () => {
 
     dispatch(setLoading(false));
 
+    const displayMsg = msg.split("|");
+
     if (!ok) {
-      modal.error({
-        title: t("Error login"),
-        content: (
+      modal.warning({
+        title: t("Restricted login"),
+        content: [
+          <br></br>,
+          <br></br>,
           <p>
-            {t(`${msg}`, {
-              role: t(user.role),
+            {t(`${displayMsg[0]}`, {
               names: user.names,
-              lastname: user.lastName,
+              lastname: user.lastname,
             })}
-          </p>
-        ),
+          </p>,
+          <p>{t(`${displayMsg[1]}`)}</p>,
+          <p>{t(`${displayMsg[2]}`)}</p>,
+          <p>{t(`${displayMsg[3]}`)}</p>,
+          <br></br>,
+        ],
         autoFocusButton: null,
         okText: `${t("Agreed")}`,
       });

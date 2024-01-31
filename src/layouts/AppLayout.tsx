@@ -45,7 +45,7 @@ export const AppLayout = (/* { children }: { children: ReactNode } */) => {
         </Sider>
       )}
       <Layout>
-        <Header style={{ paddingLeft: 0, paddingRight: 12 }}>
+        <Header style={{ paddingLeft: 0, width: "100%" }}>
           <HeaderContent />
         </Header>
         <Content

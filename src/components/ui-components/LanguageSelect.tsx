@@ -1,7 +1,7 @@
 import { Select } from "antd";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { setES, setUS } from "../../store/slices";
+import { setES, setIsOpened, setUS } from "../../store/slices";
 
 export const LanguageSelect = () => {
   const dispatch = useDispatch();
@@ -12,10 +12,13 @@ export const LanguageSelect = () => {
       i18n.changeLanguage("es");
       dispatch(setES());
     }
+
     if (value === "en") {
       i18n.changeLanguage("en");
       dispatch(setUS());
     }
+
+    dispatch(setIsOpened(false));
   };
 
   return (
