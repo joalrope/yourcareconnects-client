@@ -103,8 +103,6 @@ export const RegisterForm = ({ role }: { role: string }) => {
 
     dispatch(setLoading(false));
 
-    console.log({ newUser });
-
     if (ok) {
       if (newUser.role === "customer" || newUser.role === "superadmin") {
         modal.success({
@@ -136,25 +134,26 @@ export const RegisterForm = ({ role }: { role: string }) => {
       if (newUser.role === "provider") {
         modal.success({
           title: t("Successful registration"),
-          content: (
-            <>
-              <span key={1}>
-                {t("Your account has been created successfully")}
-              </span>
-              <br key={2} />
-              <span key={3}>
-                {t("Please wait until your account is approved")}
-              </span>
-              <br key={4} />
-              <br key={5} />
-              <span key={6}>{t("Sorry for the inconvenience")}</span>
-            </>
-          ),
+          content: [
+            <span>
+              {t(
+                "{{names}} {{lastname}}, your account has been created successfully",
+                {
+                  names: result.user.names,
+                  lastname: result.user.lastName,
+                }
+              )}
+            </span>,
+            <br />,
+            <span>{t("Please wait until your account is approved")}</span>,
+            <br />,
+            <br />,
+            <span>{t("We are sorry for the inconvenience caused")}</span>,
+          ],
           autoFocusButton: null,
           okText: `${t("Agreed")}`,
           onOk: () => {
             form.resetFields();
-            dispatch(setLocationPath("login"));
             navigate("/login");
           },
         });
@@ -162,18 +161,14 @@ export const RegisterForm = ({ role }: { role: string }) => {
     } else {
       modal.error({
         title: t("Error registration"),
-        content: (
-          <>
-            <span key={1}>
-              {t("An error occurred while creating your account")}
-            </span>
-            <br />
-            <span>{t(msg)}</span>
-            <br key={2} />
-            <br key={3} />
-            <span key={4}>{t("Please try again")}</span>
-          </>
-        ),
+        content: [
+          <span>{t("An error occurred while creating your account")}</span>,
+          <br></br>,
+          <span>{t(msg)}</span>,
+          <br></br>,
+          <br></br>,
+          <span>{t("Please try again")}</span>,
+        ],
         autoFocusButton: null,
         okText: `${t("Agreed")}`,
       });

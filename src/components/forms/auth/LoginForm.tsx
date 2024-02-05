@@ -51,25 +51,38 @@ export const LoginForm = () => {
 
     dispatch(setLoading(false));
 
-    const displayMsg = msg.split("|");
-
     if (!ok) {
-      modal.warning({
-        title: t("Restricted login"),
-        content: [
-          <br></br>,
-          <br></br>,
+      const displayMsg = msg.split("|");
+      const content = [];
+
+      if (displayMsg.length > 1) {
+        content.push(<br></br>, <br></br>);
+      }
+
+      if (displayMsg[0].includes("{{")) {
+        content.push(
           <p>
             {t(`${displayMsg[0]}`, {
               names: user.names,
               lastname: user.lastname,
             })}
-          </p>,
-          <p>{t(`${displayMsg[1]}`)}</p>,
-          <p>{t(`${displayMsg[2]}`)}</p>,
-          <p>{t(`${displayMsg[3]}`)}</p>,
-          <br></br>,
-        ],
+          </p>
+        );
+      } else {
+        content.push(<p>{t(`${displayMsg[0]}`)}</p>);
+      }
+
+      for (let i = 1; i < displayMsg.length; i++) {
+        content.push(<p>{t(`${displayMsg[i]}`)}</p>);
+      }
+
+      if (displayMsg.length > 1) {
+        content.push(<br></br>);
+      }
+
+      modal.warning({
+        title: t("Restricted login"),
+        content,
         autoFocusButton: null,
         okText: `${t("Agreed")}`,
       });
