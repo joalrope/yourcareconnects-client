@@ -1,40 +1,66 @@
 import { Col, Row, Typography } from "antd";
-import {
-  IDataProvider,
-  ProviderCard,
-} from "../../../ui-components/provider-card/ProviderCard";
+import { ProviderCard } from "../../../ui-components/provider-card/ProviderCard";
 import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getUsersByIsActive } from "../../../../services";
+import { useDispatch, useSelector } from "react-redux";
+import { setClearProviders, setProviders } from "../../../../store/slices";
+import { RootState } from "../../../../store";
+import { IProvider } from "../../../../interface/provider";
+import { getUserByEmail } from "../../../../services/userService";
 
 const { Title } = Typography;
+const gutter = 16;
 
-export const UserGrid = ({ userType }: { userType: string }) => {
+export const UserGrid = ({
+  userType,
+  email = "",
+}: {
+  userType: string;
+  email?: string;
+}) => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const [users, setUsers] = useState<IDataProvider[]>([]);
-
-  const gutter = 16;
+  const providers = useSelector((state: RootState) => state.providers);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const {
-          result: { users },
-        } = await getUsersByIsActive(userType);
+      let response = null;
 
-        const filteredUsers = users.filter(
-          (user: IDataProvider) => user.role !== "superadmin"
-        );
-        setUsers(filteredUsers);
+      try {
+        if (userType !== "unique") {
+          response = await getUsersByIsActive(userType);
+        } else {
+          response = await getUserByEmail(email);
+        }
       } catch (error) {
         console.log(error);
       }
+
+      const {
+        result: { users },
+      } = response;
+
+      if (!users) {
+        dispatch(setClearProviders());
+        return;
+      }
+
+      if (userType !== "unique") {
+        const filteredUsers = users.filter(
+          (user: IProvider) => user.role !== "superadmin"
+        );
+        dispatch(setProviders(filteredUsers));
+        return;
+      }
+
+      dispatch(setProviders(users));
     };
 
     fetchData();
-  }, [userType]);
+  }, [dispatch, email, userType]);
 
-  return users?.length > 0 ? (
+  return (
     <Row
       gutter={[gutter, gutter]}
       style={{
@@ -49,18 +75,30 @@ export const UserGrid = ({ userType }: { userType: string }) => {
       <Title level={4}>{t("Provider Activation")}</Title>
       <Row
         gutter={[24, 24]}
-        style={{ display: "flex", justifyContent: "center", width: "100%" }}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginLeft: 0,
+          marginRight: 0,
+          width: "100%",
+        }}
       >
-        {users.map((user: IDataProvider) => {
-          return (
-            <Col key={user.id} xs={24} sm={10} md={8} lg={6}>
-              <ProviderCard small={true} {...user} />
-            </Col>
-          );
-        })}
+        {providers?.length > 0 ? (
+          providers.map((provider: IProvider) => {
+            return (
+              <Col key={provider.id}>
+                <ProviderCard provider={provider} small={true} />
+              </Col>
+            );
+          })
+        ) : userType !== "unique" ? (
+          <Title level={4}>{t(`There are no ${userType} providers`)}</Title>
+        ) : (
+          <Title level={4}>
+            {t(`Please enter an email to search for providers`)}
+          </Title>
+        )}
       </Row>
     </Row>
-  ) : (
-    <></>
   );
 };

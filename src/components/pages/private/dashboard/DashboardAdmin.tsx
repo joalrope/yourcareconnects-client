@@ -1,22 +1,32 @@
-import { Col, Radio, RadioChangeEvent, Row, Typography } from "antd";
+import { Col, Input, Radio, RadioChangeEvent, Row, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { UserGrid } from "./UserGrid";
 import { useState } from "react";
 
 const { Title } = Typography;
+const { Search } = Input;
 
 export enum TypeActiveUserStatus {
   ALL = "all",
   ACTIVE = "active",
   INACTIVE = "inactive",
+  UNIQUE = "unique",
 }
 
 export const DashboardAdmin = () => {
   const { t } = useTranslation();
-  const [value, setValue] = useState(TypeActiveUserStatus.ALL);
+  const [email, setEmail] = useState("");
+  const [typeActiveUser, setTypeActiveUser] = useState(
+    TypeActiveUserStatus.ALL
+  );
 
   const onUserTypeChange = (e: RadioChangeEvent) => {
-    setValue(e.target.value);
+    setTypeActiveUser(e.target.value);
+  };
+
+  const onUserSearch = (value: string) => {
+    setTypeActiveUser(TypeActiveUserStatus.UNIQUE);
+    setEmail(value);
   };
 
   return (
@@ -32,8 +42,10 @@ export const DashboardAdmin = () => {
         <Row
           style={{
             justifyContent: "flex-end",
+            marginLeft: 48,
             marginRight: 24,
-            paddingTop: 48,
+            marginTop: 10,
+            marginBottom: 10,
             width: "100%",
           }}
           gutter={[24, 24]}
@@ -41,14 +53,12 @@ export const DashboardAdmin = () => {
           <Col>
             <Radio.Group
               onChange={onUserTypeChange}
-              value={value}
+              value={typeActiveUser}
               style={{
                 display: "flex",
-                justifyContent: "flex-start",
+                justifyContent: "center",
                 flexDirection: "row",
                 flexWrap: "wrap",
-                marginLeft: 48,
-                marginRight: 24,
               }}
             >
               <Radio value={TypeActiveUserStatus.ALL}>
@@ -60,11 +70,18 @@ export const DashboardAdmin = () => {
               <Radio value={TypeActiveUserStatus.ACTIVE}>
                 <Title level={5}> {t("Active Providers")}</Title>
               </Radio>
+              <Search
+                onSearch={onUserSearch}
+                allowClear={true}
+                placeholder="Search by email"
+                style={{ width: 200 }}
+                enterButton
+              />
             </Radio.Group>
           </Col>
         </Row>
         <Row style={{ marginLeft: 48, marginRight: 24, width: "100%" }}>
-          <UserGrid userType={value} />
+          <UserGrid userType={typeActiveUser} email={email} />
         </Row>
       </Row>
       {/* <Row>Servicios</Row> */}

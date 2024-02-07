@@ -5,6 +5,7 @@ import {
   uiSlice,
   userSlice,
   serviceSlice,
+  providersSlice,
   userServiceSlice,
   chatSlice,
 } from "./slices";
@@ -12,13 +13,14 @@ import { routerSlice } from "./slices/router/routerSlice";
 
 export const store = configureStore({
   reducer: {
-    i18n: i18nSlice.reducer,
-    user: userSlice.reducer,
     chat: chatSlice.reducer,
-    ui: uiSlice.reducer,
-    router: routerSlice.reducer,
     form: formSlice.reducer,
+    i18n: i18nSlice.reducer,
+    providers: providersSlice.reducer,
+    router: routerSlice.reducer,
     service: serviceSlice.reducer,
+    user: userSlice.reducer,
+    ui: uiSlice.reducer,
     userService: userServiceSlice.reducer,
   },
   devTools: import.meta.env.NODE_ENV !== "production",

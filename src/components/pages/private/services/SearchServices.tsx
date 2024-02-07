@@ -1,10 +1,7 @@
 import { Button, Col, Form, Modal, Row, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { CategorySelect } from "../../../ui-components/category-select/CategorySelect";
-import {
-  IDataProvider,
-  ProviderCard,
-} from "../../../ui-components/provider-card/ProviderCard";
+import { ProviderCard } from "../../../ui-components/provider-card/ProviderCard";
 import { useEffect, useState } from "react";
 import { getServicesToSearch } from "../../../../helpers/services";
 import { MapView } from "../..";
@@ -14,6 +11,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { useContent } from "../../../../hooks/useContent";
 import { getLocation } from "../../../ui-components/map/utils/getLocation";
+import { IProvider } from "../../../../interface/provider";
 
 const { Title } = Typography;
 
@@ -23,7 +21,7 @@ interface Props {
 }
 
 export const SearchServices = () => {
-  const [providers, setProviders] = useState<IDataProvider[]>([]);
+  const [providers, setProviders] = useState<IProvider[]>([]);
   const [areThereUsers, setAreThereUsers] = useState<boolean>(true);
   const [searchServices, setSearchServices] = useState<string | undefined>("");
   const [selSrvices, setSelSrvices] = useState<string[]>([]);
@@ -55,7 +53,7 @@ export const SearchServices = () => {
     }
 
     if (users.length >= 1) {
-      const usersMarkers = users.map((user: IDataProvider) => {
+      const usersMarkers = users.map((user: IProvider) => {
         const userLocation = getLocation(user.location as ILocation);
 
         return {
@@ -221,7 +219,7 @@ export const SearchServices = () => {
             {t("There are no providers that provide the requested service")}
           </h3>
         ) : (
-          providers.map((provider: IDataProvider) => {
+          providers.map((provider: IProvider) => {
             return (
               <Col
                 key={provider.id}
@@ -232,7 +230,9 @@ export const SearchServices = () => {
                 xl={6}
                 xxl={6}
               >
-                {provider.role === "provider" && <ProviderCard {...provider} />}
+                {provider.role === "provider" && (
+                  <ProviderCard provider={provider} small={false} />
+                )}
               </Col>
             );
           })

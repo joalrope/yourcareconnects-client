@@ -11,6 +11,7 @@ export const Dashboard = () => {
   ) : role === "admin" ? (
     <DashboardAdmin />
   ) : (
+    // TODO: Later change to superadmin
     <DashboardAdmin />
   );
 };

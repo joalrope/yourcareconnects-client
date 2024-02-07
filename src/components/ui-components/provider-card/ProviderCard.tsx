@@ -1,13 +1,13 @@
 import { Card, Col, Rate, Row, Tooltip, Typography } from "antd";
 
-import { ILocation } from "../map/MapView";
 import { UserTitle } from "./UserTitle";
 import { useTranslation } from "react-i18next";
+import { IProvider } from "../../../interface/provider";
 
 const { Meta } = Card;
 const { Text, Title } = Typography;
 
-export interface IDataProvider {
+/* export interface IDataProvider {
   id: string;
   services: string[];
   fullname?: string;
@@ -18,32 +18,38 @@ export interface IDataProvider {
   ratings?: number;
   small?: boolean;
   role?: string;
-}
+} */
 
 export const ProviderCard = ({
-  id,
-  fullname,
-  email,
-  services,
-  pictures,
-  ratings,
-  role,
-  isActive,
-  small = false,
-}: IDataProvider) => {
-  const { profile } = !small
-    ? pictures
-    : { profile: { name: "", image: "/images/user.png", type: "" } };
+  provider,
+  small,
+}: {
+  provider: IProvider;
+  small: boolean;
+}) => {
+  const profile = !small
+    ? provider.pictures?.profile
+    : { name: "", image: "/images/user.png", type: "" };
 
-  const picture = `${profile.image}`;
+  const {
+    id,
+    fullname,
+    email,
+    phoneNumber,
+    services,
+    ratings,
+    role,
+    isActive,
+  } = provider;
+
+  const picture = profile?.image || "/images/user.png";
   const { t } = useTranslation();
 
   const serv: string[] = [];
 
-  !small &&
-    services.map((service) => {
-      serv.push(t(service.split("|").pop() as string));
-    });
+  services?.map((service) => {
+    serv.push(t(service.split("|").pop() as string));
+  });
 
   const userServ = serv.join(", ");
 
@@ -53,9 +59,9 @@ export const ProviderCard = ({
       style={{
         display: "flex",
         flexDirection: "column",
-        height: small ? 240 : 380,
-        maxWidth: "300px",
-        width: "100%",
+        maxHeight: 450,
+        height: small ? 345 : 400,
+        maxWidth: 230,
       }}
       cover={
         !small && (
@@ -81,7 +87,8 @@ export const ProviderCard = ({
               <UserTitle
                 fullname={fullname}
                 email={email}
-                id={id}
+                phoneNumber={phoneNumber}
+                id={String(id)}
                 contact={small}
                 isActive={isActive}
                 small={small}
@@ -109,7 +116,6 @@ export const ProviderCard = ({
             </Text>
           </Tooltip>
         </Col>
-
         <Rate
           disabled
           allowHalf

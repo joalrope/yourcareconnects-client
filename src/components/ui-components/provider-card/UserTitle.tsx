@@ -10,7 +10,7 @@ import {
   Typography,
 } from "antd";
 import { useTranslation } from "react-i18next";
-import { UserAddOutlined } from "@ant-design/icons";
+import { DeleteOutlined, UserAddOutlined } from "@ant-design/icons";
 import { RootState } from "../../../store";
 import {
   getUserById,
@@ -18,15 +18,17 @@ import {
   updateRoleUser,
   updateUserContactsById,
 } from "../../../services";
-import { setUser } from "../../../store/slices";
+import { deleteProvider, setUser } from "../../../store/slices";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useState } from "react";
+import { deleteUserById } from "../../../services/userService";
 
 const { Text, Title } = Typography;
 
 interface Props {
   fullname: string | undefined;
   email: string | undefined;
+  phoneNumber: string | undefined;
   id: string;
   contact: boolean;
   isActive: boolean | undefined;
@@ -37,16 +39,18 @@ interface Props {
 export const UserTitle = ({
   fullname,
   email,
+  phoneNumber,
   id,
   contact,
   isActive,
   small,
   role,
 }: Props) => {
-  const { message } = App.useApp();
+  const { message, modal } = App.useApp();
   const {
     id: userId,
     contacts,
+    role: userLoggedIn,
     fullname: userFullname,
   } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
@@ -99,6 +103,8 @@ export const UserTitle = ({
       result: { user },
     } = await updateActiveUserStatus(id, e.target.checked);
 
+    console.log({ user });
+
     if (ok) {
       setActive(!active);
       message.success({
@@ -110,6 +116,44 @@ export const UserTitle = ({
         duration: 3,
       });
     }
+  };
+
+  const handleDeleteProvider = async (id: string) => {
+    modal.confirm({
+      title: t(`Are you sure you want to delete {{fullname}}`, { fullname }),
+      okText: t("Yes"),
+      okType: "danger",
+      cancelText: t("No"),
+      onOk: async () => {
+        const {
+          ok,
+          result: { user },
+        } = await deleteUserById(id);
+
+        if (ok) {
+          dispatch(deleteProvider(id));
+
+          message.success({
+            content: t(
+              `${t("The user {{fullname}} was deleted", {
+                fullname: user.fullname,
+              })}`
+            ),
+            duration: 3,
+          });
+
+          return;
+        }
+
+        //TODO: HANDLE ERROR
+        message.error({
+          content: t(`${t("Sorry, we couldn't remove it. Please try later")}`),
+          duration: 3,
+        });
+      },
+    });
+
+    return;
   };
 
   const handleRoleChange = async (value: string[]) => {
@@ -157,20 +201,30 @@ export const UserTitle = ({
                 />
               </Col>
 
-              <Col style={{ display: "flex", justifyContent: "flex-end" }}>
-                <Checkbox
-                  onChange={(e) => onActivateChange(id, e)}
-                  style={{ justifyContent: "flex-end", width: "100%" }}
-                  checked={active}
-                  defaultChecked={isActive}
-                >
-                  {t("Activate")}
-                </Checkbox>
+              <Col
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                {userLoggedIn === "superadmin" && (
+                  <Checkbox
+                    onChange={(e) => onActivateChange(id, e)}
+                    style={{ justifyContent: "flex-end", width: "100%" }}
+                    checked={active}
+                    defaultChecked={isActive}
+                  >
+                    {t("Activate")}
+                  </Checkbox>
+                )}
               </Col>
             </Row>
             <Col style={{ width: "100%" }}>
+              <Title level={5} style={{ margin: 0, marginTop: 12 }}>
+                {t("User type:")}
+              </Title>
               <Select
-                style={{ marginTop: 12, width: "100%" }}
+                style={{ width: "100%" }}
                 size={"small"}
                 value={[userRole]}
                 placeholder="Please select"
@@ -196,21 +250,36 @@ export const UserTitle = ({
         )}
       </Col>
       <Col xs={!contact ? 19 : 24}>
-        <Tooltip placement="top" title={fullname}>
-          <Title level={5} ellipsis={true} style={{ margin: 0 }}>
+        <Title level={5} ellipsis={true} style={{ margin: 0 }}>
+          {userLoggedIn === "superadmin" && (
+            <Tooltip placement="top" title={t("Delete Provider")}>
+              <DeleteOutlined
+                onClick={() => handleDeleteProvider(id)}
+                style={{ color: "red" }}
+              />
+            </Tooltip>
+          )}
+          {userLoggedIn === "superadmin" && " "}
+          <Tooltip placement="top" title={fullname}>
             {fullname}
-          </Title>
-        </Tooltip>
-        {contact && (
-          <Tooltip
-            placement="leftTop"
-            title={email}
-            style={{ display: "flex", justifyContent: "flex-end" }}
-          >
-            <Text style={{ fontSize: 12 }}>
-              <a href={`mailto:${email}`}>{email}</a>
-            </Text>
           </Tooltip>
+        </Title>
+        {contact && (
+          <Row style={{ flexDirection: "column" }}>
+            <Tooltip
+              placement="leftTop"
+              title={email}
+              style={{ display: "flex", justifyContent: "flex-end" }}
+            >
+              <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+                <a href={`mailto:${email}`}>{email}</a>
+              </Text>
+            </Tooltip>
+
+            <Col>
+              <Text style={{ fontSize: 12 }}>{phoneNumber}</Text>
+            </Col>
+          </Row>
         )}
       </Col>
       {!contacts?.includes(id) && (

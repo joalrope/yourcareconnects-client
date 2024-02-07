@@ -15,6 +15,12 @@ export const getUserById = async (id: string) => {
   return result;
 };
 
+export const getUserByEmail = async (email: string) => {
+  const result = await fetchWithToken(`/users/email/${email}`);
+
+  return result;
+};
+
 export const getUsersByIsActive = async (userType: string) => {
   const result = await fetchWithToken(
     `/users/isActive/${userType}?from=0&limit=0`
@@ -99,6 +105,12 @@ export const updateActiveUserStatus = async (
     {},
     "PUT"
   );
+
+  return result;
+};
+
+export const deleteUserById = async (id: string) => {
+  const result = await fetchWithToken(`/users/${id}`, {}, "DELETE");
 
   return result;
 };
