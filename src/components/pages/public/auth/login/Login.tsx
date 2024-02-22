@@ -1,14 +1,9 @@
-import { useDispatch } from "react-redux";
 import { Col, Row } from "antd";
 import "./login.css";
 import { LoginForm } from "../../../../forms/auth/LoginForm";
-import { setLocationPath } from "../../../../../store/slices/router/routerSlice";
 import ImageYCC from "../../../../ui-components/ImageYCC";
 
 export const Login = () => {
-  const dispatch = useDispatch();
-  dispatch(setLocationPath("login"));
-
   return (
     <Row
       gutter={16}

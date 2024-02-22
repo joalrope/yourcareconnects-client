@@ -1,7 +1,7 @@
+import { useState } from "react";
 import { App, Button, Checkbox, Col, Form, Input, Row } from "antd";
 import { Typography } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { fetchWithoutToken } from "../../../helpers/fetch";
@@ -13,6 +13,7 @@ import {
   setUser,
 } from "../../../store/slices";
 import { setLocationPath } from "../../../store/slices/router/routerSlice";
+import { ReCaptcha } from "../../ui-components/ReCaptcha";
 
 const { Title } = Typography;
 
@@ -42,7 +43,7 @@ export const RegisterForm = ({ role }: { role: string }) => {
   const conditionsValue = Form.useWatch("conditions", form) || false;
 
   const [hideBtn, setHideBtn] = useState<boolean>(conditionsValue);
-  //const [thereIsSuperAdmin, setThereIsSuperAdmin] = useState<boolean>(false);
+  const [recaptcha, setRecaptcha] = useState<boolean>(false);
 
   const onChange = (e: CheckboxChangeEvent) => {
     setHideBtn(e.target.checked);
@@ -183,7 +184,7 @@ export const RegisterForm = ({ role }: { role: string }) => {
     <Row style={{ width: "100%" }}>
       <Col style={{ width: "100%" }}>
         <Row style={{ display: "flex", flexDirection: "column" }}>
-          <Title level={3} style={{ margin: "50px 0px" }}>
+          <Title level={3} style={{ margin: "5% 0px" }}>
             {`${t("Create your account as a")} ${t(`${role}`)}`}
           </Title>
         </Row>
@@ -354,12 +355,29 @@ export const RegisterForm = ({ role }: { role: string }) => {
               <Input.Password placeholder={`${t("Password").toLowerCase()}`} />
             </Form.Item>
 
-            <Form.Item name="conditions" valuePropName="checked">
+            <Form.Item
+              name="conditions"
+              valuePropName="checked"
+              style={{
+                width: "100%",
+                marginBottom: "6px",
+              }}
+            >
               <Checkbox checked={hideBtn} onChange={onChange}>
                 {t("I accept terms and conditions")}
               </Checkbox>
             </Form.Item>
-
+            <Row
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: 10,
+                marginBottom: 20,
+                width: "100%",
+              }}
+            >
+              <ReCaptcha setRecaptcha={setRecaptcha} />
+            </Row>
             <Form.Item
               wrapperCol={{
                 offset: 10,
@@ -367,7 +385,11 @@ export const RegisterForm = ({ role }: { role: string }) => {
               }}
               style={{ display: "flex", justifyContent: "center" }}
             >
-              <Button type="primary" htmlType="submit" disabled={!hideBtn}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                disabled={!(hideBtn && recaptcha)}
+              >
                 {t("Get Into")}
               </Button>
             </Form.Item>

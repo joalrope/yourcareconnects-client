@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { IItem } from "../components/ui-components/category-select/interfaces";
 
 export const servicesSort = (services: IItem[]) => {
@@ -24,4 +25,22 @@ export const getServicesToSearch = (services: string[]) => {
   }
 
   return str;
+};
+
+export const useTranslatedServices = (services: string[] | undefined) => {
+  const { t } = useTranslation();
+
+  const result: string[] = [];
+
+  if (!services) {
+    return result;
+  }
+
+  services.map((service: string) => {
+    const serv = String(service.split("|").pop());
+
+    result.push(t(serv));
+  });
+
+  return result;
 };

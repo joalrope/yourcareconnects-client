@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import {
   Avatar,
@@ -10,8 +12,13 @@ import {
   Typography,
   theme,
 } from "antd";
-import { LogoutOutlined, MenuOutlined } from "@ant-design/icons";
-
+import {
+  AppstoreOutlined,
+  FormOutlined,
+  HeartOutlined,
+  LogoutOutlined,
+  MenuOutlined,
+} from "@ant-design/icons";
 import { setLocationPath } from "../store/slices/router/routerSlice";
 import {
   chatOffline,
@@ -20,17 +27,13 @@ import {
   setLoggedIn,
   setUnreadCount,
 } from "../store/slices";
-import { useTranslation } from "react-i18next";
 import { LanguageSelect } from "../components/ui-components/LanguageSelect";
 import { RootState } from "../store";
 
 import styles from "./layout.module.css";
-import { useEffect } from "react";
 
 const { Title } = Typography;
 const { useToken } = theme;
-
-//const baseUrl = import.meta.env.VITE_URL_BASE;
 
 interface Props {
   names: string | undefined;
@@ -45,8 +48,6 @@ export const InfoContent = ({ names }: Props) => {
   );
   const { unreadCount } = useSelector((state: RootState) => state.chat);
   const { isOpened } = useSelector((state: RootState) => state.ui);
-  //const [open, setOpen] = useState<boolean>(false);
-  //const [notification, setNotification] = useState<number>(1);
 
   useEffect(() => {
     let count = 0;
@@ -79,6 +80,10 @@ export const InfoContent = ({ names }: Props) => {
   };
 
   const handleNotificationsClick = () => {
+    dispatch(setIsOpened(false));
+  };
+
+  const handleItemClick = () => {
     dispatch(setIsOpened(false));
   };
 
@@ -181,6 +186,78 @@ export const InfoContent = ({ names }: Props) => {
           }}
         >
           <Link
+            to="/donations"
+            style={{
+              marginInline: 20,
+              userSelect: "none",
+              color: token.colorTextBase,
+            }}
+            onClick={handleItemClick}
+          >
+            <HeartOutlined /> {t("donations")}
+          </Link>
+        </Row>
+      ),
+    },
+    {
+      key: "5",
+      label: (
+        <Row
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Link
+            to="/blog"
+            style={{
+              marginInline: 20,
+              userSelect: "none",
+              color: token.colorTextBase,
+            }}
+            onClick={handleItemClick}
+          >
+            <FormOutlined /> {t("blog")}
+          </Link>
+        </Row>
+      ),
+    },
+    {
+      key: "6",
+      label: (
+        <Row
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Link
+            to="/shop"
+            style={{
+              marginInline: 20,
+              userSelect: "none",
+              color: token.colorTextBase,
+            }}
+            onClick={handleItemClick}
+          >
+            <AppstoreOutlined /> {t("shop")}
+          </Link>
+        </Row>
+      ),
+    },
+    {
+      key: "7",
+      label: (
+        <Row
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Link
             to="/"
             onClick={handleLogOut}
             style={{
@@ -208,6 +285,60 @@ export const InfoContent = ({ names }: Props) => {
           }}
         >
           <Col>
+            <Link
+              to="/donations"
+              style={{
+                marginLeft: "30px",
+                userSelect: "none",
+                color: token.colorPrimary,
+              }}
+            >
+              <HeartOutlined /> {t("donations")}
+            </Link>
+          </Col>
+
+          <Col>
+            <Link
+              to="/blog"
+              style={{
+                marginLeft: "30px",
+                userSelect: "none",
+                color: token.colorPrimary,
+              }}
+            >
+              <FormOutlined /> {t("blog")}
+            </Link>
+          </Col>
+
+          <Col>
+            <Link
+              to="/shop"
+              style={{
+                marginLeft: "30px",
+                userSelect: "none",
+                color: token.colorPrimary,
+              }}
+            >
+              <AppstoreOutlined /> {t("shop")}
+            </Link>
+          </Col>
+
+          <Col>
+            <Link
+              to="/"
+              onClick={handleLogOut}
+              style={{
+                marginLeft: "30px",
+                marginRight: "50px",
+                userSelect: "none",
+                color: token.colorPrimary,
+              }}
+            >
+              <LogoutOutlined /> {t("Log Out")}
+            </Link>
+          </Col>
+
+          <Col>
             <Link to="/dashboard" onClick={handleNameClick}>
               {names && (
                 <Title
@@ -224,6 +355,7 @@ export const InfoContent = ({ names }: Props) => {
               )}
             </Link>
           </Col>
+
           <Col>
             <Avatar
               shape="circle"
@@ -250,19 +382,6 @@ export const InfoContent = ({ names }: Props) => {
             </Link>
           </Col>
 
-          <Col>
-            <Link
-              to="/"
-              onClick={handleLogOut}
-              style={{
-                marginLeft: "10px",
-                userSelect: "none",
-                color: token.colorPrimary,
-              }}
-            >
-              <LogoutOutlined /> {t("Log Out")}
-            </Link>
-          </Col>
           <Col style={{ margin: 20 }}>
             <LanguageSelect />
           </Col>

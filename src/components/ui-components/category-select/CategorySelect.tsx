@@ -12,11 +12,12 @@ import {
   setServiceFormVisible,
 } from "../../../store/slices";
 import { servicesSort } from "../../../helpers/services";
-import { translate } from "../../../helpers/translate";
+//import { usetranslate } from "../../../helpers/translate";
 import { RootState } from "../../../store";
 import { pushAddService } from "./pushAddService";
 import { formatterServiceItems } from "./FormatterServiceItems";
 import { IItem, Props } from "./interfaces";
+import { translateServices } from "../../../helpers/translate";
 
 export const CategorySelect = ({
   form,
@@ -49,7 +50,7 @@ export const CategorySelect = ({
 
   const customizeServices = useCallback(
     (servicesDB: IItem[]) => {
-      const services = translate(servicesDB, t);
+      const services = translateServices(servicesDB, t);
 
       if (sortable) servicesSort(services);
 
@@ -60,7 +61,8 @@ export const CategorySelect = ({
       setData(services);
       dispatch(setNewService(""));
     },
-    [dispatch, handleClick, editable, formatted, language, sortable, t]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [language]
   );
 
   useEffect(() => {
@@ -122,6 +124,8 @@ export const CategorySelect = ({
             </Tag>
           );
         }}
+        filterTreeNode
+        treeNodeFilterProp="value"
         treeCheckable
         getPopupContainer={(triggerNode) => triggerNode.parentNode}
         treeData={data}

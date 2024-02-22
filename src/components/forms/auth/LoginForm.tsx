@@ -17,6 +17,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { setLoading, setLoggedIn, setUser } from "../../../store/slices";
 import { setLocationPath } from "../../../store/slices/router/routerSlice";
 import { loginUser } from "../../../services";
+import { ReCaptcha } from "../../ui-components/ReCaptcha";
+import { useState } from "react";
 
 const { Paragraph, Title } = Typography;
 const { useToken } = theme;
@@ -34,6 +36,7 @@ export const LoginForm = () => {
   const navigate = useNavigate();
   const { modal } = App.useApp();
   const [form] = Form.useForm<ILoginData>();
+  const [recaptcha, setRecaptcha] = useState<boolean>(false);
 
   const onFinish = async ({ email, password }: ILoginData) => {
     const userData: ILoginData = {
@@ -173,27 +176,31 @@ export const LoginForm = () => {
               <Input.Password placeholder="password" />
             </Form.Item>
 
-            <Form.Item
-              name="remember"
-              valuePropName="checked"
-              wrapperCol={{
-                offset: 8,
-                span: 16,
-              }}
-            >
-              <Checkbox>{t("Remember me")}</Checkbox>
-            </Form.Item>
+            <Row style={{ justifyContent: "center", width: "100%" }}>
+              <Form.Item name="remember" valuePropName="checked">
+                <Checkbox>{t("Remember me")}</Checkbox>
+              </Form.Item>
+            </Row>
 
-            <Form.Item
-              wrapperCol={{
-                offset: 8,
-                span: 16,
+            <Row
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: 10,
+                marginBottom: 20,
+                width: "100%",
               }}
             >
-              <Button type="primary" htmlType="submit">
-                {t("Submit")}
-              </Button>
-            </Form.Item>
+              <ReCaptcha setRecaptcha={setRecaptcha} />
+            </Row>
+
+            <Row style={{ justifyContent: "center", width: "100%" }}>
+              <Form.Item>
+                <Button type="primary" htmlType="submit" disabled={!recaptcha}>
+                  {t("Submit")}
+                </Button>
+              </Form.Item>
+            </Row>
           </Form>
         </Row>
         <Link to={"/home/create-account"}>

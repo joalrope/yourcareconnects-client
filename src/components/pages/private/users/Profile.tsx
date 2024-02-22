@@ -1,10 +1,16 @@
-import { Row } from "antd";
+import { Col, Row } from "antd";
 import { ProviderForm } from "../../../forms/auth/provicer-form/ProviderForm";
+import { UploadDocs } from "../../../ui-components/UploadDocs";
 
 export const Profile = () => {
   return (
-    <Row justify={"center"} align={"middle"}>
-      <ProviderForm />
+    <Row style={{ flexDirection: "column" }}>
+      <Col>
+        <ProviderForm />
+      </Col>
+      <Col>
+        <UploadDocs />
+      </Col>
     </Row>
   );
 };

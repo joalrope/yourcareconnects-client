@@ -7,6 +7,7 @@ export const formatterServiceItems = (
   handleClick: (value: string | React.ReactNode) => void
 ) => {
   services.map((item) => {
+    console.log({ item });
     const bgc = `${item.tagColor}20`;
     const frc = `${item.tagColor}`;
 

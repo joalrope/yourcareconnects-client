@@ -37,3 +37,20 @@
 .--footer__avatar {
   margin-right: 10px;
 }
+
+.ant-float-btn-default .ant-float-btn-body {
+  background-color: #01e675 !important;
+}
+
+.float-button {
+  background-color: #01e675 !important;
+  bottom: 72px !important;
+  right: 32px !important;
+  height: 120 !important;
+  width: 120 !important;
+}
+
+.float-button-icon {
+  color: white !important;
+  font-size: 18px;
+}

@@ -1,19 +1,6 @@
-import {
-  App,
-  Button,
-  Col,
-  Form,
-  Input,
-  Modal,
-  Row,
-  Select,
-  Typography,
-  Upload,
-} from "antd";
+import { App, Button, Col, Form, Input, Modal } from "antd";
+import { Row, Select, Typography } from "antd";
 import { useTranslation } from "react-i18next";
-import type { RcFile, UploadProps } from "antd/es/upload/interface";
-import { UploadOutlined } from "@ant-design/icons";
-import { CategorySelect } from "../../../ui-components/category-select/CategorySelect";
 import { SetStateAction, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
@@ -21,20 +8,17 @@ import { useNavigate } from "react-router-dom";
 import { getModalities, updateUserById } from "../../../../services";
 import { setUser } from "../../../../store/slices";
 import { setLocationPath } from "../../../../store/slices/router/routerSlice";
-2;
+import { CategorySelect } from "../../../ui-components/category-select/CategorySelect";
 import { IModality, IProvider } from "./interfaces";
 import { MapView } from "../../../pages";
 import { FormItemInput } from "../../../ui-components/FormItemInput";
 import { useContent } from "../../../../hooks/useContent";
 import { UserProfileImage } from "../../../ui-components/user-profile-image/UserProfileImage";
+import { useTranslatedServices } from "../../../../helpers/services";
 
 const { Title } = Typography;
 
-const baseUrl = import.meta.env.VITE_URL_BASE;
-
 export const ProviderForm = () => {
-  const user = useSelector((state: RootState) => state.user);
-  const { id, role } = user;
   const { message } = App.useApp();
   const [form] = Form.useForm<IProvider>();
   const { t } = useTranslation();
@@ -42,60 +26,10 @@ export const ProviderForm = () => {
   const dispatch = useDispatch();
   const content = useContent();
 
+  const user = useSelector((state: RootState) => state.user);
+  const { id, role } = user;
   const [modalities, setModalities] = useState<IModality[]>([]);
   const [viewMap, setViewMap] = useState<boolean>(false);
-
-  const uploadDocs: UploadProps = {
-    name: "file",
-    maxCount: 5,
-    listType: "text",
-
-    async onChange({ file, fileList }) {
-      if (file.status !== "uploading") {
-        console.log(file, fileList);
-      }
-
-      const formData = new FormData();
-
-      formData.append("file", fileList[0].originFileObj as RcFile, file.name);
-
-      const files = fileList.map((file) => {
-        return file.originFileObj?.name;
-      });
-
-      console.log({ files });
-
-      const url = `${baseUrl}/api/uploads/docs`;
-
-      return await fetch(url, {
-        method: "POST",
-        headers: {
-          Accept: "*/*",
-          "x-token": sessionStorage.token,
-        },
-        body: formData,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          return data;
-        })
-        .catch(() => {
-          console.error("An error occurred while loading the image.");
-        });
-    },
-    beforeUpload(file) {
-      const isDocs =
-        file.type === "application/pdf" ||
-        file.type === "application/msword" ||
-        file.type ===
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-      if (!isDocs) {
-        message.error(`${file.name} is not a png file`);
-      }
-
-      return isDocs || Upload.LIST_IGNORE;
-    },
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -184,6 +118,7 @@ export const ProviderForm = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const defaultValues = useRef({
     id: user.id,
+    email: user.email,
     address: user.address,
     biography: user.biography,
     certificates: user.certificates,
@@ -284,6 +219,10 @@ export const ProviderForm = () => {
               </Col>
             </Row>
 
+            {role === "superadmin" && (
+              <FormItemInput name="email" label="Email" />
+            )}
+
             <Row gutter={16}>
               <Col xs={24} sm={24} md={16} lg={16}>
                 {role !== "customer" && (
@@ -349,7 +288,8 @@ export const ProviderForm = () => {
               >
                 <CategorySelect
                   form={form}
-                  initValues={user.services}
+                  // eslint-disable-next-line react-hooks/rules-of-hooks
+                  initValues={useTranslatedServices(user.services)}
                   formatted={true}
                   editable={true}
                   sortable={true}
@@ -379,17 +319,17 @@ export const ProviderForm = () => {
             {role !== "customer" && (
               <Form.Item
                 label={t("Licenses and certificates to provide services")}
-                name="certificates"
                 style={{
                   width: "100%",
                   marginBottom: "6px",
                 }}
               >
-                <Upload {...uploadDocs}>
+                {/* <Upload {...uploadDocs}>
+                  <UploadDocs />
                   <Button type="primary" icon={<UploadOutlined />}>
                     {t("Upload")}
                   </Button>
-                </Upload>
+                </Upload> */}
               </Form.Item>
             )}
 
