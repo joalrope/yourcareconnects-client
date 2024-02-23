@@ -1,5 +1,7 @@
 import { /* ReactNode, */ useState } from "react";
-import { Layout, Spin } from "antd";
+import { FloatButton, Layout, Spin } from "antd";
+import { WhatsAppOutlined } from "@ant-design/icons";
+
 import { FooterContent } from "./FooterContent";
 import { HeaderContent } from "./HeaderContent";
 import { SiderContent } from "./sider/SiderContent";
@@ -24,16 +26,6 @@ export const AppLayout = (/* { children }: { children: ReactNode } */) => {
 
   return (
     <Layout style={{ height: "100vh" }}>
-      <Spin
-        size="large"
-        spinning={loading}
-        style={{
-          position: "absolute",
-          top: screen.availHeight / 3,
-          left: screen.availWidth / 2,
-          zIndex: 100,
-        }}
-      />
       {isLoggedIn && (
         <Sider
           breakpoint="xs"
@@ -55,7 +47,23 @@ export const AppLayout = (/* { children }: { children: ReactNode } */) => {
             overflowX: "hidden",
           }}
         >
+          <Spin
+            size="large"
+            spinning={loading}
+            style={{
+              position: "absolute",
+              top: screen.width / 3,
+              left: screen.width / 2,
+              zIndex: 100,
+            }}
+          />
           <AppRouter />
+          <FloatButton
+            className="float-button"
+            type="default"
+            icon={<WhatsAppOutlined className="float-button-icon" />}
+            onClick={() => window.open("https://wa.me/", "_blank")}
+          />
         </Content>
         <Footer>
           <FooterContent />

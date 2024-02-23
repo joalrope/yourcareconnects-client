@@ -19,11 +19,12 @@ import {
 } from "../components/pages";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleProtectedRoute } from "./RoleProtectedRoute";
+import { Redirect } from "../components/pages/public/shared/Redirect";
 
 export const AppRouter = () => {
   return (
     <Routes>
-      <Route index element={<Home />}></Route>
+      <Route index element={<Home />} />
       <Route key="login" path="/login" element={<Login />} />
       <Route
         key="register-customer"
@@ -49,6 +50,21 @@ export const AppRouter = () => {
         key="createAccount"
         path="/home/create-account"
         element={<SelectCreateAccount />}
+      />
+      <Route
+        key="shop"
+        path="/shop"
+        element={<Redirect url="https://www.yourcareconnects.com/shop" />}
+      />
+      <Route
+        key="blog"
+        path="/blog"
+        element={<Redirect url="https://www.yourcareconnects.com/blog" />}
+      />
+      <Route
+        key="donations"
+        path="/donations"
+        element={<Redirect url="https://yourcareconnects.com/donations" />}
       />
 
       <Route element={<ProtectedRoute />}>

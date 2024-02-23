@@ -21,7 +21,7 @@ export const Home = () => {
             marginTop: "2%",
             textAlign: "center",
             userSelect: "none",
-            fontSize: 38,
+            fontSize: 42,
           }}
           level={3}
         >

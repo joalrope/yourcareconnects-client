@@ -1,7 +1,7 @@
 import { TFunction } from "i18next";
 import { IItem } from "../components/ui-components/category-select/interfaces";
 
-export const translate = (
+export const translateServices = (
   jsonArray: IItem[],
   t: TFunction<"translation", undefined, "translation">
 ) => {
@@ -10,10 +10,24 @@ export const translate = (
   if (!jsonArray) return;
 
   jsonArray.map((item) => {
+    const value: string[] = [];
+    let translateValue = "";
+
+    if (item.value?.toString().includes("|")) {
+      const arrayValue = item.value?.toString().split("|");
+
+      for (const subValue of arrayValue) {
+        value.push(t(subValue));
+      }
+
+      translateValue = value.join("|");
+    }
+
+    item.value = translateValue || t(`${item.value}`);
     item.title = t(`${item.title}`);
 
     if (item.children) {
-      translate(item.children, t);
+      translateServices(item.children, t);
     }
   });
 

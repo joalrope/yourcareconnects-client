@@ -1,4 +1,4 @@
-import { Card, Col, Row, theme } from "antd";
+import { Card, Col, Row } from "antd";
 import Title from "antd/es/typography/Title";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,14 +10,14 @@ import { useEffect, useState } from "react";
 import { IRes } from "../../../../services/serviceService";
 import { setLoading } from "../../../../store/slices";
 
-const { useToken } = theme;
+//const { useToken } = theme;
 export const DashboardUser = () => {
   const dispatch = useDispatch();
-  const { names, balance, biography, points, services } = useSelector(
+  const { names, balance, points, services } = useSelector(
     (state: RootState) => state.user
   );
   const { t } = useTranslation();
-  const { token } = useToken();
+  //const { token } = useToken();
 
   const [providerCard, setProviderCard] = useState<IRes[]>([]);
 

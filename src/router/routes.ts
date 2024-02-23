@@ -12,22 +12,12 @@ export interface IRoute {
   type: string;
   name: React.ReactNode;
   mode: string;
-  element: () => JSX.Element;
+  element?: () => JSX.Element;
   icon?: string;
   children?: Children[];
 }
 
 export const routes: IRoute[] = [
-  /* {
-    key: "home",
-    Pos: "header",
-    path: "/",
-    type: "public",
-    name: "Inicio",
-    mode: "",
-    icon: "HomeOutlined",
-    element: Home,
-  }, */
   {
     key: "login",
     Pos: "header",
