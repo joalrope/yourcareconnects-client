@@ -208,6 +208,20 @@ export const InfoContent = ({ names }: Props) => {
           }}
         >
           <Col>
+            <LanguageSelect />
+          </Col>
+          <Col style={{ margin: 12 }}>
+            <Link to="/chat" onClick={handleNotificationsClick}>
+              <Badge size="small" count={unreadCount}>
+                <Avatar
+                  shape="circle"
+                  src="/images/bell-icon.png"
+                  style={{ cursor: "pointer", marginLeft: "12px" }}
+                />
+              </Badge>
+            </Link>
+          </Col>
+          <Col>
             <Link to="/dashboard" onClick={handleNameClick}>
               {names && (
                 <Title
@@ -237,19 +251,6 @@ export const InfoContent = ({ names }: Props) => {
               }}
             />
           </Col>
-
-          <Col>
-            <Link to="/chat" onClick={handleNotificationsClick}>
-              <Badge size="small" count={unreadCount}>
-                <Avatar
-                  shape="circle"
-                  src="/images/bell-icon.png"
-                  style={{ cursor: "pointer", marginLeft: "12px" }}
-                />
-              </Badge>
-            </Link>
-          </Col>
-
           <Col>
             <Link
               to="/"
@@ -262,9 +263,6 @@ export const InfoContent = ({ names }: Props) => {
             >
               <LogoutOutlined /> {t("Log Out")}
             </Link>
-          </Col>
-          <Col style={{ margin: 20 }}>
-            <LanguageSelect />
           </Col>
         </Row>
       </Col>

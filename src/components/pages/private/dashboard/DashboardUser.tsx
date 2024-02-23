@@ -21,7 +21,7 @@ export const DashboardUser = () => {
 
   const [providerCard, setProviderCard] = useState<IRes[]>([]);
 
-  const gutter = 32;
+  const gutter = 18;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,39 +41,54 @@ export const DashboardUser = () => {
   return (
     <Row style={{ padding: 24, width: "100%" }}>
       <Col span={24} style={{ maxWidth: "96%", margin: "auto" }}>
-        <Col span={24} style={{ borderBottom: "1px solid #e8e8e8" }}>
-          <Title level={3} style={{ margin: "20px", width: "100%" }}>
-            {t("Dashboard")}
+        <Col span={24}>
+          <Title level={3} style={{ margin: "20px 12px", width: "100%" }}>
+            {t("Welcome")}, {names}
           </Title>
         </Col>
         <Row
           gutter={[gutter, gutter]}
-          justify="space-around"
+          justify="start"
           style={{ padding: gutter }}
         >
-          <Col xs={24} xl={12}>
-            <Card title={`${t("Welcome")}, ${names}`}>
-              <p>{biography}</p>
-            </Card>
+          <Col xs={24} xl={8} style={{ paddingLeft: 0 }}>
+            <div
+              style={{
+                background: "white",
+                padding: 18,
+
+                border: "1px solid #80808030",
+                borderRadius: 8,
+              }}
+            >
+              <Title level={4} style={{ marginBottom: 0, textAlign: "left" }}>
+                <span style={{ fontSize: 20, fontWeight: 700 }}>
+                  {" "}
+                  {useLocale(balance)}{" "}
+                </span>{" "}
+                <br />
+                <span style={{ fontSize: 14 }}> Balance</span>
+              </Title>
+            </div>
           </Col>
-          <Col xs={24} xl={12}>
-            <Card title="Balance" style={{ height: "100%" }}>
-              <Title level={4} style={{ marginBottom: 0, textAlign: "center" }}>
-                {useLocale(balance)}{" "}
+          <Col xs={24} xl={8}>
+            <div
+              style={{
+                background: "white",
+                padding: 18,
+                border: "1px solid #80808030",
+                borderRadius: 8,
+              }}
+            >
+              <Title level={4} style={{ marginBottom: 0, textAlign: "left" }}>
+                <span style={{ fontSize: 20, fontWeight: 700 }}>
+                  {" "}
+                  {`${points} `}{" "}
+                </span>{" "}
+                <br />
+                <span style={{ fontSize: 14 }}>{t("Points")}</span>
               </Title>
-              <Title
-                level={5}
-                style={{
-                  marginTop: 0,
-                  textAlign: "center",
-                  color: token.colorPrimary,
-                  WebkitTextStrokeColor: token.colorWhite,
-                  WebkitTextStrokeWidth: "1px",
-                }}
-              >
-                {`${points} ${t("Points")}`}
-              </Title>
-            </Card>
+            </div>
           </Col>
         </Row>
         {providerCard && providerCard.length > 0 && (

@@ -49,19 +49,20 @@ const RoleCard = ({ role }: { role: string }) => {
           alignItems: "center",
           backgroundColor,
           borderRadius: 8,
+          padding: 24,
           color,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          height: 180,
+          height: 200,
           userSelect: "none",
-          width: 180,
+          width: 200,
         }}
       >
-        <div style={{ height: "66%", marginBottom: "10%", padding: 24 }}>
-          <Image src={image} preview={false} width={80} />
+        <div style={{ height: "66%", marginBottom: "10%" }}>
+          <Image src={image} preview={false} width={100} />
         </div>
-        <h3 style={{ fontSize: 18, fontWeight: 600 }}>{curRole}</h3>
+        <h3 style={{ fontSize: 18, fontWeight: 600, margin: 0 }}>{curRole}</h3>
       </div>
     </Link>
   );

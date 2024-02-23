@@ -12,29 +12,28 @@ export const Home = () => {
     <Row
       align={"middle"}
       justify={"center"}
-      style={{ height: "100%", padding: 24 }}
+      style={{ height: "100%", width: "90%", margin: "0 auto", padding: 24 }}
     >
-      <Col
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <ImageYCC width="50%" />
+      <Col span={12}>
         <Title
           style={{
             marginBottom: 0,
             marginTop: "2%",
             textAlign: "center",
             userSelect: "none",
+            fontSize: 38,
           }}
           level={3}
         >
-          {t("Welcome to yourcareconnects")}
+          {t("Welcome to Yourcareconnects")}
         </Title>
         <Paragraph
-          style={{ marginBottom: 0, textAlign: "center", userSelect: "none" }}
+          style={{
+            marginBottom: 0,
+            textAlign: "center",
+            userSelect: "none",
+            fontSize: 26,
+          }}
         >
           {t("Connecting Customers and Providers")}
         </Paragraph>
@@ -48,6 +47,9 @@ export const Home = () => {
             </Button>
           </Link> */}
         </Row>
+      </Col>
+      <Col span={12}>
+        <ImageYCC width="60%" margin="0 auto" />
       </Col>
     </Row>
   );

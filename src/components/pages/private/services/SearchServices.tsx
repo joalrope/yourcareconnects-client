@@ -136,7 +136,8 @@ export const SearchServices = () => {
               span: 24,
             }}
             style={{
-              width: "100%",
+              width: "70%",
+              margin: "0 auto",
             }}
             initialValues={{
               conditions: false,
@@ -171,6 +172,7 @@ export const SearchServices = () => {
             <Row style={{ alignItems: "center", flexDirection: "column" }}>
               <Col>
                 <Button
+                  size="large"
                   type="primary"
                   htmlType="submit"
                   style={{ marginRight: 8, marginTop: 32, width: 200 }}
@@ -179,6 +181,7 @@ export const SearchServices = () => {
                 </Button>
                 {searchServices && (
                   <Button
+                    size="large"
                     type="primary"
                     onClick={HandleViewOnMap}
                     style={{ marginLeft: 8, marginTop: 32, width: 200 }}

@@ -30,8 +30,9 @@ export const FooterContent = () => {
         {t("Copyright")} <CopyrightOutlined /> {new Date().getFullYear()} -
         Yourcareconnects
       </Col>
-      <Col flex="1 0 auto">
+      <Col flex="1 0 auto" style={{ textAlign: "right" }}>
         <Link
+          style={{ marginRight: 12 }}
           className="--footer__avatar"
           to={ownerFacebookUrl}
           target="_blank"
@@ -40,7 +41,12 @@ export const FooterContent = () => {
             <FacebookFilled style={{ color: "#1a1a13" }} />
           </Avatar>
         </Link>
-        <Link className="--footer__avatar" to={ownerTwitterUrl} target="_blank">
+        <Link
+          style={{ marginRight: 12 }}
+          className="--footer__avatar"
+          to={ownerTwitterUrl}
+          target="_blank"
+        >
           <Avatar style={{ backgroundColor: token.colorPrimary }}>
             <TwitterCircleFilled style={{ color: "#1a1a13" }} />
           </Avatar>

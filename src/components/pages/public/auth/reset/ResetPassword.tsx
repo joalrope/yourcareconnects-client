@@ -56,14 +56,12 @@ export const ResetPassword = () => {
           >
             {t("Forgot password")}
           </Title>
-          <Paragraph style={{ marginTop: "2%", userSelect: "none" }}>
+          <Paragraph style={{ marginTop: 12, userSelect: "none" }}>
             {t("You can reset your password")}
           </Paragraph>
         </Row>
 
-        <Row
-          style={{ justifyContent: "center", marginTop: "3%", width: "100%" }}
-        >
+        <Row style={{ justifyContent: "center", width: "100%" }}>
           <Form
             name="resetPassword"
             labelCol={{
@@ -93,7 +91,7 @@ export const ResetPassword = () => {
                 },
               ]}
             >
-              <Input placeholder="email@smtp.com" />
+              <Input size="large" placeholder="email@smtp.com" />
             </Form.Item>
 
             <Form.Item
@@ -103,9 +101,10 @@ export const ResetPassword = () => {
               }}
             >
               <Button
+                size="large"
                 type="primary"
                 htmlType="submit"
-                style={{ marginTop: "30%" }}
+                style={{ marginTop: "8px" }}
               >
                 {t("Send my password")}
               </Button>

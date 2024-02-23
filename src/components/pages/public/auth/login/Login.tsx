@@ -23,14 +23,15 @@ export const Login = () => {
       <Col
         xs={0}
         sm={0}
-        md={12}
-        lg={12}
+        md={11}
+        lg={11}
         style={{ display: "flex", justifyContent: "flex-end" }}
       >
         <ImageYCC width="30vw" />
       </Col>
       <Col
         xs={24}
+        offset={1}
         sm={12}
         md={12}
         lg={12}

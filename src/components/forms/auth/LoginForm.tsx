@@ -157,7 +157,7 @@ export const LoginForm = () => {
                 },
               ]}
             >
-              <Input placeholder="email@smtp.com" />
+              <Input size="large" placeholder="email@smtp.com" />
             </Form.Item>
 
             <Form.Item
@@ -170,14 +170,13 @@ export const LoginForm = () => {
                 },
               ]}
             >
-              <Input.Password placeholder="password" />
+              <Input.Password size="large" placeholder="password" />
             </Form.Item>
 
             <Form.Item
               name="remember"
               valuePropName="checked"
               wrapperCol={{
-                offset: 8,
                 span: 16,
               }}
             >
@@ -187,45 +186,54 @@ export const LoginForm = () => {
             <Form.Item
               wrapperCol={{
                 offset: 8,
-                span: 16,
+                span: 6,
               }}
             >
-              <Button type="primary" htmlType="submit">
+              <Button
+                style={{ width: "100%" }}
+                size="large"
+                type="primary"
+                htmlType="submit"
+              >
                 {t("Submit")}
               </Button>
             </Form.Item>
           </Form>
         </Row>
-        <Link to={"/home/create-account"}>
-          <Paragraph
-            style={{
-              color: token.colorPrimary,
-              fontSize: 16,
-              fontWeight: 700,
-              marginBottom: 0,
-              textAlign: "center",
-              userSelect: "none",
-              WebkitTextStrokeColor: token.colorWhite,
-              WebkitTextStrokeWidth: "1px",
-            }}
-          >
-            {t("Create an account")}
-          </Paragraph>
-        </Link>
-        <Link to={"/auth/reset-password"}>
-          <Paragraph
-            style={{
-              color: token.colorWhite,
-              fontSize: 16,
-              fontWeight: 700,
-              marginTop: "8%",
-              textAlign: "center",
-              userSelect: "none",
-            }}
-          >
-            {t("Have you forgotten your password")}
-          </Paragraph>
-        </Link>
+        <Row style={{ display: "flex", flexDirection: "row", marginTop: 8 }}>
+          <Col xs={12} sm={12} md={12} style={{ width: "100%" }}>
+            <Link to={"/home/create-account"}>
+              <Paragraph
+                style={{
+                  color: token.colorWhite,
+                  fontSize: 16,
+                  fontWeight: 700,
+                  marginBottom: 0,
+                  textAlign: "left",
+                  userSelect: "none",
+                }}
+              >
+                {t("Create an account")}
+              </Paragraph>
+            </Link>
+          </Col>
+          <Col xs={12} sm={12} md={12} style={{ width: "100%" }}>
+            <Link to={"/auth/reset-password"}>
+              <Paragraph
+                style={{
+                  color: token.colorWhite,
+                  fontSize: 16,
+                  fontWeight: 700,
+
+                  textAlign: "right",
+                  userSelect: "none",
+                }}
+              >
+                {t("Have you forgotten your password")}
+              </Paragraph>
+            </Link>
+          </Col>
+        </Row>
       </Col>
     </Row>
   );

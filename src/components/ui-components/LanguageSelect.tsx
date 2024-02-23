@@ -23,6 +23,7 @@ export const LanguageSelect = () => {
 
   return (
     <Select
+      size="middle"
       style={{ width: 120 }}
       onChange={handleChange}
       value={i18n.language}

@@ -183,7 +183,7 @@ export const RegisterForm = ({ role }: { role: string }) => {
     <Row style={{ width: "100%" }}>
       <Col style={{ width: "100%" }}>
         <Row style={{ display: "flex", flexDirection: "column" }}>
-          <Title level={3} style={{ margin: "50px 0px" }}>
+          <Title level={3} style={{ marginTop: "50px", textAlign: "center" }}>
             {`${t("Create your account as a")} ${t(`${role}`)}`}
           </Title>
         </Row>
@@ -228,7 +228,10 @@ export const RegisterForm = ({ role }: { role: string }) => {
                     marginBottom: "6px",
                   }}
                 >
-                  <Input placeholder={`${t("Names").toLowerCase()}`} />
+                  <Input
+                    size="large"
+                    placeholder={`${t("Names").toLowerCase()}`}
+                  />
                 </Form.Item>
               </Col>
               <Col xs={24} sm={24} md={12} lg={12}>
@@ -246,7 +249,10 @@ export const RegisterForm = ({ role }: { role: string }) => {
                     marginBottom: "6px",
                   }}
                 >
-                  <Input placeholder={`${t("Last Name").toLowerCase()}`} />
+                  <Input
+                    size="large"
+                    placeholder={`${t("Last Name").toLowerCase()}`}
+                  />
                 </Form.Item>
               </Col>
             </Row>
@@ -266,7 +272,10 @@ export const RegisterForm = ({ role }: { role: string }) => {
                   marginBottom: "6px",
                 }}
               >
-                <Input placeholder={`${t("Company Name").toLowerCase()}`} />
+                <Input
+                  size="large"
+                  placeholder={`${t("Company Name").toLowerCase()}`}
+                />
               </Form.Item>
             )}
 
@@ -288,7 +297,7 @@ export const RegisterForm = ({ role }: { role: string }) => {
                 marginBottom: "6px",
               }}
             >
-              <Input placeholder="email@smtp.com" />
+              <Input size="large" placeholder="email@smtp.com" />
             </Form.Item>
 
             <Form.Item
@@ -305,7 +314,10 @@ export const RegisterForm = ({ role }: { role: string }) => {
                 marginBottom: "6px",
               }}
             >
-              <Input placeholder={`${t("Phone number").toLowerCase()}`} />
+              <Input
+                size="large"
+                placeholder={`${t("Phone number").toLowerCase()}`}
+              />
             </Form.Item>
 
             <Form.Item
@@ -328,7 +340,10 @@ export const RegisterForm = ({ role }: { role: string }) => {
                 marginBottom: "6px",
               }}
             >
-              <Input.Password placeholder={`${t("Password").toLowerCase()}`} />
+              <Input.Password
+                size="large"
+                placeholder={`${t("Password").toLowerCase()}`}
+              />
             </Form.Item>
 
             <Form.Item
@@ -351,7 +366,10 @@ export const RegisterForm = ({ role }: { role: string }) => {
                 marginBottom: "6px",
               }}
             >
-              <Input.Password placeholder={`${t("Password").toLowerCase()}`} />
+              <Input.Password
+                size="large"
+                placeholder={`${t("Password").toLowerCase()}`}
+              />
             </Form.Item>
 
             <Form.Item name="conditions" valuePropName="checked">
@@ -367,7 +385,12 @@ export const RegisterForm = ({ role }: { role: string }) => {
               }}
               style={{ display: "flex", justifyContent: "center" }}
             >
-              <Button type="primary" htmlType="submit" disabled={!hideBtn}>
+              <Button
+                size="large"
+                type="primary"
+                htmlType="submit"
+                disabled={!hideBtn}
+              >
                 {t("Get Into")}
               </Button>
             </Form.Item>

@@ -2,7 +2,13 @@ import { Image, Row, theme } from "antd";
 
 const { useToken } = theme;
 
-const ImageYCC = ({ width }: { width: string | number }) => {
+const ImageYCC = ({
+  width,
+  margin,
+}: {
+  width: string | number;
+  margin?: string;
+}) => {
   const { token } = useToken();
 
   return (
@@ -13,6 +19,7 @@ const ImageYCC = ({ width }: { width: string | number }) => {
         minWidth: 200,
         userSelect: "none",
         width: `${width}`,
+        margin: margin,
         paddingBottom: 24,
       }}
     >

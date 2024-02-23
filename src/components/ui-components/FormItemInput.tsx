@@ -18,7 +18,7 @@ export const FormItemInput = ({ name, label }: Props) => {
         marginBottom: "6px",
       }}
     >
-      <Input placeholder={`${t(label).toLowerCase()}`} />
+      <Input size="large" placeholder={`${t(label).toLowerCase()}`} />
     </Form.Item>
   );
 };

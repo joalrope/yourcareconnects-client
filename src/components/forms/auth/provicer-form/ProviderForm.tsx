@@ -279,7 +279,11 @@ export const ProviderForm = () => {
                     marginBottom: "6px",
                   }}
                 >
-                  <Input.TextArea rows={3} style={{ resize: "none" }} />
+                  <Input.TextArea
+                    size="large"
+                    rows={3}
+                    style={{ resize: "none" }}
+                  />
                 </Form.Item>
               </Col>
             </Row>
@@ -312,6 +316,7 @@ export const ProviderForm = () => {
                   }}
                 >
                   <Button
+                    size="large"
                     type="primary"
                     onClick={HandleGeoloc}
                     style={{ width: "100%" }}
@@ -367,6 +372,7 @@ export const ProviderForm = () => {
                 }}
               >
                 <Select
+                  size="large"
                   mode="tags"
                   style={{ width: "100%" }}
                   tokenSeparators={[","]}
@@ -386,7 +392,7 @@ export const ProviderForm = () => {
                 }}
               >
                 <Upload {...uploadDocs}>
-                  <Button type="primary" icon={<UploadOutlined />}>
+                  <Button size="large" type="primary" icon={<UploadOutlined />}>
                     {t("Upload")}
                   </Button>
                 </Upload>
@@ -402,6 +408,7 @@ export const ProviderForm = () => {
             >
               <Button
                 type="primary"
+                size="large"
                 htmlType="submit"
                 style={{ marginTop: "24px" }}
               >

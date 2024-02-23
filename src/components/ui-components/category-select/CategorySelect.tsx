@@ -102,6 +102,7 @@ export const CategorySelect = ({
     <>
       <ServiceForm />
       <TreeSelect
+        size="large"
         allowClear
         autoClearSearchValue={false}
         dropdownStyle={{ maxHeight: "300px", overflow: "auto" }}

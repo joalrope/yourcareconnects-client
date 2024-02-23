@@ -59,13 +59,16 @@ function App() {
           Menu: {
             colorItemTextHover: "#1a1a13",
             colorItemText: "#1a1a13",
-            colorItemBgHover: "#fbd467",
-            colorItemBgSelected: "#fbd467",
+            colorItemBgHover: "#000000",
+            colorItemBgSelected: "#000000",
             colorItemTextSelected: "#1a1a13",
             paddingContentVertical: 0,
           },
           Select: {
             colorBgBase: "red",
+          },
+          Input: {
+            colorBorder: "#444444",
           },
         },
         token: {
