@@ -66,18 +66,21 @@ export const UserGrid = ({
       style={{
         border: "1px solid #fbd467",
         borderRadius: 10,
+        padding: 24,
         flexDirection: "column",
         justifyContent: "center",
-        padding: gutter,
+
         width: "100%",
       }}
     >
-      <Title level={4}>{t("Provider Activation")}</Title>
+      <Title style={{ paddingLeft: 12, paddingRight: 12 }} level={4}>
+        {t("Provider Activation")}
+      </Title>
       <Row
         gutter={[24, 24]}
         style={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "flex-start",
           marginLeft: 0,
           marginRight: 0,
           width: "100%",
@@ -86,7 +89,7 @@ export const UserGrid = ({
         {providers?.length > 0 ? (
           providers.map((provider: IProvider) => {
             return (
-              <Col key={provider.id}>
+              <Col style={{ width: "33.33%" }} key={provider.id}>
                 <ProviderCard provider={provider} small={true} />
               </Col>
             );

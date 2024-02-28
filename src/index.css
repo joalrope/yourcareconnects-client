@@ -78,6 +78,14 @@ body {
   
 }
 
+.ant-radio-wrapper{
+  align-items: center !important;
+}
+
+.ant-radio-wrapper .ant-typography{
+  margin: 0px;
+}
+
 .ant-menu-dark .ant-menu-item-active,
 .ant-menu-item-active {
   color:  white !important;

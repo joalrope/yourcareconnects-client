@@ -30,20 +30,13 @@ export const DashboardAdmin = () => {
   };
 
   return (
-    <Row>
+    <Row style={{ padding: 12 }}>
       <Row>
-        <Col span={24} style={{ maxWidth: "96%", margin: "auto" }}>
-          <Col span={24} style={{ borderBottom: "1px solid #e8e8e8" }}>
-            <Title level={3} style={{ margin: "20px", width: "100%" }}>
-              {t("Dashboard")}
-            </Title>
-          </Col>
-        </Col>
         <Row
           style={{
             justifyContent: "flex-end",
-            marginLeft: 48,
-            marginRight: 24,
+            marginLeft: 22,
+            marginRight: 0,
             marginTop: 10,
             marginBottom: 10,
             width: "100%",
@@ -71,6 +64,7 @@ export const DashboardAdmin = () => {
                 <Title level={5}> {t("Active Providers")}</Title>
               </Radio>
               <Search
+                size="large"
                 onSearch={onUserSearch}
                 allowClear={true}
                 placeholder="Search by email"
