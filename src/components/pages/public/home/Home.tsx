@@ -1,11 +1,4 @@
-import {
-  /* Button, */ Avatar,
-  Button,
-  Col,
-  Row,
-  Typography,
-  theme,
-} from "antd";
+import { /* Button, */ Avatar, Col, Row, Typography, theme } from "antd";
 import { useTranslation } from "react-i18next";
 // import { Link } from "react-router-dom";
 import ImageYCC from "../../../ui-components/ImageYCC";
@@ -16,9 +9,7 @@ import {
   ownerInstagramUrl,
 } from "../../../../app.config.json";
 import {
-  CopyrightOutlined,
   FacebookFilled,
-  HeartFilled,
   InstagramFilled,
   TwitterCircleFilled,
 } from "@ant-design/icons";
