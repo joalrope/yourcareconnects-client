@@ -30,18 +30,18 @@ export const Home = () => {
         height: "100%",
         width: "100%",
         margin: "0 auto",
-        padding: "24px 5%",
+        padding: "24px 4vh",
         background: "#f1f1f1",
       }}
     >
-      <Col span={12}>
+      <Col span={24} md={12}>
         <Title
           style={{
             marginBottom: 0,
 
             textAlign: "center",
             userSelect: "none",
-            fontSize: 48,
+            fontSize: "3em",
           }}
           level={3}
         >
@@ -53,7 +53,7 @@ export const Home = () => {
             marginBottom: 0,
             textAlign: "center",
             userSelect: "none",
-            fontSize: 30,
+            fontSize: "2em",
           }}
         >
           {t("Connecting Customers and Providers")}
