@@ -7,6 +7,7 @@ export {
   updateModality,
 } from "./modalityService";
 export {
+  createUser,
   clearNotificationsById,
   getThereIsSuperadmin,
   getUserById,

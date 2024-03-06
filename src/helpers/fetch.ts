@@ -24,6 +24,8 @@ export const fetchWithoutToken = (
   method = "GET"
 ) => {
   const url = `${baseUrl}/api${endpoint}`;
+
+  console.log({ url });
   if (method === "GET") {
     response = fetch(url)
       .then((resp) => {

@@ -1,32 +1,38 @@
 import { IProvider } from "../components/forms/auth/provicer-form/interfaces";
-import { fetchWithToken } from "../helpers/fetch";
+import { fetchWithToken, fetchWithoutToken } from "../helpers/fetch";
 import { ILocation } from "../components/ui-components/map/MapView";
 import { getLocation } from "../components/ui-components/map/utils/getLocation";
+import { IRegister } from "../components/forms/auth/RegisterForm";
 
-export const getThereIsSuperadmin = async () => {
-  const { result } = await fetchWithToken(`/users/sarole`);
+export const createUser = async (newUser: IRegister) => {
+  const resp = await fetchWithoutToken("/users", newUser, "POST");
 
-  return result;
+  return resp;
 };
-
 export const getUserById = async (id: string) => {
-  const result = await fetchWithToken(`/users/${id}`);
+  const resp = await fetchWithToken(`/users/${id}`);
 
-  return result;
+  return resp;
 };
 
 export const getUserByEmail = async (email: string) => {
-  const result = await fetchWithToken(`/users/email/${email}`);
+  const resp = await fetchWithToken(`/users/email/${email}`);
 
-  return result;
+  return resp;
 };
 
 export const getUsersByIsActive = async (userType: string) => {
-  const result = await fetchWithToken(
+  const resp = await fetchWithToken(
     `/users/isActive/${userType}?from=0&limit=0`
   );
 
-  return result;
+  return resp;
+};
+
+export const getThereIsSuperadmin = async () => {
+  const { resp } = await fetchWithToken(`/users/sarole`);
+
+  return resp;
 };
 
 export const getUserByServices = async (
@@ -52,9 +58,9 @@ export const updateUserById = async (
   id: string | undefined,
   data: IProvider
 ) => {
-  const result = await fetchWithToken(`/users/${id}`, data, "PUT");
+  const resp = await fetchWithToken(`/users/${id}`, data, "PUT");
 
-  return result;
+  return resp;
 };
 
 export const updateUserContactsById = async (
@@ -62,84 +68,79 @@ export const updateUserContactsById = async (
   contact: string
 ) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let result: any;
+  let resp: any;
 
-  const result1 = await fetchWithToken(
+  const resp1 = await fetchWithToken(
     `/users/contacts/${id}`,
     { contact },
     "PUT"
   );
 
-  if (result1.ok) {
-    console.log("result1 ok");
-    const result2 = await fetchWithToken(
+  if (resp1.ok) {
+    const resp2 = await fetchWithToken(
       `/users/contacts/${contact}`,
       { contact: id },
       "PUT"
     );
 
-    if (result2.ok) {
+    if (resp2.ok) {
       console.log("result2 ok");
-      result = {
+      resp = {
         ok: true,
         msg: "Contacts was updated",
-        result: { user: result1.result.user },
+        result: { user: resp1.result.user },
       };
     }
   } else {
-    result = {
+    resp = {
       ok: false,
       msg: "Contacts not updated",
       result: {},
     };
   }
 
-  return result;
+  return resp;
 };
 export const updateActiveUserStatus = async (
   id: string | undefined,
   value: boolean
 ) => {
-  const result = await fetchWithToken(
-    `/users/active/${id}/${value}`,
-    {},
-    "PUT"
-  );
+  const resp = await fetchWithToken(`/users/active/${id}/${value}`, {}, "PUT");
 
-  return result;
+  return resp;
 };
 
 export const deleteUserById = async (id: string) => {
-  const result = await fetchWithToken(`/users/${id}`, {}, "DELETE");
+  const resp = await fetchWithToken(`/users/${id}`, {}, "DELETE");
 
-  return result;
+  return resp;
 };
 export const updateRoleUser = async (id: string | undefined, value: string) => {
-  const result = await fetchWithToken(`/users/role/${id}/${value}`, {}, "PUT");
+  const resp = await fetchWithToken(`/users/role/${id}/${value}`, {}, "PUT");
 
-  return result;
+  return resp;
 };
 
 export const clearNotificationsById = async (
   receiverId: string,
   senderId: string
 ) => {
-  const result = await fetchWithToken(
+  const resp = await fetchWithToken(
     `/users/notifications/${receiverId}/clear/${senderId}`,
     {},
     "PUT"
   );
 
-  return result;
+  return resp;
 };
 
 export const getUserMessagesById = async (
   senderId: string,
   receiverId: string
 ) => {
-  const result = await fetchWithToken(
+  const resp = await fetchWithToken(
     `/users/messages/${senderId}/${receiverId}`
   );
 
-  return result;
+  return resp;
 };

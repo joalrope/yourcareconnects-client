@@ -14,32 +14,32 @@ export interface Result {
 }
 
 export const getModalities = async () => {
-  const result: Result = await fetchWithToken("/modalities/");
+  const resp: Result = await fetchWithToken("/modalities/");
 
-  return result;
+  return resp;
 };
 export const addNewModality = async (title: string, color: string) => {
-  const result: Result = await fetchWithToken(
+  const resp: Result = await fetchWithToken(
     "/modalities",
     { title, color },
     "POST"
   );
 
-  return result;
+  return resp;
 };
 
 export const updateModality = async (title: string, color: string) => {
-  const result: Result = await fetchWithToken(
+  const resp: Result = await fetchWithToken(
     "/modalities",
     { title, color },
     "PUT"
   );
 
-  return result;
+  return resp;
 };
 
 export const deleteModality = async (id: string) => {
-  const result: Result = await fetchWithToken("/modalities", { id }, "DELETE");
+  const resp: Result = await fetchWithToken("/modalities", { id }, "DELETE");
 
-  return result;
+  return resp;
 };

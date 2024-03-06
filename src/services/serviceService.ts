@@ -10,18 +10,18 @@ export interface Result {
 }
 
 export const getServices = async () => {
-  const result: Result = await fetchWithToken("/services/");
+  const resp: Result = await fetchWithToken("/services/");
 
-  return result;
+  return resp;
 };
 export const addNewService = async (title: string, color: string) => {
-  const result: Result = await fetchWithToken(
+  const resp: Result = await fetchWithToken(
     "/services",
     { title, color },
     "POST"
   );
 
-  return result;
+  return resp;
 };
 
 export const updateService = async (
@@ -29,13 +29,13 @@ export const updateService = async (
   title: string,
   color: string
 ) => {
-  const result: Result = await fetchWithToken(
+  const resp: Result = await fetchWithToken(
     "/services",
     { parent, title, color },
     "PUT"
   );
 
-  return result;
+  return resp;
 };
 
 export interface IRes {
@@ -45,17 +45,17 @@ export interface IRes {
 export const getServicesWithColor = async (services: string[] | undefined) => {
   if (!services) return;
 
-  const { result } = await fetchWithToken(
+  const { resp } = await fetchWithToken(
     `/services/get-colors`,
     { services },
     "POST"
   );
 
-  return result;
+  return resp;
 };
 
 export const setServicesWithColor = async () => {
-  const { result } = await fetchWithToken(`/services/set-colors`);
+  const { resp } = await fetchWithToken(`/services/set-colors`);
 
-  return result;
+  return resp;
 };

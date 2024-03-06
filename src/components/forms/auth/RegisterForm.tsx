@@ -4,7 +4,6 @@ import { Typography } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { fetchWithoutToken } from "../../../helpers/fetch";
 import { useNavigate } from "react-router-dom";
 import {
   setLoading,
@@ -14,10 +13,13 @@ import {
 } from "../../../store/slices";
 import { setLocationPath } from "../../../store/slices/router/routerSlice";
 import { ReCaptcha } from "../../ui-components/ReCaptcha";
+import { getCodeInfo, setInactivateCode } from "../../../services/codes";
+import { createUser } from "../../../services";
 
 const { Title } = Typography;
 
-interface IRegister {
+export interface IRegister {
+  code?: string;
   company?: string;
   conditions?: boolean;
   confirmation?: string;
@@ -50,13 +52,14 @@ export const RegisterForm = ({ role }: { role: string }) => {
   };
 
   const onFinish = async ({
+    code,
     company,
     confirmation,
     email,
+    lastName,
     names,
     password,
     phoneNumber,
-    lastName,
   }: IRegister) => {
     if (password !== confirmation) {
       modal.error({
@@ -64,6 +67,44 @@ export const RegisterForm = ({ role }: { role: string }) => {
         content: [
           <>
             <span>{t("Password and password confirmation do not match")}</span>
+            <br />
+            <br />
+            <span>{t("Please input them again")}</span>
+          </>,
+        ],
+        autoFocusButton: null,
+        okText: `${t("Agreed")}`,
+      });
+
+      return;
+    }
+
+    let { ok, msg, result } = await getCodeInfo(code);
+
+    if (!ok && !result) {
+      modal.error({
+        title: t("Invalid activation code"),
+        content: [
+          <>
+            <span>{t(`Code: ${code} does not exist`)}</span>
+            <br />
+            <br />
+            <span>{t("Please input them again")}</span>
+          </>,
+        ],
+        autoFocusButton: null,
+        okText: `${t("Agreed")}`,
+      });
+
+      return;
+    }
+
+    if (result.isActive === false) {
+      modal.error({
+        title: t("Invalid activation code"),
+        content: [
+          <>
+            <span>{t(`Code: ${code} has already been used`)}</span>
             <br />
             <br />
             <span>{t("Please input them again")}</span>
@@ -96,11 +137,9 @@ export const RegisterForm = ({ role }: { role: string }) => {
 
     dispatch(setLoading(true));
 
-    const { ok, msg, result } = await fetchWithoutToken(
-      "/users",
-      newUser,
-      "POST"
-    );
+    //({ ok, msg, result } = await fetchWithoutToken("/users", newUser, "POST"));
+
+    ({ ok, msg, result } = await createUser(newUser));
 
     dispatch(setLoading(false));
 
@@ -155,6 +194,7 @@ export const RegisterForm = ({ role }: { role: string }) => {
           okText: `${t("Agreed")}`,
           onOk: () => {
             form.resetFields();
+            setInactivateCode(String(code));
             navigate("/login");
           },
         });
@@ -259,25 +299,47 @@ export const RegisterForm = ({ role }: { role: string }) => {
             </Row>
 
             {role === "provider" && (
-              <Form.Item
-                label={t("Company Name")}
-                name="company"
-                rules={[
-                  {
-                    required: false,
-                    message: `${t("Please input your company name")}`,
-                  },
-                ]}
-                style={{
-                  width: "100%",
-                  marginBottom: "6px",
-                }}
-              >
-                <Input
-                  size="large"
-                  placeholder={`${t("Company Name").toLowerCase()}`}
-                />
-              </Form.Item>
+              <>
+                <Form.Item
+                  label={t("Company Name")}
+                  name="company"
+                  rules={[
+                    {
+                      required: false,
+                      message: `${t("Please input your company name")}`,
+                    },
+                  ]}
+                  style={{
+                    width: "100%",
+                    marginBottom: "6px",
+                  }}
+                >
+                  <Input
+                    size="large"
+                    placeholder={`${t("Company Name").toLowerCase()}`}
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  label={t("Activation Code")}
+                  name="code"
+                  rules={[
+                    {
+                      required: true,
+                      message: `${t("Please input your activation code")}`,
+                    },
+                  ]}
+                  style={{
+                    width: "100%",
+                    marginBottom: "6px",
+                  }}
+                >
+                  <Input
+                    size="large"
+                    placeholder={`${t("Activation Code").toLowerCase()}`}
+                  />
+                </Form.Item>
+              </>
             )}
 
             <Form.Item
