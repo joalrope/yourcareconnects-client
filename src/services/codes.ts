@@ -8,6 +8,7 @@ export const getCodeInfo = async (code: string | undefined) => {
       result: {},
     };
   }
+
   const resp = await fetchWithoutToken(`/codes/${code}`);
 
   return resp;

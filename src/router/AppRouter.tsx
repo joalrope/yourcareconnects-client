@@ -32,6 +32,11 @@ export const AppRouter = () => {
         element={<Register />}
       />
       <Route
+        key="register-provider-code"
+        path="/register/provider/:code"
+        element={<Register />}
+      />
+      <Route
         key="register-provider"
         path="/register/provider"
         element={<Register />}

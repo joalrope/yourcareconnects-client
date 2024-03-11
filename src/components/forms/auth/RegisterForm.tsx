@@ -18,6 +18,11 @@ import { createUser } from "../../../services";
 
 const { Title } = Typography;
 
+interface ISubscription {
+  code: string;
+  subsDate: Date;
+}
+
 export interface IRegister {
   code?: string;
   company?: string;
@@ -29,14 +34,19 @@ export interface IRegister {
   phoneNumber: string;
   lastName: string;
   role: string;
+  subscription?: ISubscription;
   isActive?: boolean;
 }
 
 const superadminCode = import.meta.env.VITE_SUPERADMIN_CODE;
 
-export const RegisterForm = ({ role }: { role: string }) => {
+interface Props {
+  role: string;
+  code?: string;
+}
+
+export const RegisterForm = ({ role, code }: Props) => {
   const dispatch = useDispatch();
-  //const { role } = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
   const { modal } = App.useApp();
   const [form] = Form.useForm<IRegister>();
@@ -79,14 +89,18 @@ export const RegisterForm = ({ role }: { role: string }) => {
       return;
     }
 
+    dispatch(setLoading(true));
+
     let { ok, msg, result } = await getCodeInfo(code);
 
-    if (!ok && !result) {
+    dispatch(setLoading(false));
+
+    if (!ok) {
       modal.error({
         title: t("Invalid activation code"),
         content: [
           <>
-            <span>{t(`Code: ${code} does not exist`)}</span>
+            <span>{t(`${msg}`, { code })}</span>
             <br />
             <br />
             <span>{t("Please input them again")}</span>
@@ -94,17 +108,20 @@ export const RegisterForm = ({ role }: { role: string }) => {
         ],
         autoFocusButton: null,
         okText: `${t("Agreed")}`,
+        onOk: () => {
+          form.resetFields();
+        },
       });
 
       return;
     }
 
-    if (result.isActive === false) {
+    if (result.code === false) {
       modal.error({
         title: t("Invalid activation code"),
         content: [
           <>
-            <span>{t(`Code: ${code} has already been used`)}</span>
+            <span>{t(`${msg}`, { code })}</span>
             <br />
             <br />
             <span>{t("Please input them again")}</span>
@@ -112,6 +129,9 @@ export const RegisterForm = ({ role }: { role: string }) => {
         ],
         autoFocusButton: null,
         okText: `${t("Agreed")}`,
+        onOk: () => {
+          form.resetFields();
+        },
       });
 
       return;
@@ -122,6 +142,7 @@ export const RegisterForm = ({ role }: { role: string }) => {
       names,
       password,
       phoneNumber,
+      subscription: { code: result.code, subsDate: result.date_created },
       role: role ? role : "customer",
       lastName,
     };
@@ -136,8 +157,6 @@ export const RegisterForm = ({ role }: { role: string }) => {
     }
 
     dispatch(setLoading(true));
-
-    //({ ok, msg, result } = await fetchWithoutToken("/users", newUser, "POST"));
 
     ({ ok, msg, result } = await createUser(newUser));
 
@@ -248,6 +267,7 @@ export const RegisterForm = ({ role }: { role: string }) => {
             }}
             initialValues={{
               conditions: false,
+              code,
             }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
