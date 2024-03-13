@@ -19,6 +19,33 @@ export interface IRoute {
 
 export const routes: IRoute[] = [
   {
+    key: "donations",
+    Pos: "header",
+    path: "/donations",
+    type: "public",
+    name: "donations",
+    mode: "",
+    icon: "UploadOutlined",
+  },
+  {
+    key: "blog",
+    Pos: "header",
+    path: "/blog",
+    type: "public",
+    name: "blog",
+    mode: "",
+    icon: "UploadOutlined",
+  },
+  {
+    key: "shop",
+    Pos: "header",
+    path: "/shop",
+    type: "public",
+    name: "shop",
+    mode: "",
+    icon: "UploadOutlined",
+  },
+  {
     key: "login",
     Pos: "header",
     path: "/login",
