@@ -89,52 +89,57 @@ export const RegisterForm = ({ role, code }: Props) => {
       return;
     }
 
-    dispatch(setLoading(true));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let ok, msg, result: any;
 
-    let { ok, msg, result } = await getCodeInfo(code);
+    if (role === "provider") {
+      dispatch(setLoading(true));
 
-    dispatch(setLoading(false));
+      ({ ok, msg, result } = await getCodeInfo(code));
 
-    if (!ok) {
-      modal.error({
-        title: t("Invalid activation code"),
-        content: [
-          <>
-            <span>{t(`${msg}`, { code })}</span>
-            <br />
-            <br />
-            <span>{t("Please input them again")}</span>
-          </>,
-        ],
-        autoFocusButton: null,
-        okText: `${t("Agreed")}`,
-        onOk: () => {
-          form.resetFields();
-        },
-      });
+      dispatch(setLoading(false));
 
-      return;
-    }
+      if (!ok) {
+        modal.error({
+          title: t("Invalid activation code"),
+          content: [
+            <>
+              <span>{t(`${msg}`, { code })}</span>
+              <br />
+              <br />
+              <span>{t("Please input them again")}</span>
+            </>,
+          ],
+          autoFocusButton: null,
+          okText: `${t("Agreed")}`,
+          onOk: () => {
+            form.resetFields();
+          },
+        });
 
-    if (result.code === false) {
-      modal.error({
-        title: t("Invalid activation code"),
-        content: [
-          <>
-            <span>{t(`${msg}`, { code })}</span>
-            <br />
-            <br />
-            <span>{t("Please input them again")}</span>
-          </>,
-        ],
-        autoFocusButton: null,
-        okText: `${t("Agreed")}`,
-        onOk: () => {
-          form.resetFields();
-        },
-      });
+        return;
+      }
 
-      return;
+      if (result.code === false) {
+        modal.error({
+          title: t("Invalid activation code"),
+          content: [
+            <>
+              <span>{t(`${msg}`, { code })}</span>
+              <br />
+              <br />
+              <span>{t("Please input them again")}</span>
+            </>,
+          ],
+          autoFocusButton: null,
+          okText: `${t("Agreed")}`,
+          onOk: () => {
+            form.resetFields();
+          },
+        });
+
+        return;
+      }
     }
 
     const newUser: IRegister = {
@@ -142,7 +147,10 @@ export const RegisterForm = ({ role, code }: Props) => {
       names,
       password,
       phoneNumber,
-      subscription: { code: result.code, subsDate: result.date_created },
+      subscription:
+        role === "provider"
+          ? { code: result.code, subsDate: result.date_created }
+          : undefined,
       role: role ? role : "customer",
       lastName,
     };
