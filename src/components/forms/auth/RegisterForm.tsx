@@ -13,7 +13,7 @@ import {
 } from "../../../store/slices";
 import { setLocationPath } from "../../../store/slices/router/routerSlice";
 import { ReCaptcha } from "../../ui-components/ReCaptcha";
-import { getCodeInfo, setInactivateCode } from "../../../services/codes";
+import { setInactivateCode } from "../../../services/codes";
 import { createUser } from "../../../services";
 
 const { Title } = Typography;
@@ -89,70 +89,14 @@ export const RegisterForm = ({ role, code }: Props) => {
       return;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let ok, msg, result: any;
-
-    if (role === "provider") {
-      dispatch(setLoading(true));
-
-      ({ ok, msg, result } = await getCodeInfo(code));
-
-      dispatch(setLoading(false));
-
-      if (!ok) {
-        modal.error({
-          title: t("Invalid activation code"),
-          content: [
-            <>
-              <span>{t(`${msg}`, { code })}</span>
-              <br />
-              <br />
-              <span>{t("Please input them again")}</span>
-            </>,
-          ],
-          autoFocusButton: null,
-          okText: `${t("Agreed")}`,
-          onOk: () => {
-            form.resetFields();
-          },
-        });
-
-        return;
-      }
-
-      if (result.code === false) {
-        modal.error({
-          title: t("Invalid activation code"),
-          content: [
-            <>
-              <span>{t(`${msg}`, { code })}</span>
-              <br />
-              <br />
-              <span>{t("Please input them again")}</span>
-            </>,
-          ],
-          autoFocusButton: null,
-          okText: `${t("Agreed")}`,
-          onOk: () => {
-            form.resetFields();
-          },
-        });
-
-        return;
-      }
-    }
-
     const newUser: IRegister = {
+      code,
       email,
+      lastName,
       names,
       password,
       phoneNumber,
-      subscription:
-        role === "provider"
-          ? { code: result.code, subsDate: result.date_created }
-          : undefined,
-      role: role ? role : "customer",
-      lastName,
+      role: role || "customer",
     };
 
     if (company) newUser.company = company;
@@ -166,7 +110,7 @@ export const RegisterForm = ({ role, code }: Props) => {
 
     dispatch(setLoading(true));
 
-    ({ ok, msg, result } = await createUser(newUser));
+    const { ok, msg, result } = await createUser(newUser);
 
     dispatch(setLoading(false));
 
@@ -232,7 +176,7 @@ export const RegisterForm = ({ role, code }: Props) => {
         content: [
           <span>{t("An error occurred while creating your account")}</span>,
           <br></br>,
-          <span>{t(msg)}</span>,
+          <span>{t(msg, { email })}</span>,
           <br></br>,
           <br></br>,
           <span>{t("Please try again")}</span>,
