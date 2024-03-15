@@ -275,7 +275,7 @@ export const InfoContent = ({ names }: Props) => {
 
   return (
     <Row>
-      <Col xs={0} sm={24} md={24}>
+      <Col xs={0} lg={24}>
         <Row
           style={{
             display: "flex",
@@ -385,7 +385,7 @@ export const InfoContent = ({ names }: Props) => {
         </Row>
       </Col>
 
-      <Col xs={24} sm={0} md={0}>
+      <Col xs={24} lg={0}>
         <Row className={styles.wrapperRow}>
           <Dropdown
             menu={{ items }}

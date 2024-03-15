@@ -83,6 +83,7 @@ export const RegisterForm = ({ role, code }: Props) => {
           </>,
         ],
         autoFocusButton: null,
+        onOk: () => form.resetFields(),
         okText: `${t("Agreed")}`,
       });
 
@@ -146,7 +147,7 @@ export const RegisterForm = ({ role, code }: Props) => {
         modal.success({
           title: t("Successful registration"),
           content: [
-            <span>
+            <span key={1}>
               {t(
                 "{{names}} {{lastname}}, your account has been created successfully",
                 {
@@ -155,11 +156,15 @@ export const RegisterForm = ({ role, code }: Props) => {
                 }
               )}
             </span>,
-            <br />,
-            <span>{t("Please wait until your account is approved")}</span>,
-            <br />,
-            <br />,
-            <span>{t("We are sorry for the inconvenience caused")}</span>,
+            <br key={2} />,
+            <span key={3}>
+              {t("Please wait until your account is approved")}
+            </span>,
+            <br key={4} />,
+            <br key={5} />,
+            <span key={63}>
+              {t("We are sorry for the inconvenience caused")}
+            </span>,
           ],
           autoFocusButton: null,
           okText: `${t("Agreed")}`,
@@ -174,14 +179,17 @@ export const RegisterForm = ({ role, code }: Props) => {
       modal.error({
         title: t("Error registration"),
         content: [
-          <span>{t("An error occurred while creating your account")}</span>,
-          <br></br>,
-          <span>{t(msg, { email })}</span>,
-          <br></br>,
-          <br></br>,
-          <span>{t("Please try again")}</span>,
+          <span key={1}>
+            {t("An error occurred while creating your account")}
+          </span>,
+          <br key={2}></br>,
+          <span key={3}>{t(msg, { email, code })}</span>,
+          <br key={4}></br>,
+          <br key={5}></br>,
+          <span key={6}>{t("Please try again")}</span>,
         ],
         autoFocusButton: null,
+        onOk: () => form.resetFields(),
         okText: `${t("Agreed")}`,
       });
     }
