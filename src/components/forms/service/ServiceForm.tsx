@@ -113,9 +113,9 @@ export const ServiceForm = () => {
           dispatch(setNewService(title));
         }
       })
-      .catch((info) => {
-        console.log("Validate Failed:", info);
-      })
+      //.catch((info) => {
+      //console.log("Validate Failed:", info);
+      //})
       .finally(() => {
         form.resetFields();
         dispatch(setServiceFormHide());

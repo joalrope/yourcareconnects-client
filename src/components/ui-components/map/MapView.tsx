@@ -159,6 +159,11 @@ export const MapView = ({ getLoc, goBack, markers }: Props) => {
         lat: e.latLng?.lat() as number,
         lng: e.latLng?.lng() as number,
       });
+
+      //{
+      //  type: "Point",
+      //  coordinates: [loc.lng, loc.lat],
+      //}
     }
   };
 

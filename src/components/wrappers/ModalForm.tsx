@@ -108,14 +108,12 @@ export const ModalForm = ({
       cancelText={cancelText}
       onCancel={() => onCancel()}
       onOk={() => {
-        form
-          .validateFields()
-          .then(() => {
-            onOk();
-          })
-          .catch((info) => {
-            console.log("Validate Failed:", info);
-          });
+        form.validateFields().then(() => {
+          onOk();
+        });
+        //.catch((info) => {
+        //  console.log("Validate Failed:", info);
+        //});
       }}
       modalRender={(modal) => (
         <Draggable

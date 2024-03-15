@@ -84,7 +84,6 @@ export const updateUserContactsById = async (
     );
 
     if (resp2.ok) {
-      console.log("result2 ok");
       resp = {
         ok: true,
         msg: "Contacts was updated",

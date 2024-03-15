@@ -61,8 +61,8 @@ export const UserProfileImage = ({ form }: Props) => {
       src = await new Promise((resolve) => {
         const reader = new FileReader();
         reader.readAsDataURL(file.originFileObj as RcFile);
-        reader.onload = (e) => {
-          console.log({ base64: e.target?.result });
+        reader.onload = (/*e*/) => {
+          //console.log({ base64: e.target?.result });
           resolve(reader.result as string);
         };
       });

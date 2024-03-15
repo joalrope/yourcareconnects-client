@@ -43,9 +43,9 @@ export const useSocket = (
       dispatch(setNotifications(notifications));
     });
 
-    socket.on("unsentMessage", (message: string) => {
-      console.log({ unsentMessage: message });
-    });
+    //socket.on("unsentMessage", (message: string) => {
+    //console.log({ unsentMessage: message });
+    //});
 
     socket.on("connectedUsers", (connectedUsers: IConnectedUsers) => {
       //console.log({ connectedUsers });

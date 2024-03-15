@@ -22,15 +22,11 @@ export const useUploadDocs = () => {
         formData.append("file", fileList[0].originFileObj as RcFile, file.name);
       }
 
-      const files = fileList.map((file) => {
-        return file.originFileObj?.name;
-      });
-
-      console.log({ files });
+      //const files = fileList.map((file) => {
+      //  return file.originFileObj?.name;
+      //});
 
       const url = `${baseUrl}/api/uploads/docs`;
-
-      console.log("fetching to upload");
 
       return await fetch(url, {
         method: "POST",

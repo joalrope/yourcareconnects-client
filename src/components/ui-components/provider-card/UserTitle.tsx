@@ -103,8 +103,6 @@ export const UserTitle = ({
       result: { user },
     } = await updateActiveUserStatus(id, e.target.checked);
 
-    console.log({ user });
-
     if (ok) {
       setActive(!active);
       message.success({
