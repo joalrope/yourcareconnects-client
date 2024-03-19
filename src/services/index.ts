@@ -19,3 +19,5 @@ export {
   updateActiveUserStatus,
   updateRoleUser,
 } from "./userService";
+
+export { getFilesService, docDeleteService } from "./uploads";

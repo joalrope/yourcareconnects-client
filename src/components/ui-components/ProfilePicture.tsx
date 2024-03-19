@@ -141,7 +141,7 @@ export const handleUpload = async (
 
   formData.append("image", fileList[0].originFileObj as RcFile, fileName);
 
-  const url = `${baseUrl}/api/uploads/docs/${fileName}`;
+  const url = `${baseUrl}/api/uploads/${fileName}`;
 
   return await fetch(url, {
     method: "POST",

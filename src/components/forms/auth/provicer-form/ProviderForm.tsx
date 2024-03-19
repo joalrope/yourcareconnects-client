@@ -1,11 +1,17 @@
-import { App, Button, Col, Form, Input, Modal } from "antd";
-import { Row, Select, Typography } from "antd";
-import { useTranslation } from "react-i18next";
 import { SetStateAction, useEffect, useRef, useState } from "react";
+import { App, Button, Col, Form, Input, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { Row, Select, Typography } from "antd";
+import type { UploadFile } from "antd/es/upload/interface";
 import { RootState } from "../../../../store";
 import { useNavigate } from "react-router-dom";
-import { getModalities, updateUserById } from "../../../../services";
+import {
+  docDeleteService,
+  getFilesService,
+  getModalities,
+  updateUserById,
+} from "../../../../services";
 import { setUser } from "../../../../store/slices";
 import { setLocationPath } from "../../../../store/slices/router/routerSlice";
 import { CategorySelect } from "../../../ui-components/category-select/CategorySelect";
@@ -15,6 +21,7 @@ import { FormItemInput } from "../../../ui-components/FormItemInput";
 import { useContent } from "../../../../hooks/useContent";
 import { UserProfileImage } from "../../../ui-components/user-profile-image/UserProfileImage";
 import { useTranslatedServices } from "../../../../helpers/services";
+import { UploadDocs } from "../../../ui-components/UploadDocs";
 
 const { Title } = Typography;
 
@@ -30,6 +37,22 @@ export const ProviderForm = () => {
   const { id, role } = user;
   const [modalities, setModalities] = useState<IModality[]>([]);
   const [viewMap, setViewMap] = useState<boolean>(false);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const {
+        ok,
+        result: { fileList },
+      } = await getFilesService(String(user.id), "docs");
+
+      if (ok) {
+        setFileList([...fileList]);
+      }
+    };
+
+    fetch();
+  }, [user.id]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,29 +88,6 @@ export const ProviderForm = () => {
     fetchData();
   }, []);
 
-  const onFinish = async (values: IProvider) => {
-    const {
-      ok,
-      msg,
-      result: { user },
-    } = await updateUserById(id, values);
-
-    if (!ok) {
-      message.error(t(`${msg}`));
-    }
-
-    dispatch(setUser(user));
-
-    form.resetFields();
-    message.success(t(`${msg}`));
-    dispatch(setLocationPath("dashboard"));
-    navigate("/dashboard");
-  };
-
-  const onFinishFailed = (errorInfo: unknown) => {
-    console.log("Failed:", errorInfo);
-  };
-
   const HandleGeoloc = () => {
     navigator.permissions.query({ name: "geolocation" }).then((result) => {
       if (result.state === "denied") {
@@ -103,16 +103,10 @@ export const ProviderForm = () => {
         });
         return;
       }
-      setViewMap(true);
-    });
-  };
 
-  const getLoc = (loc: { lat: number; lng: number }) => {
-    form.setFieldValue("location", {
-      type: "Point",
-      coordinates: [loc.lng, loc.lat],
+      navigate("/map");
+      //setViewMap(true);
     });
-    return loc;
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -144,6 +138,47 @@ export const ProviderForm = () => {
       ...values,
     } as unknown as IProvider);
   }, [form]);
+
+  const getLoc = (loc: { lat: number; lng: number }) => {
+    form.setFieldValue("location", {
+      type: "Point",
+      coordinates: [loc.lng, loc.lat],
+    });
+    return loc;
+  };
+
+  const onFinish = async (values: IProvider) => {
+    const {
+      ok,
+      msg,
+      result: { user },
+    } = await updateUserById(id, values);
+
+    if (!ok) {
+      message.error(t(`${msg}`));
+    }
+
+    dispatch(setUser(user));
+
+    form.resetFields();
+    message.success(t(`${msg}`));
+    dispatch(setLocationPath("dashboard"));
+    navigate("/dashboard");
+  };
+
+  const onFinishFailed = (errorInfo: unknown) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onRemove = async (file: any) => {
+    const { ok, msg } = await docDeleteService(String(id), file.name);
+    if (!ok) {
+      message.error(t(`${msg}`));
+      return;
+    }
+    setFileList((prev) => prev.filter((f) => f.name !== file.name));
+  };
 
   return viewMap ? (
     <MapView getLoc={getLoc} goBack={setViewMap} />
@@ -194,6 +229,7 @@ export const ProviderForm = () => {
                   style={{
                     width: "100%",
                     marginBottom: "0px",
+                    marginTop: "15px",
                   }}
                 >
                   <UserProfileImage form={form} />
@@ -260,7 +296,7 @@ export const ProviderForm = () => {
                     onClick={HandleGeoloc}
                     style={{ width: "100%" }}
                   >
-                    {t("Get location")}
+                    {t("Geolocation")}
                   </Button>
                 </Form.Item>
               </Col>
@@ -330,32 +366,30 @@ export const ProviderForm = () => {
                   marginBottom: "6px",
                 }}
               >
-                {/* <Upload {...uploadDocs}>
-                  <UploadDocs />
-                  <Button type="primary" icon={<UploadOutlined />}>
-                    {t("Upload")}
-                  </Button>
-                </Upload> */}
+                <UploadDocs
+                  id={String(id)}
+                  fileType="docs"
+                  fileList={fileList}
+                  setFileList={setFileList}
+                  maxCount={5}
+                  onRemove={onRemove}
+                />
               </Form.Item>
             )}
 
-            <Form.Item
-              wrapperCol={{
-                offset: 10,
-                span: 4,
-              }}
-              style={{
-                textAlign: "center",
-              }}
-            >
-              <Button
-                type="primary"
-                size="large"
-                htmlType="submit"
-                style={{ marginTop: "24px", width: "100%" }}
-              >
-                {t("Save")}
-              </Button>
+            <Form.Item style={{ width: "100%" }}>
+              <Row style={{ justifyContent: "center", width: "100%" }}>
+                <Col xs={24} sm={24} md={8} lg={8}>
+                  <Button
+                    type="primary"
+                    size="large"
+                    htmlType="submit"
+                    style={{ marginTop: "96px", width: "100%" }}
+                  >
+                    {t("Save")}
+                  </Button>
+                </Col>
+              </Row>
             </Form.Item>
           </Form>
         </Row>

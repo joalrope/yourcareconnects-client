@@ -26,7 +26,7 @@ export const useUploadDocs = () => {
       //  return file.originFileObj?.name;
       //});
 
-      const url = `${baseUrl}/api/uploads/docs`;
+      const url = `${baseUrl}/api/uploads`;
 
       return await fetch(url, {
         method: "POST",

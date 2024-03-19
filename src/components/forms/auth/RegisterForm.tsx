@@ -116,65 +116,33 @@ export const RegisterForm = ({ role, code }: Props) => {
     dispatch(setLoading(false));
 
     if (ok) {
-      if (newUser.role === "customer" || newUser.role === "superadmin") {
-        modal.success({
-          title: t("Successful registration"),
-          content: (
-            <>
-              <span key={1}>
-                {t("Your account has been created successfully")}
-              </span>
-              <br key={2} />
-              <br key={3} />
-              <span key={4}>{t("Please start to use your account")}</span>
-            </>
-          ),
-          autoFocusButton: null,
-          okText: `${t("Agreed")}`,
-          onOk: () => {
-            form.resetFields();
-            dispatch(setUser(result.user));
-            dispatch(setLoggedIn(true));
-            sessionStorage.setItem("token", result.token);
-            sessionStorage.setItem("id", JSON.stringify(result.user.id));
-            dispatch(setLocationPath("dashboard"));
-            navigate("/dashboard");
-          },
-        });
-      }
-
-      if (newUser.role === "provider") {
-        modal.success({
-          title: t("Successful registration"),
-          content: [
+      modal.success({
+        title: t("Successful registration"),
+        content: (
+          <>
             <span key={1}>
-              {t(
-                "{{names}} {{lastname}}, your account has been created successfully",
-                {
-                  names: result.user.names,
-                  lastname: result.user.lastName,
-                }
-              )}
-            </span>,
-            <br key={2} />,
-            <span key={3}>
-              {t("Please wait until your account is approved")}
-            </span>,
-            <br key={4} />,
-            <br key={5} />,
-            <span key={63}>
-              {t("We are sorry for the inconvenience caused")}
-            </span>,
-          ],
-          autoFocusButton: null,
-          okText: `${t("Agreed")}`,
-          onOk: () => {
-            form.resetFields();
-            setInactivateCode(String(code));
-            navigate("/login");
-          },
-        });
-      }
+              {t("Your account has been created successfully")}
+            </span>
+            <br key={2} />
+            <br key={3} />
+            <span key={4}>{t("Please start to use your account")}</span>
+          </>
+        ),
+        autoFocusButton: null,
+        okText: `${t("Agreed")}`,
+        onOk: () => {
+          if (role === "provider") {
+            setInactivateCode(code);
+          }
+          form.resetFields();
+          dispatch(setUser(result.user));
+          dispatch(setLoggedIn(true));
+          sessionStorage.setItem("token", result.token);
+          sessionStorage.setItem("id", JSON.stringify(result.user.id));
+          dispatch(setLocationPath("dashboard"));
+          navigate("/dashboard");
+        },
+      });
     } else {
       modal.error({
         title: t("Error registration"),

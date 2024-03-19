@@ -14,7 +14,7 @@ import {
   MarkerF,
   useLoadScript,
 } from "@react-google-maps/api";
-import { Button, Modal, Typography } from "antd";
+import { Button, Modal, Typography, message } from "antd";
 import { useTranslation } from "react-i18next";
 //import { LongInfo } from "./LongInfo";
 import styles from "./mapStyles.json";
@@ -26,6 +26,8 @@ import { MarkersSort } from "../../../helpers/markers";
 import { useContent } from "../../../hooks/useContent";
 import { Markers } from "./Markers";
 import { getLocation } from "./utils/getLocation";
+import { useNavigate } from "react-router-dom";
+import { setUserLocation } from "../../../services/userService";
 
 const { Text } = Typography;
 
@@ -68,6 +70,7 @@ export const MapView = ({ getLoc, goBack, markers }: Props) => {
   const libraries: Libraries = useMemo(() => ["places", "marker"], []);
   const { t } = useTranslation();
   const content = useContent();
+  const navigate = useNavigate();
 
   const { isLoaded } = useLoadScript({
     id: "google-map-script",
@@ -153,17 +156,16 @@ export const MapView = ({ getLoc, goBack, markers }: Props) => {
     });
   }, [content, goBack, t]);
 
-  const onDragEnd = (e: google.maps.MapMouseEvent) => {
-    if (getLoc) {
-      getLoc({
-        lat: e.latLng?.lat() as number,
-        lng: e.latLng?.lng() as number,
-      });
+  const onDragEnd = async (e: google.maps.MapMouseEvent) => {
+    const location: ILocation = {
+      type: "Point",
+      coordinates: [e.latLng?.lng() as number, e.latLng?.lat() as number],
+    };
 
-      //{
-      //  type: "Point",
-      //  coordinates: [loc.lng, loc.lat],
-      //}
+    const { ok, msg } = await setUserLocation(user.id as string, location);
+
+    if (!ok) {
+      message.error(msg);
     }
   };
 
@@ -177,9 +179,10 @@ export const MapView = ({ getLoc, goBack, markers }: Props) => {
   };
 
   const handleReadyButtonClick = () => {
-    if (goBack) {
+    navigate("/profile");
+    /*if (goBack) {
       goBack(false);
-    }
+    }*/
   };
 
   return !isLoaded ? (

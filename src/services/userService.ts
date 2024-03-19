@@ -120,6 +120,19 @@ export const updateRoleUser = async (id: string | undefined, value: string) => {
   return resp;
 };
 
+export const setUserLocation = async (
+  id: string | undefined,
+  location: ILocation
+) => {
+  const resp = await fetchWithToken(
+    `/users/location/${id}`,
+    { location },
+    "PUT"
+  );
+
+  return resp;
+};
+
 export const clearNotificationsById = async (
   receiverId: string,
   senderId: string
