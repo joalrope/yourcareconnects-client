@@ -61,7 +61,8 @@ interface ICenterMap {
   lat: number;
   lng: number;
 }
-export const MapView = ({ getLoc, goBack, markers }: Props) => {
+
+export const ServiceProvidersMap = ({ getLoc, goBack, markers }: Props) => {
   const user = useSelector((state: RootState) => state.user);
   const [center, setCenter] = useState<ICenterMap>({ lat: 0, lng: 0 });
   const [selectedMarker, setSelectedMarker] = useState<IMarker | null>(null);

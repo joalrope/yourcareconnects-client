@@ -1,4 +1,4 @@
-import { ILocation } from "../components/ui-components/map/MapView";
+import { ILocation } from "../components/ui-components/map/GetLocationMap";
 
 export interface IPictures {
   profile: { name: string; image: string; type: string };

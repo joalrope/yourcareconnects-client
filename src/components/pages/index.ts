@@ -12,7 +12,8 @@ export { DashboardAdmin } from "./private/dashboard/DashboardAdmin";
 export { Dashboard } from "./private/dashboard/Dashboard";
 export { SearchServices } from "./private/services/SearchServices";
 
-export { MapView } from "../ui-components/map/MapView";
+export { GetLocationMap } from "../ui-components/map/GetLocationMap";
+export { ServiceProvidersMap } from "../ui-components/map/ServiceProvidersMap";
 export { ChatView } from "../ui-components/chat/ChatView";
 
 export { ChangeProfilePicture } from "../forms/picture/ChangeProfilePicture";

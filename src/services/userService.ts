@@ -1,6 +1,6 @@
 import { IProvider } from "../components/forms/auth/provicer-form/interfaces";
 import { fetchWithToken, fetchWithoutToken } from "../helpers/fetch";
-import { ILocation } from "../components/ui-components/map/MapView";
+import { ILocation } from "../components/ui-components/map/GetLocationMap";
 import { getLocation } from "../components/ui-components/map/utils/getLocation";
 import { IRegister } from "../components/forms/auth/RegisterForm";
 
@@ -46,9 +46,11 @@ export const getUserByServices = async (
 
     const location = getLocation(coordinates);
 
-    return await fetchWithToken(
+    const result = await fetchWithToken(
       `/users/services/${300}/${location.lat}/${location.lng}?${query}`
     );
+
+    return result;
   }
 
   return await fetchWithToken(`/search/users/${services[0]}`);

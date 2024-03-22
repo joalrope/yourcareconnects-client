@@ -9,7 +9,7 @@ import {
   DashboardAdmin,
   Home,
   Login,
-  MapView,
+  GetLocationMap,
   NotAllowed,
   NotFound,
   Profile,
@@ -21,6 +21,7 @@ import {
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleProtectedRoute } from "./RoleProtectedRoute";
 import { Redirect } from "../components/pages/public/shared/Redirect";
+import { ServiceProvidersMap } from "../components/ui-components/map/ServiceProvidersMap";
 
 export const AppRouter = () => {
   return (
@@ -79,7 +80,12 @@ export const AppRouter = () => {
         <Route key="dashboard" path="/dashboard" element={<Dashboard />} />
         <Route key="services" path="/services" element={<SearchServices />} />
         <Route key="chat" path="/chat" element={<ChatView />} />
-        <Route key="map" path="/map" element={<MapView />} />
+        <Route key="locmap" path="/locationmap" element={<GetLocationMap />} />
+        <Route
+          key="servicemap"
+          path="/servicesmap"
+          element={<ServiceProvidersMap />}
+        />
       </Route>
       <Route element={<RoleProtectedRoute />}>
         <Route

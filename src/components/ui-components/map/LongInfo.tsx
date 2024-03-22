@@ -1,6 +1,6 @@
 import { Col, Image, Rate, Row, Typography } from "antd";
 import { useTranslation } from "react-i18next";
-import { IMarker } from "./MapView";
+import { IMarker } from "./GetLocationMap";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store";
 

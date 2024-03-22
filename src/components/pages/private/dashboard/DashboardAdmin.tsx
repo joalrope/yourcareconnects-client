@@ -74,7 +74,14 @@ export const DashboardAdmin = () => {
             </Radio.Group>
           </Col>
         </Row>
-        <Row style={{ marginLeft: 48, marginRight: 24, width: "100%" }}>
+        <Row
+          style={{
+            justifyContent: "center",
+            marginLeft: 48,
+            marginRight: 24,
+            width: "100%",
+          }}
+        >
           <UserGrid userType={typeActiveUser} email={email} />
         </Row>
       </Row>

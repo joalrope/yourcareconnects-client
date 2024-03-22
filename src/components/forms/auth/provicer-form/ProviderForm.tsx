@@ -16,14 +16,14 @@ import { setUser } from "../../../../store/slices";
 import { setLocationPath } from "../../../../store/slices/router/routerSlice";
 import { CategorySelect } from "../../../ui-components/category-select/CategorySelect";
 import { IModality, IProvider } from "./interfaces";
-import { MapView } from "../../../pages";
+//import { MapView } from "../../../pages";
 import { FormItemInput } from "../../../ui-components/FormItemInput";
 import { useContent } from "../../../../hooks/useContent";
 import { UserProfileImage } from "../../../ui-components/user-profile-image/UserProfileImage";
 import { useTranslatedServices } from "../../../../helpers/services";
 import { UploadDocs } from "../../../ui-components/UploadDocs";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 export const ProviderForm = () => {
   const { message } = App.useApp();
@@ -104,7 +104,7 @@ export const ProviderForm = () => {
         return;
       }
 
-      navigate("/map");
+      navigate("/locationmap");
       //setViewMap(true);
     });
   };
@@ -139,13 +139,13 @@ export const ProviderForm = () => {
     } as unknown as IProvider);
   }, [form]);
 
-  const getLoc = (loc: { lat: number; lng: number }) => {
+  /*  const getLoc = (loc: { lat: number; lng: number }) => {
     form.setFieldValue("location", {
       type: "Point",
       coordinates: [loc.lng, loc.lat],
     });
     return loc;
-  };
+  }; */
 
   const onFinish = async (values: IProvider) => {
     const {
@@ -181,7 +181,8 @@ export const ProviderForm = () => {
   };
 
   return viewMap ? (
-    <MapView getLoc={getLoc} goBack={setViewMap} />
+    // <MapView getLoc={getLoc} goBack={setViewMap} />
+    <></>
   ) : (
     <Row justify={"center"} style={{ padding: 24, width: "100%" }}>
       <Col xs={24} sm={24} lg={16}>
@@ -296,7 +297,9 @@ export const ProviderForm = () => {
                     onClick={HandleGeoloc}
                     style={{ width: "100%" }}
                   >
-                    {t("Geolocation")}
+                    <Text style={{ maxWidth: "100%" }} ellipsis={true}>
+                      {t("Geolocation")}
+                    </Text>
                   </Button>
                 </Form.Item>
               </Col>

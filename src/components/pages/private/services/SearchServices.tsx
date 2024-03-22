@@ -4,8 +4,11 @@ import { CategorySelect } from "../../../ui-components/category-select/CategoryS
 import { ProviderCard } from "../../../ui-components/provider-card/ProviderCard";
 import { useEffect, useState } from "react";
 import { getServicesToSearch } from "../../../../helpers/services";
-import { MapView } from "../..";
-import { ILocation, IMarker } from "../../../ui-components/map/MapView";
+import {
+  ILocation,
+  IMarker,
+  MapView,
+} from "../../../ui-components/map/MapView";
 import { getUserByServices } from "../../../../services";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
@@ -43,11 +46,12 @@ export const SearchServices = () => {
 
     const {
       ok,
-      //msg,
+      msg,
       result: { users },
     } = await getUserByServices(values.services, location);
 
     if (!ok) {
+      console.log(msg);
       setAreThereUsers(false);
     }
 
@@ -225,12 +229,12 @@ export const SearchServices = () => {
             return (
               <Col
                 key={provider.id}
-                xs={24}
-                sm={12}
-                md={6}
-                lg={6}
-                xl={6}
-                xxl={6}
+                // xs={24}
+                // sm={12}
+                // md={6}
+                // lg={6}
+                // xl={6}
+                // xxl={6}
               >
                 {provider.role === "provider" && (
                   <ProviderCard provider={provider} small={false} />
