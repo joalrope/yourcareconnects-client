@@ -113,6 +113,8 @@ export const RegisterForm = ({ role, code }: Props) => {
 
     const { ok, msg, result } = await createUser(newUser);
 
+    console.log({ ok, msg, result });
+
     dispatch(setLoading(false));
 
     if (ok) {
