@@ -1,9 +1,22 @@
+import { useEffect } from "react";
 import { Col, Row } from "antd";
-import "./login.css";
 import { LoginForm } from "../../../../forms/auth/LoginForm";
 import ImageYCC from "../../../../ui-components/ImageYCC";
+import "./login.css";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../../store";
 
 export const Login = () => {
+  const navigate = useNavigate();
+  const { isLoggedIn } = useSelector((state: RootState) => state.user);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/dashboard");
+    }
+  }, [isLoggedIn, navigate]);
+
   return (
     <Row
       gutter={16}

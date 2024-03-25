@@ -18,7 +18,7 @@ import {
   Conversation,
   ConversationHeader,
   ConversationList,
-  EllipsisButton,
+  //EllipsisButton,
   MainContainer,
   Message,
   MessageInput,
@@ -227,9 +227,9 @@ export const ChatView = () => {
     console.log("show context menu", id);
   };
 
-  const handleonMenuClick = () => {
+  /* const handleonMenuClick = () => {
     setShowMenu(!showMenu);
-  };
+  }; */
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onClickMenu: MenuProps["onClick"] = (e) => {
@@ -301,10 +301,10 @@ export const ChatView = () => {
               info={activeContact.id !== "" ? activeContact.info : ""}
             />
             <ConversationHeader.Actions>
-              <EllipsisButton
+              {/*  <EllipsisButton
                 onClick={handleonMenuClick}
                 orientation="vertical"
-              />
+              /> */}
               {showMenu && (
                 <div
                   className={styles.conversationHeaderActions}

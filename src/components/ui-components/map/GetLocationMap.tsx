@@ -68,7 +68,7 @@ export const GetLocationMap = () => {
   useEffect(() => {
     const userLoc = getLocation(user.location);
 
-    if (userLoc.lat === 0 && userLoc.lng === 0) {
+    if (!userLoc || (userLoc.lat === 0 && userLoc.lng === 0)) {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
 
@@ -76,12 +76,16 @@ export const GetLocationMap = () => {
           lat: latitude,
           lng: longitude,
         });
+
+        dispatch(setLatLng({ lat: latitude, lng: longitude }));
       });
     } else {
       setCenter({
         lat: userLoc.lat,
         lng: userLoc.lng,
       });
+
+      dispatch(setLatLng({ lat: userLoc.lat, lng: userLoc.lng }));
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -121,7 +125,14 @@ export const GetLocationMap = () => {
       lng: e.latLng?.lng() as number,
     });
 
-    if (!ok) {
+    if (ok) {
+      message.success({
+        content: `${t(msg)}`,
+        style: {
+          marginTop: "10vh",
+        },
+      });
+    } else {
       message.error(msg);
     }
   };
@@ -160,7 +171,12 @@ export const GetLocationMap = () => {
       <Button
         type="primary"
         onClick={handleReadyButtonClick}
-        style={{ position: "absolute", top: "30px", left: "30px" }}
+        style={{
+          border: "1px solid black",
+          position: "absolute",
+          top: "30px",
+          left: "30px",
+        }}
       >
         {t("Ready, I already indicated my location")}
       </Button>
