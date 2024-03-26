@@ -22,6 +22,7 @@ import { useContent } from "../../../../hooks/useContent";
 import { UserProfileImage } from "../../../ui-components/user-profile-image/UserProfileImage";
 import { useTranslatedServices } from "../../../../helpers/services";
 import { UploadDocs } from "../../../ui-components/UploadDocs";
+import { GetLocationMap } from "../../../pages";
 
 const { Title, Text } = Typography;
 
@@ -36,7 +37,7 @@ export const ProviderForm = () => {
   const user = useSelector((state: RootState) => state.user);
   const { id, role } = user;
   const [modalities, setModalities] = useState<IModality[]>([]);
-  const [viewMap, setViewMap] = useState<boolean>(false);
+  //const [viewMap, setViewMap] = useState<boolean>(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   useEffect(() => {
@@ -98,7 +99,7 @@ export const ProviderForm = () => {
           okText: t("Agreed"),
           autoFocusButton: "ok",
           onOk() {
-            setViewMap(false);
+            //setViewMap(false);
           },
         });
         return;
@@ -180,10 +181,7 @@ export const ProviderForm = () => {
     setFileList((prev) => prev.filter((f) => f.name !== file.name));
   };
 
-  return viewMap ? (
-    // <MapView getLoc={getLoc} goBack={setViewMap} />
-    <></>
-  ) : (
+  return (
     <Row justify={"center"} style={{ padding: 24, width: "100%" }}>
       <Col xs={24} sm={24} lg={16}>
         <Row style={{ display: "flex", flexDirection: "column" }}>
@@ -279,10 +277,10 @@ export const ProviderForm = () => {
             </Row>
 
             <Row gutter={16}>
-              <Col xs={24} sm={24} md={18} lg={18}>
+              <Col xs={24} sm={24} md={24} lg={24}>
                 <FormItemInput name="address" label="Physical address" />
               </Col>
-              <Col xs={24} sm={24} md={6} lg={6}>
+              {/* <Col xs={24} sm={24} md={6} lg={6}>
                 <Form.Item
                   label={t("GeoLoc address")}
                   name="location"
@@ -302,6 +300,51 @@ export const ProviderForm = () => {
                     </Text>
                   </Button>
                 </Form.Item>
+              </Col> */}
+            </Row>
+
+            <Row style={{ width: "100%" }}>
+              <Row
+                style={{
+                  alignItems: "center",
+                  flexDirection: "row",
+                  gap: "8px",
+                  justifyContent: "space-between",
+                  margin: "24px 0px 8px",
+                  width: "100%",
+                }}
+              >
+                <Col style={{ display: "flex", alignItems: "flex-end" }}>
+                  <Text>{t("Set your Geolocation on the map")}</Text>
+                </Col>
+                {
+                  <Col>
+                    <Button
+                      type="primary"
+                      onClick={HandleGeoloc}
+                      style={{ border: "1px solid black" }}
+                    >
+                      {t("Click t maximize the map")}
+                    </Button>
+                  </Col>
+                }
+              </Row>
+              <Col
+                xs={24}
+                sm={24}
+                md={24}
+                lg={24}
+                style={{
+                  border: "1px solid black",
+                  borderRadius: "8px",
+                  margin: "8px 0px",
+                  padding: "3px",
+                  width: "100%",
+                }}
+              >
+                <GetLocationMap
+                  mapStyles={{ width: "100%", height: "300px" }}
+                />
               </Col>
             </Row>
 

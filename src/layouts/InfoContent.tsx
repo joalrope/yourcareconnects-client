@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Avatar,
   Badge,
@@ -41,6 +41,7 @@ interface Props {
 
 export const InfoContent = ({ names }: Props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { token } = useToken();
   const { notifications, pictures } = useSelector(
@@ -76,7 +77,8 @@ export const InfoContent = ({ names }: Props) => {
   const handleNameClick = () => {
     dispatch(setIsOpened(false));
     //setOpen(false);
-    dispatch(setLocationPath("dashboard"));
+    dispatch(setLocationPath("profile"));
+    navigate("/profile");
   };
 
   const handleNotificationsClick = () => {
@@ -107,7 +109,7 @@ export const InfoContent = ({ names }: Props) => {
             justifyContent: "center",
           }}
         >
-          <Link to="/dashboard" onClick={handleNameClick}>
+          <Link to="/profile">
             {names && (
               <Title
                 style={{
@@ -122,11 +124,10 @@ export const InfoContent = ({ names }: Props) => {
               </Title>
             )}
           </Link>
-          <Col>
+          <Link to="/profile">
             <Avatar
               shape="circle"
               src={pictureUrl}
-              onClick={() => handleOpenChange(false)}
               size={44}
               style={{
                 backgroundColor:
@@ -135,7 +136,7 @@ export const InfoContent = ({ names }: Props) => {
                 marginLeft: "12px",
               }}
             />
-          </Col>
+          </Link>
         </Row>
       ),
     },
@@ -337,7 +338,7 @@ export const InfoContent = ({ names }: Props) => {
             </Link>
           </Col>
           <Col style={{ marginLeft: 18 }}>
-            <Link to="/dashboard" onClick={handleNameClick}>
+            <Link to="/profile" onClick={handleNameClick}>
               {names && (
                 <Title
                   style={{
@@ -354,7 +355,7 @@ export const InfoContent = ({ names }: Props) => {
             </Link>
           </Col>
 
-          <Col>
+          <Link to="/profile" onClick={handleNameClick}>
             <Avatar
               shape="circle"
               src={pictureUrl}
@@ -366,7 +367,7 @@ export const InfoContent = ({ names }: Props) => {
                 marginLeft: "12px",
               }}
             />
-          </Col>
+          </Link>
 
           <Col>
             <Link

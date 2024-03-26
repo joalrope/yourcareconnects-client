@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Menu, MenuProps } from "antd";
 import {
+  CommentOutlined,
   DashboardOutlined,
   FileSearchOutlined,
   ProfileOutlined,
@@ -51,7 +52,7 @@ export const SiderMenu = () => {
       path: "/chat",
       key: "chat",
       role: "customer",
-      icon: <FileSearchOutlined />,
+      icon: <CommentOutlined />,
     },
   ];
 

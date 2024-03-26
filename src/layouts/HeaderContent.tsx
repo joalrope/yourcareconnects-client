@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Col, Dropdown, Menu, Row } from "antd";
+import { Button, Col, Dropdown, Menu, Row } from "antd";
 import type { MenuProps } from "antd";
-import { MenuOutlined } from "@ant-design/icons";
+import {
+  MenuOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+} from "@ant-design/icons";
 
 import { useTranslation } from "react-i18next";
 
@@ -16,8 +20,14 @@ import { setLocationPath } from "../store/slices/router/routerSlice";
 import { LanguageSelect } from "../components/ui-components/LanguageSelect";
 import { AppLogo } from "./AppLogo";
 import { setIsOpened } from "../store/slices";
+import { Dispatch, SetStateAction } from "react";
 
-export const HeaderContent = () => {
+interface Props {
+  collapsed: boolean;
+  setCollapsed: Dispatch<SetStateAction<boolean>>;
+}
+
+export const HeaderContent = ({ collapsed, setCollapsed }: Props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { isLoggedIn, names } = useSelector((state: RootState) => state.user);
@@ -97,7 +107,23 @@ export const HeaderContent = () => {
         </>
       ) : (
         isLoggedIn && (
-          <Row justify={"end"} style={{ width: "100%" }}>
+          <Row
+            align={"middle"}
+            justify={"space-between"}
+            style={{ width: "100%" }}
+          >
+            <Button
+              type="text"
+              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              onClick={() => setCollapsed(!collapsed)}
+              style={{
+                color: "#fbd467",
+                fontSize: 16,
+                width: 24,
+                height: 48,
+              }}
+            />
+
             <InfoContent names={names} />
           </Row>
         )

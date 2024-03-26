@@ -2,7 +2,7 @@ interface ILocation {
   type: "Point";
   coordinates: [number, number];
 }
-export const getLocation = (location: ILocation) => {
+export const getCenter = (location: ILocation) => {
   if (!location) {
     return {
       lng: 0,

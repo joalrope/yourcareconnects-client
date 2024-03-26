@@ -13,7 +13,7 @@ import { getUserByServices } from "../../../../services";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { useContent } from "../../../../hooks/useContent";
-import { getLocation } from "../../../ui-components/map/utils/getLocation";
+import { getCenter } from "../../../ui-components/map/utils/getLocation";
 import { IProvider } from "../../../../interface/provider";
 
 const { Title } = Typography;
@@ -57,7 +57,7 @@ export const SearchServices = () => {
 
     if (users.length >= 1) {
       const usersMarkers = users.map((user: IProvider) => {
-        const userLocation = getLocation(user.location as ILocation);
+        const userLocation = getCenter(user.location as ILocation);
 
         return {
           id: user.id,

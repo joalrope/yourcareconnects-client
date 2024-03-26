@@ -25,7 +25,7 @@ import { IPictures } from "../../../interface/user";
 import { MarkersSort } from "../../../helpers/markers";
 import { useContent } from "../../../hooks/useContent";
 import { Markers } from "./Markers";
-import { getLocation } from "./utils/getLocation";
+import { getCenter } from "./utils/getLocation";
 
 const { Text } = Typography;
 
@@ -83,7 +83,7 @@ export const ServiceProvidersMap = ({ getLoc, goBack, markers }: Props) => {
       (marker) => marker?.fullname === user.fullname
     );
 
-    const userLocation = getLocation(user.location);
+    const userLocation = getCenter(user.location);
 
     setCenter({
       lat: userLocation.lat,

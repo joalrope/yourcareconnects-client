@@ -109,6 +109,21 @@ export const CategorySelect = ({
         autoClearSearchValue={false}
         dropdownStyle={{ maxHeight: "300px", overflow: "auto" }}
         multiple
+        notFoundContent={
+          <div style={{ textAlign: "center", padding: 5 }}>
+            <p>
+              {t(
+                "At this time there are no providers in your area for that service."
+              )}
+            </p>
+            <h4>{t("We invite you to return soon.")}</h4>
+            <p>
+              {t(
+                "New suppliers sign up every day, we continue to grow for you."
+              )}
+            </p>
+          </div>
+        }
         onBlur={() => setOpen(false)}
         onChange={onChange}
         onFocus={() => setOpen(true)}

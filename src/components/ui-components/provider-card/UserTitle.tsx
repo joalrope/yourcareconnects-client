@@ -223,7 +223,7 @@ export const UserTitle = ({
               </Title>
               <Select
                 style={{ width: "100%" }}
-                size={"small"}
+                size={"large"}
                 value={[userRole]}
                 placeholder="Please select"
                 defaultValue={["customer"]}

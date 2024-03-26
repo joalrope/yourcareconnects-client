@@ -15,6 +15,7 @@ const { Header, Footer, Sider, Content } = Layout;
 
 export const AppLayout = (/* { children }: { children: ReactNode } */) => {
   const [collapsed, setCollapsed] = useState(false);
+
   const { isLoggedIn } = useSelector((state: RootState) => state.user);
   const { loading } = useSelector((state: RootState) => state.ui);
 
@@ -24,12 +25,15 @@ export const AppLayout = (/* { children }: { children: ReactNode } */) => {
     setCollapsed(!collapsed);
   };
 
+  const supportPhone = import.meta.env.VITE_SUPPORT_PHONE;
+
   return (
     <Layout style={{ height: "100vh" }}>
       {isLoggedIn && (
         <Sider
           breakpoint="xs"
           collapsible
+          trigger={null}
           collapsed={collapsed}
           onCollapse={onCollapse}
         >
@@ -38,7 +42,7 @@ export const AppLayout = (/* { children }: { children: ReactNode } */) => {
       )}
       <Layout>
         <Header style={{ paddingLeft: 0, width: "100%" }}>
-          <HeaderContent />
+          <HeaderContent collapsed={collapsed} setCollapsed={setCollapsed} />
         </Header>
         <Content
           style={{
@@ -62,7 +66,9 @@ export const AppLayout = (/* { children }: { children: ReactNode } */) => {
             className="float-button"
             type="default"
             icon={<WhatsAppOutlined className="float-button-icon" />}
-            onClick={() => window.open("https://wa.me/", "_blank")}
+            onClick={() =>
+              window.open(`https://wa.me/${supportPhone}`, "_blank")
+            }
           />
         </Content>
         <Footer>

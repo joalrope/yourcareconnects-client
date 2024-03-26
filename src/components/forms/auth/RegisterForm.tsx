@@ -421,7 +421,7 @@ export const RegisterForm = ({ role, code }: Props) => {
                 htmlType="submit"
                 disabled={!(hideBtn && recaptcha)}
               >
-                {t("Get Into")}
+                {t("Continue")}
               </Button>
             </Form.Item>
           </Form>

@@ -1,7 +1,7 @@
 import { IProvider } from "../components/forms/auth/provicer-form/interfaces";
 import { fetchWithToken, fetchWithoutToken } from "../helpers/fetch";
 import { ILocation } from "../components/ui-components/map/GetLocationMap";
-import { getLocation } from "../components/ui-components/map/utils/getLocation";
+import { getCenter } from "../components/ui-components/map/utils/getLocation";
 import { IRegister } from "../components/forms/auth/RegisterForm";
 
 export const createUser = async (newUser: IRegister) => {
@@ -44,7 +44,7 @@ export const getUserByServices = async (
       return queryString + `services=${service}&`;
     }, "");
 
-    const location = getLocation(coordinates);
+    const location = getCenter(coordinates);
 
     const result = await fetchWithToken(
       `/users/services/${300}/${location.lat}/${location.lng}?${query}`

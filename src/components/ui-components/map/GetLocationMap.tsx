@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store";
 import { IPictures } from "../../../interface/user";
 import { useContent } from "../../../hooks/useContent";
-import { getLocation } from "./utils/getLocation";
+import { getCenter } from "./utils/getLocation";
 import { useNavigate } from "react-router-dom";
 import { setUserLocation } from "../../../services/userService";
 import { setLatLng } from "../../../store/slices";
@@ -24,7 +24,8 @@ const { Text } = Typography;
 
 const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
-const mapStyles = {
+const mapStylesDefault = {
+  borderRadius: "12px",
   height: "86.5vh",
   width: "100%",
 };
@@ -48,7 +49,17 @@ interface ICenterMap {
   lat: number;
   lng: number;
 }
-export const GetLocationMap = () => {
+
+interface IMapStyles {
+  height: string;
+  width: string;
+}
+
+interface Props {
+  mapStyles: IMapStyles;
+}
+
+export const GetLocationMap = ({ mapStyles = mapStylesDefault }: Props) => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
   const [center, setCenter] = useState<ICenterMap>({ lat: 0, lng: 0 });
@@ -66,7 +77,7 @@ export const GetLocationMap = () => {
   const mapRef = useRef<google.maps.Map | null>(null);
 
   useEffect(() => {
-    const userLoc = getLocation(user.location);
+    const userLoc = getCenter(user.location);
 
     if (!userLoc || (userLoc.lat === 0 && userLoc.lng === 0)) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -77,7 +88,12 @@ export const GetLocationMap = () => {
           lng: longitude,
         });
 
-        dispatch(setLatLng({ lat: latitude, lng: longitude }));
+        dispatch(
+          setLatLng({
+            type: "Point",
+            coordinates: { lat: latitude, lng: longitude },
+          })
+        );
       });
     } else {
       setCenter({
@@ -85,9 +101,13 @@ export const GetLocationMap = () => {
         lng: userLoc.lng,
       });
 
-      dispatch(setLatLng({ lat: userLoc.lat, lng: userLoc.lng }));
+      dispatch(
+        setLatLng({
+          type: "Point",
+          coordinates: { lat: userLoc.lat, lng: userLoc.lng },
+        })
+      );
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -138,6 +158,7 @@ export const GetLocationMap = () => {
   };
 
   const handleReadyButtonClick = () => {
+    console.log(user.location);
     navigate("/profile");
   };
 
@@ -159,7 +180,6 @@ export const GetLocationMap = () => {
         styles: styles as google.maps.MapTypeStyle[],
       }}
     >
-      (
       <MarkerF
         key={"1"}
         position={{ lat: center.lat, lng: center.lng }}
@@ -167,19 +187,20 @@ export const GetLocationMap = () => {
         draggable={true}
         onDragEnd={onDragEnd}
       />
-      )
-      <Button
-        type="primary"
-        onClick={handleReadyButtonClick}
-        style={{
-          border: "1px solid black",
-          position: "absolute",
-          top: "30px",
-          left: "30px",
-        }}
-      >
-        {t("Ready, I already indicated my location")}
-      </Button>
+      {mapStyles.height === mapStylesDefault.height && (
+        <Button
+          type="primary"
+          onClick={handleReadyButtonClick}
+          style={{
+            border: "1px solid black",
+            position: "absolute",
+            top: "30px",
+            left: "30px",
+          }}
+        >
+          {t("Ready, I already indicated my location")}
+        </Button>
+      )}
     </GoogleMap>
   );
 };
