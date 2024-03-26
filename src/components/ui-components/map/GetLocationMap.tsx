@@ -56,7 +56,7 @@ interface IMapStyles {
 }
 
 interface Props {
-  mapStyles: IMapStyles;
+  mapStyles?: IMapStyles;
 }
 
 export const GetLocationMap = ({ mapStyles = mapStylesDefault }: Props) => {
