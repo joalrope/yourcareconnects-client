@@ -10,7 +10,11 @@ import {
   Typography,
 } from "antd";
 import { useTranslation } from "react-i18next";
-import { DeleteOutlined, UserAddOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  RestOutlined,
+  UserAddOutlined,
+} from "@ant-design/icons";
 import { RootState } from "../../../store";
 import {
   getUserById,
@@ -18,7 +22,11 @@ import {
   updateRoleUser,
   updateUserContactsById,
 } from "../../../services";
-import { deleteProvider, setUser } from "../../../store/slices";
+import {
+  deleteProvider,
+  setUser,
+  updateActiveProvStatus,
+} from "../../../store/slices";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useState } from "react";
 import { deleteUserById } from "../../../services/userService";
@@ -26,23 +34,27 @@ import { deleteUserById } from "../../../services/userService";
 const { Text, Title } = Typography;
 
 interface Props {
+  picture: string | undefined;
   fullname: string | undefined;
   email: string | undefined;
   phoneNumber: string | undefined;
   id: string;
   contact: boolean;
   isActive: boolean | undefined;
+  isDeleted: boolean | undefined;
   small: boolean;
   role: string | undefined;
 }
 
 export const UserTitle = ({
+  picture,
   fullname,
   email,
   phoneNumber,
   id,
   contact,
   isActive,
+  isDeleted,
   small,
   role,
 }: Props) => {
@@ -103,6 +115,8 @@ export const UserTitle = ({
       result: { user },
     } = await updateActiveUserStatus(id, e.target.checked);
 
+    dispatch(updateActiveProvStatus({ id, isActive: e.target.checked }));
+
     if (ok) {
       setActive(!active);
       message.success({
@@ -118,7 +132,10 @@ export const UserTitle = ({
 
   const handleDeleteProvider = async (id: string) => {
     modal.confirm({
-      title: t(`Are you sure you want to delete {{fullname}}`, { fullname }),
+      title: t(`Are you sure you want to {{delete}} {{fullname}}`, {
+        fullname,
+        delete: !isDeleted ? t("delete") : t("restore"),
+      }),
       okText: t("Yes"),
       okType: "danger",
       cancelText: t("No"),
@@ -192,11 +209,7 @@ export const UserTitle = ({
           >
             <Row style={{ justifyContent: "space-between", width: "100%" }}>
               <Col>
-                <img
-                  src="/images/logo.png"
-                  alt="logo yourcareconnects.com"
-                  width={60}
-                />
+                <img src={picture} alt={`Picture of ${fullname}`} width={60} />
               </Col>
 
               <Col
@@ -212,7 +225,7 @@ export const UserTitle = ({
                     checked={active}
                     defaultChecked={isActive}
                   >
-                    {t("Activate")}
+                    {isActive ? t("Activated") : t("Deactivate")}
                   </Checkbox>
                 )}
               </Col>
@@ -248,13 +261,26 @@ export const UserTitle = ({
         )}
       </Col>
       <Col xs={!contact ? 19 : 24}>
-        <Title level={5} ellipsis={true} style={{ margin: 0 }}>
+        <Title
+          level={5}
+          ellipsis={true}
+          style={{ margin: 0 }}
+          onClick={() => handleDeleteProvider(id)}
+        >
           {userLoggedIn === "superadmin" && (
-            <Tooltip placement="top" title={t("Delete Provider")}>
-              <DeleteOutlined
-                onClick={() => handleDeleteProvider(id)}
-                style={{ color: "red" }}
-              />
+            <Tooltip
+              placement="top"
+              title={!isDeleted ? t("Delete Provider") : t("Restore Provider")}
+            >
+              {isDeleted ? (
+                <RestOutlined
+                  style={{ color: "green", cursor: "pointer", fontSize: 22 }}
+                />
+              ) : (
+                <DeleteOutlined
+                  style={{ color: "red", cursor: "pointer", fontSize: 18 }}
+                />
+              )}
             </Tooltip>
           )}
           {userLoggedIn === "superadmin" && " "}
@@ -275,7 +301,7 @@ export const UserTitle = ({
             </Tooltip>
 
             <Col>
-              <Text style={{ fontSize: 12 }}>{phoneNumber}</Text>
+              <Text style={{ fontSize: 12, marginTop: 8 }}>{phoneNumber}</Text>
             </Col>
           </Row>
         )}

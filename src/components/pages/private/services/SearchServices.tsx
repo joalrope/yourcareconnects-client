@@ -46,12 +46,10 @@ export const SearchServices = () => {
 
     const {
       ok,
-      msg,
       result: { users },
     } = await getUserByServices(values.services, location);
 
     if (!ok) {
-      console.log(msg);
       setAreThereUsers(false);
     }
 

@@ -27,10 +27,6 @@ export const ProviderCard = ({
   provider: IProvider;
   small: boolean;
 }) => {
-  const profile = !small
-    ? provider.pictures?.profile
-    : { name: "", image: "/images/user.png", type: "" };
-
   const {
     id,
     fullname,
@@ -40,7 +36,10 @@ export const ProviderCard = ({
     ratings,
     role,
     isActive,
+    isDeleted,
   } = provider;
+
+  const profile = provider.pictures?.profile;
 
   const picture = profile?.image || "/images/user.png";
   const { t } = useTranslation();
@@ -84,12 +83,14 @@ export const ProviderCard = ({
           <Meta
             title={
               <UserTitle
+                picture={picture}
                 fullname={fullname}
                 email={email}
                 phoneNumber={phoneNumber}
                 id={String(id)}
                 contact={small}
                 isActive={isActive}
+                isDeleted={isDeleted}
                 small={small}
                 role={role}
               />

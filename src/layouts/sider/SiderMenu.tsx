@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Menu, MenuProps } from "antd";
 import {
-  CommentOutlined,
   DashboardOutlined,
   FileSearchOutlined,
+  MessageOutlined,
   ProfileOutlined,
 } from "@ant-design/icons";
 
@@ -52,7 +52,7 @@ export const SiderMenu = () => {
       path: "/chat",
       key: "chat",
       role: "customer",
-      icon: <CommentOutlined />,
+      icon: <MessageOutlined />,
     },
   ];
 

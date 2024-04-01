@@ -28,10 +28,10 @@ export const UserGrid = ({
       let response = null;
 
       try {
-        if (userType !== "unique") {
-          response = await getUsersByIsActive(userType);
-        } else {
+        if (userType === "unique") {
           response = await getUserByEmail(email);
+        } else {
+          response = await getUsersByIsActive(userType);
         }
       } catch (error) {
         console.log(error);
@@ -43,7 +43,7 @@ export const UserGrid = ({
 
       if (!users) {
         dispatch(setClearProviders());
-        return;
+        return null;
       }
 
       if (userType !== "unique") {
@@ -51,7 +51,7 @@ export const UserGrid = ({
           (user: IProvider) => user.role !== "superadmin"
         );
         dispatch(setProviders(filteredUsers));
-        return;
+        return null;
       }
 
       dispatch(setProviders(users));
@@ -74,7 +74,7 @@ export const UserGrid = ({
       }}
     >
       <Title style={{ display: "flex", justifyContent: "center" }} level={4}>
-        {t("Provider Activation")}
+        {t("Provider Management")}
       </Title>
       <Row
         style={{

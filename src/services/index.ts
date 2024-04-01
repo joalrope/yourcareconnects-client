@@ -18,6 +18,7 @@ export {
   updateUserContactsById,
   updateActiveUserStatus,
   updateRoleUser,
+  restoreUserById,
 } from "./userService";
 
 export { getFilesService, docDeleteService } from "./uploads";

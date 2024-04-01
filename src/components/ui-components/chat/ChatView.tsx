@@ -233,7 +233,6 @@ export const ChatView = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onClickMenu: MenuProps["onClick"] = (e) => {
-    console.log("click ", e);
     setCurrentPath(e.key);
     setShowMenu(!showMenu);
   };

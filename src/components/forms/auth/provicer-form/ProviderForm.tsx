@@ -1,5 +1,5 @@
 import { SetStateAction, useEffect, useRef, useState } from "react";
-import { App, Button, Col, Form, Input, Modal } from "antd";
+import { App, Button, Col, Form, Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Row, Select, Typography } from "antd";
@@ -16,9 +16,7 @@ import { setUser } from "../../../../store/slices";
 import { setLocationPath } from "../../../../store/slices/router/routerSlice";
 import { CategorySelect } from "../../../ui-components/category-select/CategorySelect";
 import { IModality, IProvider } from "./interfaces";
-//import { MapView } from "../../../pages";
 import { FormItemInput } from "../../../ui-components/FormItemInput";
-import { useContent } from "../../../../hooks/useContent";
 import { UserProfileImage } from "../../../ui-components/user-profile-image/UserProfileImage";
 import { useTranslatedServices } from "../../../../helpers/services";
 import { UploadDocs } from "../../../ui-components/UploadDocs";
@@ -32,12 +30,10 @@ export const ProviderForm = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const content = useContent();
 
   const user = useSelector((state: RootState) => state.user);
   const { id, role } = user;
   const [modalities, setModalities] = useState<IModality[]>([]);
-  //const [viewMap, setViewMap] = useState<boolean>(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   useEffect(() => {
@@ -88,27 +84,6 @@ export const ProviderForm = () => {
 
     fetchData();
   }, []);
-
-  const HandleGeoloc = () => {
-    navigator.permissions.query({ name: "geolocation" }).then((result) => {
-      if (result.state === "denied") {
-        Modal.info({
-          title: t("Please activate Geolocation permission"),
-          content,
-          width: "50%",
-          okText: t("Agreed"),
-          autoFocusButton: "ok",
-          onOk() {
-            //setViewMap(false);
-          },
-        });
-        return;
-      }
-
-      navigate("/locationmap");
-      //setViewMap(true);
-    });
-  };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const defaultValues = useRef({
@@ -317,7 +292,7 @@ export const ProviderForm = () => {
                 <Col style={{ display: "flex", alignItems: "flex-end" }}>
                   <Text>{t("Set your Geolocation on the map")}</Text>
                 </Col>
-                {
+                {/*
                   <Col>
                     <Button
                       type="primary"
@@ -327,7 +302,7 @@ export const ProviderForm = () => {
                       {t("Click t maximize the map")}
                     </Button>
                   </Col>
-                }
+                  */}
               </Row>
               <Col
                 xs={24}

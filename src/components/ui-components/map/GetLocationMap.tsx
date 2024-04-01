@@ -1,24 +1,20 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   GoogleMap,
-  //InfoWindow,
   Libraries,
   MarkerF,
   useLoadScript,
 } from "@react-google-maps/api";
-import { Button, Modal, Typography, message } from "antd";
+import { App, Button, Typography } from "antd";
 import { useTranslation } from "react-i18next";
-//import { LongInfo } from "./LongInfo";
-import styles from "./mapStyles.json";
-import "./map.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store";
 import { IPictures } from "../../../interface/user";
-import { useContent } from "../../../hooks/useContent";
-import { getCenter } from "./utils/getLocation";
 import { useNavigate } from "react-router-dom";
-import { setUserLocation } from "../../../services/userService";
 import { setLatLng } from "../../../store/slices";
+import { setUserLocation } from "../../../services/userService";
+import styles from "./mapStyles.json";
+import "./map.css";
 
 const { Text } = Typography;
 
@@ -61,12 +57,13 @@ interface Props {
 
 export const GetLocationMap = ({ mapStyles = mapStylesDefault }: Props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const { message } = App.useApp();
+
   const user = useSelector((state: RootState) => state.user);
   const [center, setCenter] = useState<ICenterMap>({ lat: 0, lng: 0 });
   const libraries: Libraries = useMemo(() => ["places", "marker"], []);
-  const { t } = useTranslation();
-  const content = useContent();
-  const navigate = useNavigate();
 
   const { isLoaded } = useLoadScript({
     id: "google-map-script",
@@ -77,7 +74,10 @@ export const GetLocationMap = ({ mapStyles = mapStylesDefault }: Props) => {
   const mapRef = useRef<google.maps.Map | null>(null);
 
   useEffect(() => {
-    const userLoc = getCenter(user.location);
+    const userLoc = {
+      lng: user.location.coordinates[0],
+      lat: user.location.coordinates[1],
+    };
 
     if (!userLoc || (userLoc.lat === 0 && userLoc.lng === 0)) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -91,7 +91,7 @@ export const GetLocationMap = ({ mapStyles = mapStylesDefault }: Props) => {
         dispatch(
           setLatLng({
             type: "Point",
-            coordinates: { lat: latitude, lng: longitude },
+            coordinates: [latitude, longitude],
           })
         );
       });
@@ -104,7 +104,7 @@ export const GetLocationMap = ({ mapStyles = mapStylesDefault }: Props) => {
       dispatch(
         setLatLng({
           type: "Point",
-          coordinates: { lat: userLoc.lat, lng: userLoc.lng },
+          coordinates: [userLoc.lat, userLoc.lng],
         })
       );
     }
@@ -114,21 +114,6 @@ export const GetLocationMap = ({ mapStyles = mapStylesDefault }: Props) => {
   const onUnmount = () => {
     mapRef.current = null;
   };
-
-  useEffect(() => {
-    navigator.permissions.query({ name: "geolocation" }).then((result) => {
-      if (result.state === "denied") {
-        Modal.info({
-          title: t("Please activate Geolocation permission"),
-          content: content,
-          width: "50%",
-          okText: t("Agreed"),
-          autoFocusButton: "ok",
-          //onOk() {},
-        });
-      }
-    });
-  }, [content, t]);
 
   const onDragEnd = async (e: google.maps.MapMouseEvent) => {
     const location: ILocation = {
@@ -158,7 +143,6 @@ export const GetLocationMap = ({ mapStyles = mapStylesDefault }: Props) => {
   };
 
   const handleReadyButtonClick = () => {
-    console.log(user.location);
     navigate("/profile");
   };
 

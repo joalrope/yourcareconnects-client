@@ -116,6 +116,13 @@ export const deleteUserById = async (id: string) => {
 
   return resp;
 };
+
+export const restoreUserById = async (id: string, value: boolean) => {
+  const resp = await fetchWithToken(`/users/restore/${id}/${value}`, {}, "PUT");
+
+  return resp;
+};
+
 export const updateRoleUser = async (id: string | undefined, value: string) => {
   const resp = await fetchWithToken(`/users/role/${id}/${value}`, {}, "PUT");
 

@@ -11,6 +11,7 @@ export enum TypeActiveUserStatus {
   ACTIVE = "active",
   INACTIVE = "inactive",
   UNIQUE = "unique",
+  DELETED = "deleted",
 }
 
 export const DashboardAdmin = () => {
@@ -62,6 +63,9 @@ export const DashboardAdmin = () => {
               </Radio>
               <Radio value={TypeActiveUserStatus.ACTIVE}>
                 <Title level={5}> {t("Active Providers")}</Title>
+              </Radio>
+              <Radio value={TypeActiveUserStatus.DELETED}>
+                <Title level={5}> {t("Deleted Providers")}</Title>
               </Radio>
               <Search
                 size="large"

@@ -21,10 +21,24 @@ export const providersSlice = createSlice({
     deleteProvider: (state, action) => {
       return state.filter((provider) => provider.id !== action.payload);
     },
+    updateActiveProvStatus: (state, action) => {
+      const index = state.findIndex(
+        (provider) => provider.id === action.payload.id
+      );
+      if (index !== -1) {
+        state[index].isActive = action.payload.isActive;
+        return state;
+      }
+    },
   },
 });
 
-export const { setProviders, setClearProviders, deleteProvider, addProvider } =
-  providersSlice.actions;
+export const {
+  addProvider,
+  deleteProvider,
+  updateActiveProvStatus,
+  setClearProviders,
+  setProviders,
+} = providersSlice.actions;
 
 export const selectProviders = (state: RootState) => state.providers;
