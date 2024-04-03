@@ -59,7 +59,7 @@ export const DashboardAdmin = () => {
                 <Title level={5}>{t("All Users")}</Title>
               </Radio>
               <Radio value={TypeActiveUserStatus.INACTIVE}>
-                <Title level={5}> {t("Inactive Users")}</Title>
+                <Title level={5}> {t("Inactive Providers")}</Title>
               </Radio>
               <Radio value={TypeActiveUserStatus.ACTIVE}>
                 <Title level={5}> {t("Active Providers")}</Title>

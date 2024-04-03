@@ -63,8 +63,8 @@ export const fetchWithoutToken = (
           };
         }
       })
-      .then((data) => {
-        return data;
+      .then((result) => {
+        return result;
       })
       .catch((e) => {
         return catchError(e);

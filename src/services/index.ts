@@ -9,7 +9,7 @@ export {
 export {
   createUser,
   clearNotificationsById,
-  getThereIsSuperadmin,
+  getThereIsSupport,
   getUserById,
   getUsersByIsActive,
   getUserByServices,

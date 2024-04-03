@@ -48,7 +48,6 @@ export const useSocket = (
     //});
 
     socket.on("connectedUsers", (connectedUsers: IConnectedUsers) => {
-      //console.log({ connectedUsers });
       dispatch(setConnectedUsers(connectedUsers));
     });
 

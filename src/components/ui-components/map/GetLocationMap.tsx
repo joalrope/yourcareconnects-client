@@ -88,12 +88,37 @@ export const GetLocationMap = ({ mapStyles = mapStylesDefault }: Props) => {
           lng: longitude,
         });
 
-        dispatch(
-          setLatLng({
-            type: "Point",
-            coordinates: [latitude, longitude],
-          })
-        );
+        const location: ILocation = {
+          type: "Point",
+          coordinates: [longitude, latitude],
+        };
+
+        const setData = async () => {
+          const { ok, msg } = await setUserLocation(
+            user.id as string,
+            location
+          );
+
+          if (!ok) {
+            message.error({
+              content: `${t(msg)}`,
+              style: {
+                marginTop: "10vh",
+              },
+            });
+          } else {
+            message.success({
+              content: `${t(msg)}`,
+              style: {
+                marginTop: "10vh",
+              },
+            });
+          }
+        };
+
+        setData();
+
+        dispatch(setLatLng(location));
       });
     } else {
       setCenter({

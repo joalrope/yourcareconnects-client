@@ -29,8 +29,8 @@ export const getUsersByIsActive = async (userType: string) => {
   return resp;
 };
 
-export const getThereIsSuperadmin = async () => {
-  const { resp } = await fetchWithToken(`/users/sarole`);
+export const getThereIsSupport = async () => {
+  const { resp } = await fetchWithToken(`/users/support`);
 
   return resp;
 };

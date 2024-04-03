@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import {
   setLoading,
   setLoggedIn,
-  setRole,
+  //setRole,
   setUser,
 } from "../../../store/slices";
 import { setLocationPath } from "../../../store/slices/router/routerSlice";
@@ -38,7 +38,7 @@ export interface IRegister {
   isActive?: boolean;
 }
 
-const superadminCode = import.meta.env.VITE_SUPERADMIN_CODE;
+//const superadminCode = import.meta.env.VITE_SUPERADMIN_CODE;
 
 interface Props {
   role: string;
@@ -98,16 +98,15 @@ export const RegisterForm = ({ role, code }: Props) => {
       password,
       phoneNumber,
       role: role || "customer",
+      company,
     };
 
-    if (company) newUser.company = company;
-
-    if (company === superadminCode) {
+    /*if (company === superadminCode) {
       newUser.role = "superadmin";
       newUser.company = "Your Care Connects, LLC";
       newUser.isActive = true;
       setRole("superadmin");
-    }
+    }*/
 
     dispatch(setLoading(true));
 
@@ -151,7 +150,7 @@ export const RegisterForm = ({ role, code }: Props) => {
             {t("An error occurred while creating your account")}
           </span>,
           <br key={2}></br>,
-          <span key={3}>{t(msg, { email, code })}</span>,
+          <span key={3}>{t(msg, { code, email })}</span>,
           <br key={4}></br>,
           <br key={5}></br>,
           <span key={6}>{t("Please try again")}</span>,

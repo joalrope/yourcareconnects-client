@@ -89,6 +89,7 @@ export const LoginForm = () => {
         autoFocusButton: null,
         okText: `${t("Agreed")}`,
       });
+
       return;
     }
 

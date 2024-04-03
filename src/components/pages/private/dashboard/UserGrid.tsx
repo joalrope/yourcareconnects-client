@@ -48,7 +48,10 @@ export const UserGrid = ({
 
       if (userType !== "unique") {
         const filteredUsers = users.filter(
-          (user: IProvider) => user.role !== "superadmin"
+          (user: IProvider) =>
+            user.role !== "owner" &&
+            user.role !== "developer" &&
+            user.role !== "superadmin"
         );
         dispatch(setProviders(filteredUsers));
         return null;
@@ -74,7 +77,7 @@ export const UserGrid = ({
       }}
     >
       <Title style={{ display: "flex", justifyContent: "center" }} level={4}>
-        {t("Provider Management")}
+        {t("Customer and provider management")}
       </Title>
       <Row
         style={{
@@ -93,7 +96,11 @@ export const UserGrid = ({
             );
           })
         ) : userType !== "unique" ? (
-          <Title level={4}>{t(`There are no ${userType} providers`)}</Title>
+          <Title level={4}>
+            {t(`There are no {{userType}} providers`, {
+              userType: t(`${userType}`),
+            })}
+          </Title>
         ) : (
           <Title level={4}>
             {t(`Please enter an email to search for providers`)}
