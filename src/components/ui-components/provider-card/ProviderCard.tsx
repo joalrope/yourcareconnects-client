@@ -103,6 +103,7 @@ export const ProviderCard = ({
           </Title>
           <Tooltip placement="top" title={userServ}>
             <Text
+              ellipsis={true}
               style={{
                 display: "-webkit-box",
                 height: "100%",
