@@ -28,7 +28,7 @@ import {
   updateActiveProvStatus,
 } from "../../../store/slices";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { deleteUserById } from "../../../services/userService";
 
 const { Text, Title } = Typography;
@@ -62,13 +62,24 @@ export const UserTitle = ({
   const {
     id: userId,
     contacts,
-    role: userLoggedIn,
+    role: rolePassed,
     fullname: userFullname,
   } = useSelector((state: RootState) => state.user);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [active, setActive] = useState(isActive);
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState(role as string);
+
+  useEffect(() => {
+    if (
+      rolePassed === "owner" ||
+      rolePassed === "developer" ||
+      rolePassed === "superadmin"
+    ) {
+      setUserLoggedIn(true);
+    }
+  }, [rolePassed]);
 
   const handleAddContact = async (id: string) => {
     const {
@@ -218,7 +229,7 @@ export const UserTitle = ({
                   alignItems: "center",
                 }}
               >
-                {userLoggedIn === "superadmin" && (
+                {userLoggedIn && (
                   <Checkbox
                     onChange={(e) => onActivateChange(id, e)}
                     style={{ justifyContent: "flex-end", width: "100%" }}
@@ -267,7 +278,7 @@ export const UserTitle = ({
           style={{ margin: 0 }}
           onClick={() => handleDeleteProvider(id)}
         >
-          {userLoggedIn === "superadmin" && (
+          {userLoggedIn && (
             <Tooltip
               placement="top"
               title={!isDeleted ? t("Delete Provider") : t("Restore Provider")}
@@ -283,7 +294,7 @@ export const UserTitle = ({
               )}
             </Tooltip>
           )}
-          {userLoggedIn === "superadmin" && " "}
+          {userLoggedIn && " "}
           <Tooltip placement="top" title={fullname}>
             {fullname}
           </Tooltip>
