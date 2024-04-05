@@ -6,10 +6,11 @@ import { FooterContent } from "./FooterContent";
 import { HeaderContent } from "./HeaderContent";
 import { SiderContent } from "./sider/SiderContent";
 
-import "./app-layout.css";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { AppRouter } from "../router/AppRouter";
+
+import "./app-layout.css";
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -64,6 +65,7 @@ export const AppLayout = (/* { children }: { children: ReactNode } */) => {
           <AppRouter />
           <FloatButton
             className="float-button"
+            style={{ left: isLoggedIn ? 236 : 36 }}
             type="default"
             icon={<WhatsAppOutlined className="float-button-icon" />}
             onClick={() =>

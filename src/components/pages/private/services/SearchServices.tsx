@@ -44,6 +44,8 @@ export const SearchServices = () => {
       values.services.push("");
     }
 
+    console.log({ serSel: values.services });
+
     const {
       ok,
       result: { users },
