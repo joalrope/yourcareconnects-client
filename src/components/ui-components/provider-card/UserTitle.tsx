@@ -254,8 +254,8 @@ export const UserTitle = ({
                 onChange={handleRoleChange}
                 options={[
                   {
-                    value: "admin",
-                    label: "Admin",
+                    value: "superadmin",
+                    label: "Superadmin",
                   },
                   {
                     value: "customer",
