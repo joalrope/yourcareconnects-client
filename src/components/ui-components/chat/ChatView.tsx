@@ -277,7 +277,14 @@ export const ChatView = () => {
                   onClick={() => handleConvesationClick(c.id)}
                   unreadCnt={c.unreadCnt}
                 >
-                  <Avatar name={c.names} src={`${c.picture.image}`} />
+                  <Avatar
+                    name={c.names}
+                    src={`${
+                      c.picture.image !== ""
+                        ? c.picture.image
+                        : "/images/user.png"
+                    }`}
+                  />
                 </Conversation>
               );
             })}

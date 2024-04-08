@@ -79,10 +79,7 @@ export const GetLocationMap = ({ mapStyles = mapStylesDefault }: Props) => {
       lat: user.location.coordinates[1],
     };
 
-    console.log({ userLoc });
-
     if (!userLoc || (userLoc.lat === 0 && userLoc.lng === 0)) {
-      console.log("entro a tomar la geo automaticamente");
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
 
@@ -121,14 +118,9 @@ export const GetLocationMap = ({ mapStyles = mapStylesDefault }: Props) => {
 
         setData();
 
-        console.log({ location });
-
         dispatch(setLatLng(location));
       });
     } else {
-      console.log("entro a tomar la geo del usuario");
-      console.log({ userLoc });
-
       setCenter({
         lat: userLoc.lat,
         lng: userLoc.lng,
@@ -149,7 +141,6 @@ export const GetLocationMap = ({ mapStyles = mapStylesDefault }: Props) => {
   };
 
   const onDragEnd = async (e: google.maps.MapMouseEvent) => {
-    console.log(" tomo el evento de darrastre de pin");
     const location: ILocation = {
       type: "Point",
       coordinates: [e.latLng?.lng() as number, e.latLng?.lat() as number],

@@ -58,7 +58,7 @@ export const ProviderCard = ({
       style={{
         display: "flex",
         flexDirection: "column",
-        maxHeight: 450,
+        maxHeight: 350,
         height: small ? 345 : 400,
       }}
       cover={

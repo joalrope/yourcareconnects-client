@@ -221,9 +221,15 @@ export const MapView = ({ getLoc, goBack, markers }: Props) => {
       <Button
         type="primary"
         onClick={handleReadyButtonClick}
-        style={{ position: "absolute", top: "10px", left: "10px" }}
+        style={{
+          border: "1px solid black",
+          position: "absolute",
+          top: "30px",
+          left: "30px",
+          width: "200px",
+        }}
       >
-        {t("Ready")}
+        {t("Ready, let's go back")}
       </Button>
     </GoogleMap>
   );

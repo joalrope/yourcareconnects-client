@@ -44,8 +44,6 @@ export const SearchServices = () => {
       values.services.push("");
     }
 
-    console.log({ serSel: values.services });
-
     const {
       ok,
       result: { users },
@@ -139,7 +137,7 @@ export const SearchServices = () => {
               span: 24,
             }}
             style={{
-              width: "70%",
+              width: "100%",
               margin: "0 auto",
             }}
             initialValues={{
@@ -172,22 +170,32 @@ export const SearchServices = () => {
               />
             </Form.Item>
 
-            <Row style={{ alignItems: "center", flexDirection: "column" }}>
-              <Col>
+            <Row
+              style={{
+                alignItems: "center",
+                flexDirection: "row",
+                gap: 16,
+                justifyContent: "space-around",
+                padding: 24,
+              }}
+            >
+              <Col xs={24} lg={12}>
                 <Button
                   size="large"
                   type="primary"
                   htmlType="submit"
-                  style={{ marginRight: 8, marginTop: 32, width: 200 }}
+                  style={{ width: "100%" }}
                 >
                   {t("Search")}
                 </Button>
+              </Col>
+              <Col xs={24} lg={12}>
                 {searchServices && (
                   <Button
                     size="large"
                     type="primary"
                     onClick={HandleViewOnMap}
-                    style={{ marginLeft: 8, marginTop: 32, width: 200 }}
+                    style={{ width: "100%" }}
                   >
                     {t("View on Map")}
                   </Button>
@@ -209,15 +217,12 @@ export const SearchServices = () => {
         </Col>
       </Row>
       <Row
-        gutter={[
-          { xs: 8, sm: 16, md: 24, lg: 32 },
-          { xs: 8, sm: 16, md: 24, lg: 32 },
-        ]}
         style={{
-          alignItems: "center",
-          justifyContent: "center",
-          marginTop: 8,
-          padding: 24,
+          display: "flex",
+          justifyContent: "space-around",
+          width: "100%",
+          gap: 24,
+          paddingInline: 24,
         }}
       >
         {!areThereUsers ? (
@@ -227,16 +232,8 @@ export const SearchServices = () => {
         ) : (
           providers.map((provider: IProvider) => {
             return (
-              <Col
-                key={provider.id}
-                // xs={24}
-                // sm={12}
-                // md={6}
-                // lg={6}
-                // xl={6}
-                // xxl={6}
-              >
-                {provider.role === "provider" && (
+              <Col style={{ width: 250 }} key={provider.id}>
+                {provider.role !== "customer" && (
                   <ProviderCard provider={provider} small={false} />
                 )}
               </Col>
