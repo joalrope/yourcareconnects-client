@@ -44,7 +44,7 @@
 
 .float-button {
   background-color: #01e675 !important;
-  bottom: 72px !important;
+  /*bottom: 72px !important;*/
   height: 120 !important;
   width: 120 !important;
 }

@@ -65,7 +65,13 @@ export const AppLayout = (/* { children }: { children: ReactNode } */) => {
           <AppRouter />
           <FloatButton
             className="float-button"
-            style={{ left: isLoggedIn ? 236 : 36 }}
+            style={{
+              left: isLoggedIn ? (collapsed ? 88 : 208) : 36,
+              backgroundColor: "#01e675",
+              bottom: 88,
+              height: 48,
+              width: 48,
+            }}
             type="default"
             icon={<WhatsAppOutlined className="float-button-icon" />}
             onClick={() =>

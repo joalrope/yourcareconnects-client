@@ -261,8 +261,15 @@ export const ChatView = () => {
   return (
     <div className={styles.chatView}>
       <MainContainer responsive>
-        <Sidebar position="left" scrollable={false}>
-          <Search placeholder={`${t("Search")}...`} />
+        <Sidebar
+          position="left"
+          scrollable={false}
+          style={{ display: "unset" }}
+        >
+          <Search
+            placeholder={`${t("Search")}...`}
+            style={{ marginInline: 8 }}
+          />
           <ConversationList
             scrollable
             loadingMore={loadingMore}
@@ -293,7 +300,7 @@ export const ChatView = () => {
 
         <ChatContainer>
           <ConversationHeader>
-            <ConversationHeader.Back />
+            {/* <ConversationHeader.Back onClick={conversationBack} /> */}
             <Avatar
               src={
                 activeContact.picture.image
