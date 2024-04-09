@@ -52,7 +52,7 @@ export const LongInfo = ({
         }}
       >
         <Image
-          src={`${marker.pictures?.profile.image}`}
+          src={`${marker.pictures?.profile.image}` || "/images/user.png"}
           width={isLong ? 180 : 24}
           preview={false}
         />

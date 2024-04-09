@@ -61,9 +61,12 @@ export const GetLocationMap = ({ mapStyles = mapStylesDefault }: Props) => {
   const { t } = useTranslation();
   const { message } = App.useApp();
 
-  const user = useSelector((state: RootState) => state.user);
-  const [center, setCenter] = useState<ICenterMap>({ lat: 0, lng: 0 });
   const libraries: Libraries = useMemo(() => ["places", "marker"], []);
+  const user = useSelector((state: RootState) => state.user);
+  const [center, setCenter] = useState<ICenterMap>({
+    lat: user.location?.coordinates[1] || 0,
+    lng: user.location?.coordinates[0] || 0,
+  });
 
   const { isLoaded } = useLoadScript({
     id: "google-map-script",
@@ -74,12 +77,7 @@ export const GetLocationMap = ({ mapStyles = mapStylesDefault }: Props) => {
   const mapRef = useRef<google.maps.Map | null>(null);
 
   useEffect(() => {
-    const userLoc = {
-      lng: user.location.coordinates[0],
-      lat: user.location.coordinates[1],
-    };
-
-    if (!userLoc || (userLoc.lat === 0 && userLoc.lng === 0)) {
+    if (center.lat === 0 && center.lng === 0) {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
 
@@ -120,21 +118,8 @@ export const GetLocationMap = ({ mapStyles = mapStylesDefault }: Props) => {
 
         dispatch(setLatLng(location));
       });
-    } else {
-      setCenter({
-        lat: userLoc.lat,
-        lng: userLoc.lng,
-      });
-
-      dispatch(
-        setLatLng({
-          type: "Point",
-          coordinates: [userLoc.lat, userLoc.lng],
-        })
-      );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [center.lat, center.lng, dispatch, message, t, user.id]);
 
   const onUnmount = () => {
     mapRef.current = null;
