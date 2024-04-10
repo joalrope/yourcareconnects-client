@@ -26,9 +26,7 @@ export enum TypeActiveUserStatus {
 const clearContacts = async () => {
   const { ok, msg, result } = await clearContactsService();
 
-  if (ok) {
-    console.log(msg, result);
-  }
+  return { ok, msg, result };
 };
 
 export const DashboardDev = () => {
