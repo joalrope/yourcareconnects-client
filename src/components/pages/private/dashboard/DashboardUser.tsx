@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../store";
 import { ProviderSelectorCard } from "../../../ui-components/ProvSelCard";
-import { useLocale } from "../../../../hooks/useLocale";
+//import { useLocale } from "../../../../hooks/useLocale";
 import { getServicesWithColor } from "../../../../services";
 import { useEffect, useState } from "react";
 import { IRes } from "../../../../services/serviceService";
@@ -13,7 +13,7 @@ import { setLoading } from "../../../../store/slices";
 //const { useToken } = theme;
 export const DashboardUser = () => {
   const dispatch = useDispatch();
-  const { names, balance, points, services } = useSelector(
+  const { names, /* balance, points,*/ services } = useSelector(
     (state: RootState) => state.user
   );
   const { t } = useTranslation();
@@ -46,7 +46,7 @@ export const DashboardUser = () => {
             {t("Welcome")}, {names}
           </Title>
         </Col>
-        <Row
+        {/*  <Row
           gutter={[gutter, gutter]}
           justify="start"
           style={{ padding: gutter }}
@@ -90,7 +90,7 @@ export const DashboardUser = () => {
               </Title>
             </div>
           </Col>
-        </Row>
+        </Row> */}
         {providerCard && providerCard.length > 0 && (
           <Row justify="space-around" style={{ paddingInline: gutter }}>
             <Card title={t("Favorite Services")} style={{ width: "100%" }}>

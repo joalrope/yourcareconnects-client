@@ -21,4 +21,9 @@ export {
   restoreUserById,
 } from "./userService";
 
+export {
+  clearContactsService,
+  UserHardDeleteService,
+} from "./dashboardServices";
+
 export { getFilesService, docDeleteService } from "./uploads";
