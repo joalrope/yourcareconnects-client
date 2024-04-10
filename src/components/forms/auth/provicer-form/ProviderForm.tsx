@@ -381,7 +381,9 @@ export const ProviderForm = () => {
 
             {role !== "customer" && (
               <Form.Item
-                label={t("Licenses and certificates to provide services")}
+                label={t(
+                  "Licenses and certificates to provide services (Max.: 5 files)"
+                )}
                 style={{
                   width: "100%",
                   marginBottom: "6px",

@@ -305,7 +305,7 @@ export const ChatView = () => {
               src={
                 activeContact.picture.image
                   ? `${activeContact.picture.image}`
-                  : "/images/transparent.png"
+                  : "/images/user.png"
               }
               name={activeContact.names}
             />
