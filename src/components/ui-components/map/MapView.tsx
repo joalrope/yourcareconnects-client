@@ -99,7 +99,7 @@ export const MapView = ({ getLoc, goBack, markers }: Props) => {
         },
         pictures: user.pictures,
         services: user.services as string[],
-        ratings: user.ratings as number,
+        ratings: user.ratings?.value as number,
         role: user.role as string,
       };
 
