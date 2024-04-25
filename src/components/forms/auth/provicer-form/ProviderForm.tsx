@@ -157,9 +157,19 @@ export const ProviderForm = () => {
   };
 
   return (
-    <Row justify={"center"} style={{ padding: 24, width: "100%" }}>
+    <Row
+      className="animate__animated animate__fadeIn animate__delay-0.3s"
+      justify={"center"}
+      style={{ padding: 24, width: "100%" }}
+    >
       <Col xs={24} sm={24} lg={16}>
-        <Row style={{ display: "flex", flexDirection: "column" }}>
+        <Row
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            userSelect: "none",
+          }}
+        >
           <Title level={3} style={{ margin: "25px 0px" }}>
             {t(`${role?.charAt(0).toUpperCase()}${role?.slice(1)} profile`)}
           </Title>
@@ -289,7 +299,13 @@ export const ProviderForm = () => {
                   width: "100%",
                 }}
               >
-                <Col style={{ display: "flex", alignItems: "flex-end" }}>
+                <Col
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-end",
+                    userSelect: "none",
+                  }}
+                >
                   <Text>{t("Set your Geolocation on the map")}</Text>
                 </Col>
                 {/*
@@ -346,6 +362,7 @@ export const ProviderForm = () => {
                 style={{
                   width: "100%",
                   marginBottom: "6px",
+                  userSelect: "none",
                 }}
               >
                 <CategorySelect
@@ -366,6 +383,7 @@ export const ProviderForm = () => {
                 style={{
                   width: "100%",
                   marginBottom: "6px",
+                  userSelect: "none",
                 }}
               >
                 <Select
@@ -387,6 +405,7 @@ export const ProviderForm = () => {
                 style={{
                   width: "100%",
                   marginBottom: "6px",
+                  userSelect: "none",
                 }}
               >
                 <UploadDocs

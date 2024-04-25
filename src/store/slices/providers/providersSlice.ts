@@ -30,6 +30,24 @@ export const providersSlice = createSlice({
         return state;
       }
     },
+    updateDeletedProvStatus: (state, action) => {
+      const index = state.findIndex(
+        (provider) => provider.id === action.payload.id
+      );
+      if (index !== -1) {
+        state[index].isDeleted = action.payload.isDeleted;
+        return state;
+      }
+    },
+    updateProviderRatings: (state, action) => {
+      const index = state.findIndex(
+        (provider) => provider.id === action.payload.id
+      );
+      if (index !== -1) {
+        state[index].ratings = action.payload.ratings;
+        return state;
+      }
+    },
   },
 });
 
@@ -37,6 +55,8 @@ export const {
   addProvider,
   deleteProvider,
   updateActiveProvStatus,
+  updateDeletedProvStatus,
+  updateProviderRatings,
   setClearProviders,
   setProviders,
 } = providersSlice.actions;

@@ -1,7 +1,11 @@
 import { fetchWithToken } from "../helpers/fetch";
 
-export const UserHardDeleteService = async () => {
-  const { ok, msg, result } = await fetchWithToken("/dev/clearContacts");
+export const userHardDeleteService = async (email: string) => {
+  const { ok, msg, result } = await fetchWithToken(
+    `/dev/userHardDelete/${email}`
+  );
+
+  console.log({ ok, msg, result });
 
   return {
     ok,

@@ -1,8 +1,11 @@
-import { Button, Col, Form, Modal, Row, Typography } from "antd";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { RootState } from "../../../../store";
+import { setClearProviders, setProviders } from "../../../../store/slices";
+import { Button, Col, Form, Modal, Row, Typography } from "antd";
 import { CategorySelect } from "../../../ui-components/category-select/CategorySelect";
 import { ProviderCard } from "../../../ui-components/provider-card/ProviderCard";
-import { useEffect, useState } from "react";
 import { getServicesToSearch } from "../../../../helpers/services";
 import {
   ILocation,
@@ -10,8 +13,6 @@ import {
   MapView,
 } from "../../../ui-components/map/MapView";
 import { getUserByServices } from "../../../../services";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../store";
 import { useContent } from "../../../../hooks/useContent";
 import { getCenter } from "../../../ui-components/map/utils/getLocation";
 import { IProvider } from "../../../../interface/provider";
@@ -24,7 +25,9 @@ interface Props {
 }
 
 export const SearchServices = () => {
-  const [providers, setProviders] = useState<IProvider[]>([]);
+  const dispatch = useDispatch();
+  //const [providers, setProviders] = useState<IProvider[]>([]);
+  const providers = useSelector((state: RootState) => state.providers);
   const [areThereUsers, setAreThereUsers] = useState<boolean>(true);
   const [searchServices, setSearchServices] = useState<string | undefined>("");
   const [selSrvices, setSelSrvices] = useState<string[]>([]);
@@ -36,8 +39,12 @@ export const SearchServices = () => {
   const { language } = useSelector((state: RootState) => state.i18n);
   const { t } = useTranslation();
 
+  useEffect(() => {
+    dispatch(setClearProviders());
+  }, [dispatch]);
+
   const onFinish = async (values: Props) => {
-    setProviders([]);
+    dispatch(setClearProviders());
     setSelSrvices(values.services);
 
     if (values.services.length === 1) {
@@ -68,7 +75,9 @@ export const SearchServices = () => {
         };
       });
 
-      setProviders(usersMarkers);
+      console.log({ usersMarkers });
+
+      dispatch(setProviders(usersMarkers));
       setAreThereUsers(true);
     }
 
@@ -114,6 +123,7 @@ export const SearchServices = () => {
   ) : (
     <>
       <Row
+        className="animate__animated animate__fadeIn animate__delay-0.3s"
         align={"middle"}
         justify={"center"}
         style={{
@@ -121,6 +131,7 @@ export const SearchServices = () => {
           flexDirection: "column",
           marginTop: "5%",
           padding: 24,
+          userSelect: "none",
         }}
       >
         <Col xs={24} md={16} lg={12}>
@@ -223,6 +234,7 @@ export const SearchServices = () => {
           width: "100%",
           gap: 24,
           paddingInline: 24,
+          userSelect: "none",
         }}
       >
         {!areThereUsers ? (

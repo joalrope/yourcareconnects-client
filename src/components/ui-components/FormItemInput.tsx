@@ -16,6 +16,7 @@ export const FormItemInput = ({ name, label }: Props) => {
       style={{
         width: "100%",
         marginBottom: "6px",
+        userSelect: "none",
       }}
     >
       <Input size="large" placeholder={`${t(label).toLowerCase()}`} />

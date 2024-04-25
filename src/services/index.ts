@@ -9,6 +9,7 @@ export {
 export {
   createUser,
   clearNotificationsById,
+  deleteUserById,
   getThereIsSupport,
   getUserById,
   getUsersByIsActive,
@@ -16,14 +17,12 @@ export {
   getUserMessagesById,
   updateUserById,
   updateUserContactsById,
+  updateUserRatings,
   updateActiveUserStatus,
   updateRoleUser,
   restoreUserById,
 } from "./userService";
 
-export {
-  clearContactsService,
-  UserHardDeleteService,
-} from "./dashboardServices";
+export { clearContactsService, userHardDeleteService } from "./devServices";
 
 export { getFilesService, docDeleteService } from "./uploads";

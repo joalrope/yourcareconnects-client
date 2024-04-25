@@ -22,7 +22,10 @@ export const FooterContent = () => {
   const { t } = useTranslation();
 
   return (
-    <Row className="--layout__footer" style={{ color: token.colorPrimary }}>
+    <Row
+      className="--layout__footer"
+      style={{ color: token.colorPrimary, userSelect: "none" }}
+    >
       <Col xs={0} sm={0} md={0} lg={8} flex="1 0 auto">
         Made with <HeartFilled style={{ color: "red" }} /> by Bohiques
       </Col>

@@ -14,6 +14,6 @@ export interface IProvider {
   isDeleted?: boolean;
   isActive?: boolean;
   pictures?: { profile: { name: string; image: string; type: string } };
-  ratings?: number;
+  ratings: { value: number; count: number };
   services?: string[];
 }

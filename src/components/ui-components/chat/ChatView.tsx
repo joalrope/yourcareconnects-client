@@ -67,6 +67,7 @@ export const ChatView = () => {
   const [messageInputValue, setMessageInputValue] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [showConversations, setShowConversations] = useState(true);
   const [currentPath, setCurrentPath] = useState("info");
   const [loadingMore, setLoadingMore] = useState(false);
   const [showTyping, setShowTyping] = useState({ isTyping: false, writer: "" });
@@ -258,49 +259,65 @@ export const ChatView = () => {
     return `${month} ${day}`;
   };
 
+  const handleConvesationsClick = () => {
+    setShowConversations(!showConversations);
+
+    const button = document.querySelector(".button-arrow");
+    button?.classList.toggle("clicked");
+  };
+
   return (
-    <div className={styles.chatView}>
+    <div
+      className={`${styles.chatView} animate__animated animate__fadeIn animate__delay-0.3s`}
+    >
       <MainContainer responsive>
-        <Sidebar
-          position="left"
-          scrollable={false}
-          style={{ display: "unset" }}
-        >
-          <Search
-            placeholder={`${t("Search")}...`}
-            style={{ marginInline: 8 }}
-          />
-          <ConversationList
-            scrollable
-            loadingMore={loadingMore}
-            //onYReachEnd={onYReachEnd}
+        {showConversations && (
+          <Sidebar
+            position="left"
+            scrollable={false}
+            style={{ display: "unset" }}
+            className="animate animate__animated animate__fadeIn animate__delay-0.3s"
           >
-            {conversations.map((c) => {
-              return (
-                <Conversation
-                  key={c.id}
-                  name={c.names}
-                  info={c.info}
-                  onClick={() => handleConvesationClick(c.id)}
-                  unreadCnt={c.unreadCnt}
-                >
-                  <Avatar
+            <Search
+              placeholder={`${t("Search")}...`}
+              style={{ marginInline: 8 }}
+            />
+            <ConversationList
+              scrollable
+              loadingMore={loadingMore}
+              //onYReachEnd={onYReachEnd}
+            >
+              {conversations.map((c) => {
+                return (
+                  <Conversation
+                    key={c.id}
                     name={c.names}
-                    src={`${
-                      c.picture.image !== ""
-                        ? c.picture.image
-                        : "/images/user.png"
-                    }`}
-                  />
-                </Conversation>
-              );
-            })}
-          </ConversationList>
-        </Sidebar>
+                    info={c.info}
+                    onClick={() => handleConvesationClick(c.id)}
+                    unreadCnt={c.unreadCnt}
+                  >
+                    <Avatar
+                      name={c.names}
+                      src={`${
+                        c.picture.image !== ""
+                          ? c.picture.image
+                          : "/images/user.png"
+                      }`}
+                    />
+                  </Conversation>
+                );
+              })}
+            </ConversationList>
+          </Sidebar>
+        )}
 
         <ChatContainer>
           <ConversationHeader>
-            {/* <ConversationHeader.Back onClick={conversationBack} /> */}
+            <ConversationHeader.Back
+              style={{ display: "flex" }}
+              onClick={handleConvesationsClick}
+              className="button-arrow"
+            />
             <Avatar
               src={
                 activeContact.picture.image

@@ -1,19 +1,27 @@
 import {
+  App,
   Button,
   Col,
+  Form,
   Input,
-  Radio,
-  RadioChangeEvent,
+  //Pagination,
+  //Radio,
+  //RadioChangeEvent,
   Row,
+  Space,
   Typography,
 } from "antd";
 import { useTranslation } from "react-i18next";
-import { UserGrid } from "./UserGrid";
-import { useState } from "react";
-import { clearContactsService } from "../../../../services";
+//import { UserGrid } from "./UserGrid";
+//import { useState } from "react";
+import {
+  clearContactsService,
+  userHardDeleteService,
+} from "../../../../services";
+import { DashboardAdmin } from "./DashboardAdmin";
 
 const { Title } = Typography;
-const { Search } = Input;
+//const { Search } = Input;
 
 export enum TypeActiveUserStatus {
   ALL = "all",
@@ -23,31 +31,60 @@ export enum TypeActiveUserStatus {
   DELETED = "deleted",
 }
 
-const clearContacts = async () => {
-  const { ok, msg, result } = await clearContactsService();
-
-  return { ok, msg, result };
-};
+interface IUserDeleteData {
+  email: string;
+}
 
 export const DashboardDev = () => {
   const { t } = useTranslation();
-  const [email, setEmail] = useState("");
-  const [typeActiveUser, setTypeActiveUser] = useState(
+  const [form] = Form.useForm<IUserDeleteData>();
+  const { modal } = App.useApp();
+  //const [email, setEmail] = useState("");
+  /*const [typeActiveUser, setTypeActiveUser] = useState(
     TypeActiveUserStatus.ALL
-  );
+  );*/
 
-  const onUserTypeChange = (e: RadioChangeEvent) => {
+  /*const onUserTypeChange = (e: RadioChangeEvent) => {
     setTypeActiveUser(e.target.value);
-  };
+  };*/
 
-  const onUserSearch = (value: string) => {
+  /*const onUserSearch = (value: string) => {
     setTypeActiveUser(TypeActiveUserStatus.UNIQUE);
     setEmail(value);
+  };*/
+
+  const clearContacts = async () => {
+    const { ok, msg, result } = await clearContactsService();
+
+    if (ok) {
+      modal.confirm({
+        title: "Success",
+        content: t(`${msg}`),
+        onOk: () => {
+          console.log(result);
+        },
+      });
+    }
+  };
+
+  const onFinish = async ({ email }: IUserDeleteData) => {
+    const { ok, msg, result } = await userHardDeleteService(email);
+
+    if (ok) {
+      modal.confirm({
+        title: "Success",
+        content: t(`${msg}`, { email }),
+        onOk: () => {
+          form.resetFields();
+          console.log(result);
+        },
+      });
+    }
   };
 
   return (
-    <Row style={{ padding: 12 }}>
-      <Row>
+    <Row style={{ gap: 24, padding: 12 }}>
+      {/*<Row>
         <Row
           style={{
             justifyContent: "flex-end",
@@ -92,27 +129,92 @@ export const DashboardDev = () => {
               />
             </Radio.Group>
           </Col>
+          <Col>
+            <Pagination defaultCurrent={6} total={500} />
+          </Col>
         </Row>
         <Row
           style={{
             justifyContent: "center",
-            marginLeft: 48,
-            marginRight: 24,
+            marginInline: 24,
             width: "100%",
           }}
         >
           <UserGrid userType={typeActiveUser} email={email} />
         </Row>
-      </Row>
-      <Row style={{ marginTop: 48 }}>
-        <Col style={{ marginTop: 48 }}>Ejecutar rutina</Col>
-        <Col>
-          {" "}
-          <Button type="primary" onClick={clearContacts}>
-            {" "}
-            Ejecutar
-          </Button>
-        </Col>
+      </Row>*/}
+
+      <DashboardAdmin />
+
+      <Row
+        style={{
+          border: "1px solid #d9d9d9",
+          borderRadius: 10,
+          flexDirection: "column",
+          gap: 12,
+          justifyContent: "center",
+          marginTop: 48,
+          marginInline: 24,
+          marginBottom: 96,
+          padding: 24,
+          width: "100%",
+        }}
+      >
+        <Row
+          style={{
+            justifyContent: "center",
+            marginBottom: 24,
+            userSelect: "none",
+            width: "100%",
+          }}
+        >
+          <Title
+            style={{ display: "flex", justifyContent: "center" }}
+            level={4}
+          >
+            {t("Developer Management")}
+          </Title>
+        </Row>
+
+        <Row
+          style={{
+            gap: 24,
+            justifyContent: "space-around",
+            userSelect: "none",
+            width: "100%",
+          }}
+        >
+          <Col>
+            <Button type="primary" onClick={clearContacts}>
+              {t("Clear Contacts")}
+            </Button>
+          </Col>
+          <Col>
+            <Form name="userDelete" form={form} onFinish={onFinish}>
+              <Form.Item
+                label="Correo"
+                name="email"
+                rules={[
+                  {
+                    required: true,
+                    message: `${t("Please input a email")}`,
+                  },
+                  {
+                    type: "email",
+                    message: `${t("Please input a valid email")}`,
+                  },
+                ]}
+              >
+                <Space.Compact style={{ width: "100%" }}>
+                  <Input style={{ width: 350 }} />
+                  <Button htmlType="submit" type="primary">
+                    {t("User hard delete")}
+                  </Button>
+                </Space.Compact>
+              </Form.Item>
+            </Form>
+          </Col>
+        </Row>
       </Row>
     </Row>
   );

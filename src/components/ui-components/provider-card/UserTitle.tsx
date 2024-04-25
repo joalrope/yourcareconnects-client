@@ -17,7 +17,9 @@ import {
 } from "@ant-design/icons";
 import { RootState } from "../../../store";
 import {
+  deleteUserById,
   getUserById,
+  restoreUserById,
   updateActiveUserStatus,
   updateRoleUser,
   updateUserContactsById,
@@ -26,10 +28,10 @@ import {
   deleteProvider,
   setUser,
   updateActiveProvStatus,
+  updateDeletedProvStatus,
 } from "../../../store/slices";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useEffect, useState } from "react";
-import { deleteUserById } from "../../../services/userService";
 
 const { Text, Title } = Typography;
 
@@ -142,6 +144,11 @@ export const UserTitle = ({
   };
 
   const handleDeleteProvider = async (id: string) => {
+    console.log("eliminando provider", id);
+    if (!userLoggedIn) {
+      return;
+    }
+
     modal.confirm({
       title: t(`Are you sure you want to {{delete}} {{fullname}}`, {
         fullname,
@@ -151,24 +158,45 @@ export const UserTitle = ({
       okType: "danger",
       cancelText: t("No"),
       onOk: async () => {
-        const {
-          ok,
-          result: { user },
-        } = await deleteUserById(id);
+        let ok;
+        let result;
 
-        if (ok) {
-          dispatch(deleteProvider(id));
+        if (!isDeleted) {
+          ({ ok, result } = await deleteUserById(id));
 
-          message.success({
-            content: t(
-              `${t("The user {{fullname}} was deleted", {
-                fullname: user.fullname,
-              })}`
-            ),
-            duration: 3,
-          });
+          if (ok) {
+            dispatch(updateDeletedProvStatus({ id, isDeleted: true }));
 
-          return;
+            message.success({
+              content: t(
+                `${t("The user {{fullname}} was deleted", {
+                  fullname: result.user.fullname,
+                })}`
+              ),
+              duration: 3,
+            });
+
+            dispatch(deleteProvider(id));
+
+            return;
+          }
+        } else {
+          ({ ok, result } = await restoreUserById(id));
+
+          if (ok) {
+            dispatch(updateDeletedProvStatus({ id, isDeleted: false }));
+
+            message.success({
+              content: t(
+                `${t("The user {{fullname}} was restored", {
+                  fullname: result.user.fullname,
+                })}`
+              ),
+              duration: 3,
+            });
+
+            return;
+          }
         }
 
         //TODO: HANDLE ERROR

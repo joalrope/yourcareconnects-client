@@ -14,6 +14,11 @@ interface Ilocation {
   coordinates: [number, number];
 }
 
+interface IRatings {
+  value: number;
+  count: number;
+}
+
 export interface IUser {
   id?: string | undefined;
   names?: string;
@@ -38,7 +43,7 @@ export interface IUser {
   contacts?: string[];
   owner?: string;
   webUrl?: string;
-  ratings?: number;
+  ratings?: IRatings;
   services?: string[];
   serviceModality?: string[];
   certificates?: string[];

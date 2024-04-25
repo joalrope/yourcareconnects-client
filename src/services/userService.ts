@@ -117,8 +117,20 @@ export const deleteUserById = async (id: string) => {
   return resp;
 };
 
-export const restoreUserById = async (id: string, value: boolean) => {
-  const resp = await fetchWithToken(`/users/restore/${id}/${value}`, {}, "PUT");
+export const restoreUserById = async (id: string) => {
+  const resp = await fetchWithToken(`/users/restore/${id}`, {}, "PUT");
+
+  return resp;
+};
+
+export const updateUserRatings = async (
+  id: string | undefined,
+  ratings: {
+    value: number;
+    count: number;
+  }
+) => {
+  const resp = await fetchWithToken(`/users/ratings/${id}`, ratings, "PUT");
 
   return resp;
 };

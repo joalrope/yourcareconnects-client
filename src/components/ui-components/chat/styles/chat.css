@@ -112,3 +112,16 @@
 .cs-message-list .cs-typing-indicator {
   background-color: var(--transparent-color);
 }
+
+.button-arrow {
+  transform: rotate(180deg);
+  transition: transform 0.35s;
+}
+
+.button-arrow.clicked {
+  transform: rotate(0deg);
+}
+
+.cs-button:hover:not(:disabled) {
+  opacity: 1 !important;
+}

@@ -1,8 +1,12 @@
-import { Card, Col, Rate, Row, Tooltip, Typography } from "antd";
-
-import { UserTitle } from "./UserTitle";
+import { useDispatch, useSelector } from "react-redux";
+import { Card, Col, Rate, Row, Tooltip, Typography, message } from "antd";
 import { useTranslation } from "react-i18next";
+import { RootState } from "../../../store";
 import { IProvider } from "../../../interface/provider";
+import { UserTitle } from "./UserTitle";
+import { useState } from "react";
+import { updateUserRatings } from "../../../services";
+import { updateProviderRatings } from "../../../store/slices";
 
 const { Meta } = Card;
 const { Text, Title } = Typography;
@@ -39,6 +43,11 @@ export const ProviderCard = ({
     isDeleted,
   } = provider;
 
+  const dispatch = useDispatch();
+
+  const { locationPath } = useSelector((state: RootState) => state.router);
+  const [rate, setRate] = useState(ratings?.value || 0.5);
+
   const profile = provider.pictures?.profile;
 
   const picture = profile?.image || "/images/user.png";
@@ -51,6 +60,24 @@ export const ProviderCard = ({
   });
 
   const userServ = serv.join(", ");
+
+  const onRate = async (value: number) => {
+    const newRate = value + ratings.value / (ratings.count + 1);
+    const newRatings = {
+      value: newRate,
+      count: ratings.count + 1,
+    };
+
+    const { ok, msg, result } = await updateUserRatings(id, newRatings);
+
+    if (ok) {
+      setRate(newRate);
+
+      dispatch(updateProviderRatings({ id, ratings: result.ratings }));
+
+      message.success(msg);
+    }
+  };
 
   return (
     <Card
@@ -118,10 +145,11 @@ export const ProviderCard = ({
           </Tooltip>
         </Col>
         <Rate
-          disabled
+          disabled={locationPath !== "services"}
           allowHalf
-          defaultValue={ratings}
+          defaultValue={rate}
           style={{ fontSize: 16 }}
+          onChange={onRate}
         />
       </Row>
     </Card>
