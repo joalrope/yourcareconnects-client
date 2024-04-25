@@ -41,7 +41,8 @@ export const SearchServices = () => {
 
   useEffect(() => {
     dispatch(setClearProviders());
-  }, [dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onFinish = async (values: Props) => {
     dispatch(setClearProviders());

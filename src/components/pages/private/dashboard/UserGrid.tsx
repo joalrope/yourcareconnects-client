@@ -18,7 +18,6 @@ import { setClearProviders, setProviders } from "../../../../store/slices";
 import { RootState } from "../../../../store";
 import { IProvider } from "../../../../interface/provider";
 import { getUserByEmail } from "../../../../services/userService";
-import { useLocation } from "react-router-dom";
 
 const { Search } = Input;
 const { Title } = Typography;
@@ -43,11 +42,10 @@ export const UserGrid = () => {
     TypeActiveUserStatus.ALL
   );
 
-  const location = useLocation();
-
   useEffect(() => {
     dispatch(setClearProviders());
-  }, [dispatch, location]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,7 +89,8 @@ export const UserGrid = () => {
     };
 
     fetchData();
-  }, [dispatch, email, typeActiveUser, providers]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onUserTypeChange = (e: RadioChangeEvent) => {
     dispatch(setClearProviders());
