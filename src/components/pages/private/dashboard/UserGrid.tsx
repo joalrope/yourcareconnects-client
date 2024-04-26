@@ -18,6 +18,7 @@ import { setClearProviders, setProviders } from "../../../../store/slices";
 import { RootState } from "../../../../store";
 import { IProvider } from "../../../../interface/provider";
 import { getUserByEmail } from "../../../../services/userService";
+import { useLocation } from "react-router-dom";
 
 const { Search } = Input;
 const { Title } = Typography;
@@ -42,10 +43,11 @@ export const UserGrid = () => {
     TypeActiveUserStatus.ALL
   );
 
+  const location = useLocation();
+
   useEffect(() => {
     dispatch(setClearProviders());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, location]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,8 +91,7 @@ export const UserGrid = () => {
     };
 
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, email, typeActiveUser]);
 
   const onUserTypeChange = (e: RadioChangeEvent) => {
     dispatch(setClearProviders());
@@ -117,7 +118,6 @@ export const UserGrid = () => {
         flexDirection: "column",
         justifyContent: "flex-start",
         minHeight: "40hv",
-        userSelect: "none",
         width: "100%",
       }}
       className="animate__animated animate__fadeIn animate__delay-0.3s"
