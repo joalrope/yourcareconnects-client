@@ -195,6 +195,8 @@ export const UserTitle = ({
               duration: 3,
             });
 
+            dispatch(deleteProvider(id));
+
             return;
           }
         }
