@@ -105,7 +105,11 @@ export const ProviderProfile = () => {
               src={provider?.pictures?.profile.image || "/images/user.png"}
               alt={`picture of ${provider?.fullname}`}
               width={150}
-              style={{ borderRadius: 12, marginRight: 20 }}
+              style={{
+                border: "1px solid black",
+                borderRadius: 12,
+                marginRight: 20,
+              }}
             />
             <Rate
               allowHalf
