@@ -8,6 +8,7 @@ export { NotAllowed } from "./public/shared/NotAllowed";
 export { NotFound } from "./public/shared/NotFound";
 
 export { Profile } from "./private/users/Profile";
+export { ProviderProfile } from "./private/users/ProviderProfile";
 export { DashboardAdmin } from "./private/dashboard/DashboardAdmin";
 export { Dashboard } from "./private/dashboard/Dashboard";
 export { SearchServices } from "./private/services/SearchServices";

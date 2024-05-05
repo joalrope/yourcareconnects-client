@@ -67,16 +67,17 @@ export const SearchServices = () => {
 
         return {
           id: user.id,
+          email: user.email,
           location: userLocation,
           fullname: user.fullname,
+          isAllowedViewData: user.isAllowedViewData,
+          phoneNumber: user.phoneNumber,
           pictures: user.pictures,
           services: user.services,
           ratings: user.ratings,
           role: user.role,
         };
       });
-
-      console.log({ usersMarkers });
 
       dispatch(setProviders(usersMarkers));
       setAreThereUsers(true);

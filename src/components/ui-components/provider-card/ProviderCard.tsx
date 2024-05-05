@@ -1,5 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Col, Rate, Row, Tooltip, Typography, message } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Rate,
+  Row,
+  Tooltip,
+  Typography,
+  message,
+} from "antd";
 import { useTranslation } from "react-i18next";
 import { RootState } from "../../../store";
 import { IProvider } from "../../../interface/provider";
@@ -7,6 +16,7 @@ import { UserTitle } from "./UserTitle";
 import { useState } from "react";
 import { updateUserRatings } from "../../../services";
 import { updateProviderRatings } from "../../../store/slices";
+import { useNavigate } from "react-router-dom";
 
 const { Meta } = Card;
 const { Text, Title } = Typography;
@@ -36,17 +46,19 @@ export const ProviderCard = ({
     fullname,
     email,
     phoneNumber,
-    services,
     ratings,
+    services,
     role,
+    isAllowedViewData,
     isActive,
     isDeleted,
   } = provider;
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { locationPath } = useSelector((state: RootState) => state.router);
-  const [rate, setRate] = useState(ratings?.value || 0.5);
+  const [rate, setRate] = useState(ratings?.value);
 
   const profile = provider.pictures?.profile;
 
@@ -62,6 +74,7 @@ export const ProviderCard = ({
   const userServ = serv.join(", ");
 
   const onRate = async (value: number) => {
+    setRate(value);
     const newRate = value + ratings.value / (ratings.count + 1);
     const newRatings = {
       value: newRate,
@@ -79,14 +92,18 @@ export const ProviderCard = ({
     }
   };
 
+  const handleClickViewProfile = () => {
+    navigate(`/provider-profile/${id}`);
+  };
+
   return (
     <Card
       hoverable
       style={{
         display: "flex",
         flexDirection: "column",
-        maxHeight: 350,
-        height: small ? 345 : 400,
+        maxHeight: 450,
+        height: small ? 350 : 450,
       }}
       cover={
         !small && (
@@ -118,6 +135,7 @@ export const ProviderCard = ({
                 contact={small}
                 isActive={isActive}
                 isDeleted={isDeleted}
+                isAllowedViewData={isAllowedViewData}
                 small={small}
                 role={role}
               />
@@ -143,6 +161,17 @@ export const ProviderCard = ({
               {userServ}
             </Text>
           </Tooltip>
+        </Col>
+        <Col
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            width: "100%",
+          }}
+        >
+          <Button onClick={handleClickViewProfile} size="small" type="primary">
+            {t("more...")}
+          </Button>
         </Col>
         <Rate
           disabled={locationPath !== "services"}

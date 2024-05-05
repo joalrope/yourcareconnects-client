@@ -104,7 +104,6 @@ export const UserGrid = () => {
   };
 
   const onChange: PaginationProps["onChange"] = (page) => {
-    console.log(page);
     setCurrentPage(page);
   };
 
@@ -210,9 +209,11 @@ export const UserGrid = () => {
         {providers?.length > 0 && (
           <Pagination
             total={totalPage}
-            showTotal={(total, range) =>
-              `${range[0]}-${range[1]} of ${total} items`
-            }
+            showTotal={(total, range) => {
+              return total > 0
+                ? `${range[0]}-${range[1]} of ${total} items`
+                : "";
+            }}
             defaultPageSize={10}
             defaultCurrent={currentPage}
             onChange={onChange}

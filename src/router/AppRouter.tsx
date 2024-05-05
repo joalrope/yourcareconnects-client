@@ -17,6 +17,7 @@ import {
   ResetPassword,
   SearchServices,
   SelectCreateAccount,
+  ProviderProfile,
 } from "../components/pages";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { RoleProtectedRoute } from "./RoleProtectedRoute";
@@ -81,6 +82,11 @@ export const AppRouter = () => {
         <Route key="services" path="/services" element={<SearchServices />} />
         <Route key="chat" path="/chat" element={<ChatView />} />
         <Route key="locmap" path="/locationmap" element={<GetLocationMap />} />
+        <Route
+          key="provider-profile"
+          path="/provider-profile/:id"
+          element={<ProviderProfile />}
+        />
         <Route
           key="servicemap"
           path="/servicesmap"

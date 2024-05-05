@@ -54,21 +54,21 @@ export const DashboardDev = () => {
   };*/
 
   const clearContacts = async () => {
-    const { ok, msg, result } = await clearContactsService();
+    const { ok, msg /*, result*/ } = await clearContactsService();
 
     if (ok) {
       modal.confirm({
         title: "Success",
         content: t(`${msg}`),
         onOk: () => {
-          console.log(result);
+          //console.log(result);
         },
       });
     }
   };
 
   const onFinish = async ({ email }: IUserDeleteData) => {
-    const { ok, msg, result } = await userHardDeleteService(email);
+    const { ok, msg /*, result*/ } = await userHardDeleteService(email);
 
     if (ok) {
       modal.confirm({
@@ -76,7 +76,7 @@ export const DashboardDev = () => {
         content: t(`${msg}`, { email }),
         onOk: () => {
           form.resetFields();
-          console.log(result);
+          //console.log(result);
         },
       });
     }

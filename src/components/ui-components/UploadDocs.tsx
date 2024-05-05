@@ -17,6 +17,7 @@ interface Props {
   setFileList: any;
   fileList: UploadFile[];
   maxCount: number;
+  viewRemove?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onRemove?: (file: any) => void;
 }
@@ -27,6 +28,7 @@ export const UploadDocs = ({
   fileList,
   setFileList,
   maxCount,
+  viewRemove = true,
   onRemove,
 }: Props) => {
   const { t } = useTranslation();
@@ -144,6 +146,7 @@ export const UploadDocs = ({
         showUploadList={{
           showDownloadIcon: true,
           showPreviewIcon: fileType === "images" ? true : false,
+          showRemoveIcon: viewRemove ? true : false,
         }}
         onRemove={onRemove}
         onChange={onChange}

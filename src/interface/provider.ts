@@ -13,6 +13,7 @@ export interface IProvider {
   role?: string;
   isDeleted?: boolean;
   isActive?: boolean;
+  isAllowedViewData?: boolean;
   pictures?: { profile: { name: string; image: string; type: string } };
   ratings: { value: number; count: number };
   services?: string[];

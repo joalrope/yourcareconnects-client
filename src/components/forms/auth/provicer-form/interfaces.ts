@@ -11,6 +11,7 @@ export interface IProvider {
   services: string[];
   certificates: string[];
   serviceModality: string;
+  isAllowedViewData?: boolean;
 }
 
 export interface IModality {

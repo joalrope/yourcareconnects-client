@@ -224,8 +224,8 @@ export const ChatView = () => {
     socket.emit("userIsTyping", { isTyping: false, names });
   };
 
-  const onAuxClick = (id: string) => {
-    console.log("show context menu", id);
+  const onAuxClick = (/*id: string*/) => {
+    //console.log("show context menu", id);
   };
 
   /* const handleonMenuClick = () => {
@@ -389,7 +389,7 @@ export const ChatView = () => {
                             direction,
                             position: "single",
                           }}
-                          onAuxClick={() => onAuxClick(sentTime)}
+                          onAuxClick={() => onAuxClick(/*sentTime*/)}
                           //avatarSpacer
                         />
                       );

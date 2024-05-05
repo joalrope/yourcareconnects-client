@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   App,
@@ -42,6 +43,7 @@ interface Props {
   phoneNumber: string | undefined;
   id: string;
   contact: boolean;
+  isAllowedViewData: boolean | undefined;
   isActive: boolean | undefined;
   isDeleted: boolean | undefined;
   small: boolean;
@@ -55,6 +57,7 @@ export const UserTitle = ({
   phoneNumber,
   id,
   contact,
+  isAllowedViewData,
   isActive,
   isDeleted,
   small,
@@ -67,6 +70,7 @@ export const UserTitle = ({
     role: rolePassed,
     fullname: userFullname,
   } = useSelector((state: RootState) => state.user);
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [active, setActive] = useState(isActive);
@@ -107,6 +111,7 @@ export const UserTitle = ({
           duration: 4,
         });
         dispatch(setUser(user));
+        navigate(`/chat`);
         return;
       } else {
         message.error({
@@ -145,7 +150,6 @@ export const UserTitle = ({
   };
 
   const handleDeleteProvider = async (id: string) => {
-    console.log("eliminando provider", id);
     if (!userLoggedIn) {
       return;
     }
@@ -235,11 +239,18 @@ export const UserTitle = ({
       style={{
         display: "flex",
         flexDirection: contact ? "column" : "row",
-        justifyContent: "space-evenly",
+        justifyContent: contact ? "space-evenly" : "flex-start",
         width: "100%",
       }}
     >
-      <Col>
+      <Col
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          marginBottom: 12,
+          width: "100%",
+        }}
+      >
         {small && (
           <Row
             style={{
@@ -260,16 +271,18 @@ export const UserTitle = ({
                   alignItems: "center",
                 }}
               >
-                {userLoggedIn && (
-                  <Checkbox
-                    onChange={(e) => onActivateChange(id, e)}
-                    style={{ justifyContent: "flex-end", width: "100%" }}
-                    checked={active}
-                    defaultChecked={isActive}
-                  >
-                    {isActive ? t("Activated") : t("Deactivate")}
-                  </Checkbox>
-                )}
+                <Row style={{ flexDirection: "column", gap: 8, width: "100%" }}>
+                  {userLoggedIn && (
+                    <Checkbox
+                      onChange={(e) => onActivateChange(id, e)}
+                      style={{ justifyContent: "flex-end", width: "100%" }}
+                      checked={active}
+                      defaultChecked={isActive}
+                    >
+                      {isActive ? t("Activated") : t("Deactivate")}
+                    </Checkbox>
+                  )}
+                </Row>
               </Col>
             </Row>
             <Col style={{ width: "100%" }}>
@@ -330,7 +343,7 @@ export const UserTitle = ({
             {fullname}
           </Tooltip>
         </Title>
-        {contact && (
+        {isAllowedViewData && (
           <Row style={{ flexDirection: "column" }}>
             <Tooltip
               placement="leftTop"

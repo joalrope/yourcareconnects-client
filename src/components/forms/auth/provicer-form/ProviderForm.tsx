@@ -1,5 +1,5 @@
 import { SetStateAction, useEffect, useRef, useState } from "react";
-import { App, Button, Col, Form, Input } from "antd";
+import { App, Button, Checkbox, CheckboxProps, Col, Form, Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Row, Select, Typography } from "antd";
@@ -37,7 +37,7 @@ export const ProviderForm = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   useEffect(() => {
-    const fetch = async () => {
+    const fetchData = async () => {
       const {
         ok,
         result: { fileList },
@@ -48,7 +48,7 @@ export const ProviderForm = () => {
       }
     };
 
-    fetch();
+    fetchData();
   }, [user.id]);
 
   useEffect(() => {
@@ -94,6 +94,7 @@ export const ProviderForm = () => {
     certificates: user.certificates,
     company: user.company,
     contacts: user.contacts,
+    isAllowedViewData: user.isAllowedViewData,
     faxNumber: user.faxNumber,
     owner: user.owner,
     phoneNumber: user.phoneNumber,
@@ -154,6 +155,10 @@ export const ProviderForm = () => {
       return;
     }
     setFileList((prev) => prev.filter((f) => f.name !== file.name));
+  };
+
+  const onChange: CheckboxProps["onChange"] = (e) => {
+    form.setFieldsValue({ isAllowedViewData: e.target.checked });
   };
 
   return (
@@ -286,6 +291,23 @@ export const ProviderForm = () => {
                   </Button>
                 </Form.Item>
               </Col> */}
+            </Row>
+
+            <Row style={{ marginTop: 24, width: "100%" }}>
+              <Form.Item
+                name="isAllowedViewData"
+                style={{
+                  width: "100%",
+                  marginBottom: "6px",
+                  userSelect: "none",
+                }}
+              >
+                <Checkbox onChange={onChange}>
+                  {t(
+                    "Allow them to see my personal information (phone, email)"
+                  )}
+                </Checkbox>
+              </Form.Item>
             </Row>
 
             <Row style={{ width: "100%" }}>

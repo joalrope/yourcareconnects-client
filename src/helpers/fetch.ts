@@ -162,10 +162,10 @@ const catchError = (error: Error) => {
 
 const checkSessionStatus = (status: number) => {
   if (status === 401) {
-    const previousUrl = window.location.pathname;
+    //const previousUrl = window.location.pathname;
     sessionStorage.clear();
     //store.dispatch(startLogout());
-    showExpiredSessionMessage(previousUrl);
+    showExpiredSessionMessage(/*previousUrl*/);
 
     return {
       ok: false,
@@ -182,7 +182,7 @@ const checkSessionStatus = (status: number) => {
   }
 };
 
-const showExpiredSessionMessage = (url: string) => {
+const showExpiredSessionMessage = (/*url: string*/) => {
   Modal.info({
     title: "User session",
     content: ["Your active session has expired. Please start a new one"],
@@ -194,7 +194,7 @@ const showExpiredSessionMessage = (url: string) => {
       //history.replace(url);
       //history.push("/home");
       //history.push("/login");
-      console.log("Ok Modal Info", url);
+      //console.log("Ok Modal Info", url);
     },
   });
 };

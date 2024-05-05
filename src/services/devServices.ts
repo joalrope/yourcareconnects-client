@@ -5,8 +5,6 @@ export const userHardDeleteService = async (email: string) => {
     `/dev/userHardDelete/${email}`
   );
 
-  console.log({ ok, msg, result });
-
   return {
     ok,
     msg,

@@ -23,7 +23,7 @@ export const getUserByEmail = async (email: string) => {
 
 export const getUsersByIsActive = async (userType: string) => {
   const resp = await fetchWithToken(
-    `/users/isActive/${userType}?from=0&limit=0`
+    `/users/isActive/${userType}?from=${0}&limit=${0}`
   );
 
   return resp;
@@ -130,7 +130,7 @@ export const updateUserRatings = async (
     count: number;
   }
 ) => {
-  const resp = await fetchWithToken(`/users/ratings/${id}`, ratings, "PUT");
+  const resp = await fetchWithToken(`/users/ratings/${id}`, { ratings }, "PUT");
 
   return resp;
 };
