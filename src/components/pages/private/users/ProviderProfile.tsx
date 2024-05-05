@@ -130,12 +130,6 @@ export const ProviderProfile = () => {
             )}
             <ProfileItem title="Address" value={String(provider?.address)} />
             <ProfileItem title="Zip code" value={String(provider?.zipCode)} />
-            {!provider?.isAllowedViewData && (
-              <ProfileItem
-                title="Biography"
-                value={String(provider?.biography)}
-              />
-            )}
             <ProfileItem
               title="Biography"
               value={String(provider?.biography)}
