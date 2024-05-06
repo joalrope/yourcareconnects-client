@@ -296,6 +296,7 @@ export const ProviderForm = () => {
             <Row style={{ marginTop: 24, width: "100%" }}>
               <Form.Item
                 name="isAllowedViewData"
+                valuePropName="checked"
                 style={{
                   width: "100%",
                   marginBottom: "6px",

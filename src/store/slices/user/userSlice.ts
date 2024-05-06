@@ -17,6 +17,7 @@ const initialState: IUser = {
   faxNumber: "",
   id: "",
   isLoggedIn,
+  isAllowedViewData: false,
   lastName: "",
   location: {
     type: "Point",
@@ -51,6 +52,7 @@ export const userSlice = createSlice({
         faxNumber,
         fullname,
         id,
+        isAllowedViewData,
         lastName,
         location,
         names,
@@ -76,6 +78,7 @@ export const userSlice = createSlice({
       state.faxNumber = faxNumber;
       state.fullname = fullname;
       state.id = id;
+      state.isAllowedViewData = isAllowedViewData;
       state.lastName = lastName;
       state.location = location;
       state.names = names;
@@ -119,6 +122,7 @@ export const userSlice = createSlice({
       state.email = "";
       state.faxNumber = "";
       state.id = "";
+      state.isAllowedViewData = false;
       state.lastName = "";
       state.names = "";
       state.owner = "";

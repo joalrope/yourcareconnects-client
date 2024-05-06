@@ -39,7 +39,6 @@ export const ProviderProfile = () => {
         result: { fileList },
       } = await getFilesService(String(id), "docs");
 
-      console.log({ fileList });
       if (ok) {
         setFileList([...fileList]);
         setCertificatesCount(fileList.length);
@@ -62,7 +61,6 @@ export const ProviderProfile = () => {
 
   const onRate = (value: number) => {
     setRate(value);
-    console.log({ value });
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
