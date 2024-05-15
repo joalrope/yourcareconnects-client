@@ -17,13 +17,14 @@ export const getConversations = async (
           names,
           info,
           pictures: { profile: picture },
+          role,
         },
       } = user;
 
       if (ok) {
         return {
           id,
-          names,
+          names: role === "owner" ? "Support" : names,
           picture,
           info,
         } as IConversation;

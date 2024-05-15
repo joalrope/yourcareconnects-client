@@ -287,7 +287,7 @@ export const UserTitle = ({
             </Row>
             <Col style={{ width: "100%" }}>
               <Title level={5} style={{ margin: 0, marginTop: 12 }}>
-                {t("User type:")}
+                {t("User type")}:
               </Title>
               <Select
                 style={{ width: "100%" }}
@@ -299,15 +299,15 @@ export const UserTitle = ({
                 options={[
                   {
                     value: "superadmin",
-                    label: "Superadmin",
+                    label: `${t("Superadmin")}`,
                   },
                   {
                     value: "customer",
-                    label: "Customer",
+                    label: `${t("Customer")}`,
                   },
                   {
                     value: "provider",
-                    label: "Provider",
+                    label: `${t("Provider")}`,
                   },
                 ]}
               />

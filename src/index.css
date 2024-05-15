@@ -37,17 +37,17 @@ body {
   background: var(--secondary-color);
   transition: all 0.2s, background 0s;
 }
+
 .ant-layout-sider-children .ant-menu-item {
-  padding:32px 12px !important;
+  padding: 32px 12px !important;
   font-size: 18px;
   width: 100%;
   border-radius: 0px;
-  margin:  0px !important;
+  margin: 0px !important;
 }
+
 .ant-layout-sider-children .anticon {
- 
   font-size: 18px !important;
- 
 }
 
 .ant-layout-header {
@@ -67,33 +67,32 @@ body {
 .ant-layout .ant-layout-sider-trigger {
   background: var(--secondary-color);
 }
-.ant-menu-item{
-  padding:  4px 12px !important;
+.ant-menu-item {
+  padding: 4px 12px !important;
 }
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-item-selected,
 .ant-menu-dark > .ant-menu .ant-menu-horizontal > .ant-menu-item-selected,
 .ant-menu-dark.ant-menu-horizontal > .ant-menu-submenu-selected,
 .ant-menu-dark > .ant-menu .ant-menu-horizontal > .ant-menu-submenu-selected {
-  color:  white !important;
-  
+  color: white !important;
 }
 
-.ant-radio-wrapper{
+.ant-radio-wrapper {
   align-items: center !important;
 }
 
-.ant-radio-wrapper .ant-typography{
+.ant-radio-wrapper .ant-typography {
   margin: 0px;
 }
 
 .ant-menu-dark .ant-menu-item-active,
 .ant-menu-item-active {
-  color:  white !important;
+  color: white !important;
   opacity: 0.7;
 }
 .ant-menu-dark .ant-menu-item-selected,
 .ant-menu-item-selected {
-  color:  white !important;
+  color: white !important;
 }
 
 .ant-layout-header ul {
@@ -126,8 +125,6 @@ body {
 .ant-layout .ant-layout-sider-trigger {
   color: var(--primary-color);
 }
-
-
 
 .ant-card .ant-card-body {
   padding: 12px 16px 8px;

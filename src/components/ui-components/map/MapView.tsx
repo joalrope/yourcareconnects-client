@@ -12,7 +12,8 @@ import {
   //InfoWindow,
   Libraries,
   MarkerF,
-  useLoadScript,
+  //useLoadScript,
+  useJsApiLoader,
 } from "@react-google-maps/api";
 import { Button, Modal, Typography } from "antd";
 import { useTranslation } from "react-i18next";
@@ -69,7 +70,7 @@ export const MapView = ({ getLoc, goBack, markers }: Props) => {
   const { t } = useTranslation();
   const content = useContent();
 
-  const { isLoaded } = useLoadScript({
+  const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: apiKey,
     libraries,
@@ -78,6 +79,16 @@ export const MapView = ({ getLoc, goBack, markers }: Props) => {
   const mapRef = useRef<google.maps.Map | null>(null);
 
   useEffect(() => {
+    const userLocation = getCenter(user.location);
+
+    setCenter({
+      lat: userLocation.lat,
+      lng: userLocation.lng,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /*useEffect(() => {
     const marker = markers?.some(
       (marker) => marker?.fullname === user.fullname
     );
@@ -102,11 +113,9 @@ export const MapView = ({ getLoc, goBack, markers }: Props) => {
         ratings: user.ratings?.value as number,
         role: user.role as string,
       };
-
-      markers?.push(newUser as IMarker);
+      //markers?.push(newUser as IMarker);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])*/
 
   //calculate zoom so all markers fit on screen
   const onLoad = useCallback(

@@ -169,8 +169,12 @@ export const ProviderCard = ({
             width: "100%",
           }}
         >
-          <Button onClick={handleClickViewProfile} size="small" type="primary">
-            {t("more...")}
+          <Button
+            onClick={handleClickViewProfile}
+            type="primary"
+            style={{ marginTop: 16, width: 100 }}
+          >
+            {t("Profile")}
           </Button>
         </Col>
         <Rate

@@ -36,7 +36,7 @@ export const UserGrid = () => {
   const dispatch = useDispatch();
   const providers = useSelector((state: RootState) => state.providers);
   const { t } = useTranslation();
-  const [currentPage, setCurrentPage] = useState(3);
+  const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
   const [email, setEmail] = useState("");
   const [typeActiveUser, setTypeActiveUser] = useState(
@@ -210,9 +210,9 @@ export const UserGrid = () => {
           <Pagination
             total={totalPage}
             showTotal={(total, range) => {
-              return total > 0
+              return total > 10
                 ? `${range[0]}-${range[1]} of ${total} items`
-                : "";
+                : `${1}-${total} of ${total} items`;
             }}
             defaultPageSize={10}
             defaultCurrent={currentPage}

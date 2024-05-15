@@ -114,12 +114,12 @@
 }
 
 .button-arrow {
-  transform: rotate(180deg);
+  transform: rotate(0deg);
   transition: transform 0.35s;
 }
 
 .button-arrow.clicked {
-  transform: rotate(0deg);
+  transform: rotate(180deg);
 }
 
 .cs-button:hover:not(:disabled) {

@@ -28,7 +28,10 @@ export const SearchServices = () => {
   const dispatch = useDispatch();
   //const [providers, setProviders] = useState<IProvider[]>([]);
   const providers = useSelector((state: RootState) => state.providers);
+  const user = useSelector((state: RootState) => state.user);
   const [areThereUsers, setAreThereUsers] = useState<boolean>(true);
+  const [userAdded, setUserAdded] = useState<boolean>(false);
+  const [markers, setMarkers] = useState<IMarker[]>([]);
   const [searchServices, setSearchServices] = useState<string | undefined>("");
   const [selSrvices, setSelSrvices] = useState<string[]>([]);
   const [viewMap, setViewMap] = useState<boolean>(false);
@@ -62,22 +65,42 @@ export const SearchServices = () => {
     }
 
     if (users.length >= 1) {
-      const usersMarkers = users.map((user: IProvider) => {
-        const userLocation = getCenter(user.location as ILocation);
+      const usersMarkers = users.map((provider: IProvider) => {
+        const userLocation = getCenter(provider.location as ILocation);
+        if (provider.fullname === user.fullname) {
+          setUserAdded(true);
+        }
 
         return {
-          id: user.id,
-          email: user.email,
+          id: provider.id,
+          email: provider.email,
           location: userLocation,
-          fullname: user.fullname,
-          isAllowedViewData: user.isAllowedViewData,
-          phoneNumber: user.phoneNumber,
-          pictures: user.pictures,
-          services: user.services,
-          ratings: user.ratings,
-          role: user.role,
+          fullname: provider.fullname,
+          isAllowedViewData: provider.isAllowedViewData,
+          phoneNumber: provider.phoneNumber,
+          pictures: provider.pictures,
+          services: provider.services,
+          ratings: provider.ratings,
+          role: provider.role,
         };
       });
+
+      if (!userAdded) {
+        const newUser = {
+          id: user.id as string,
+          email: user.email as string,
+          location: getCenter(user.location as ILocation),
+          fullname: user.fullname as string,
+          isAllowedViewData: user.isAllowedViewData,
+          phoneNumber: user.phoneNumber as string,
+          pictures: user.pictures,
+          services: user.services as string[],
+          ratings: user.ratings?.value as number,
+          role: user.role as string,
+        };
+
+        setMarkers([newUser, ...usersMarkers]);
+      }
 
       dispatch(setProviders(usersMarkers));
       setAreThereUsers(true);
@@ -121,7 +144,7 @@ export const SearchServices = () => {
   }, [selSrvices, language, t]);
 
   return viewMap ? (
-    <MapView markers={providers as unknown as IMarker[]} goBack={setViewMap} />
+    <MapView markers={markers} goBack={setViewMap} />
   ) : (
     <>
       <Row

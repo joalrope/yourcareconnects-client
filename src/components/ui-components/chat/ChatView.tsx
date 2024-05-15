@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Schema } from "mongoose";
 
-import { Menu, type MenuProps } from "antd";
+import { Button, Menu, Typography, type MenuProps } from "antd";
 
 import { RootState } from "../../../store";
 import {
@@ -44,6 +44,7 @@ import { useSocket } from "./hooks/useSocket";
 import { months } from "./interfaces/chat";
 
 import styles from "./styles/chat.module.css";
+import { useNavigate } from "react-router-dom";
 
 const contacInit = {
   id: "",
@@ -55,6 +56,7 @@ const contacInit = {
 
 export const ChatView = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { chatMessages, conversations, senderId } = useSelector(
     (state: RootState) => state.chat
@@ -270,7 +272,7 @@ export const ChatView = () => {
     <div
       className={`${styles.chatView} animate__animated animate__fadeIn animate__delay-0.3s`}
     >
-      <MainContainer responsive>
+      <MainContainer>
         {showConversations && (
           <Sidebar
             position="left"
@@ -291,13 +293,29 @@ export const ChatView = () => {
                 return (
                   <Conversation
                     key={c.id}
-                    name={c.names}
+                    name={
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Typography.Text ellipsis>{c.names}</Typography.Text>
+                        <Button
+                          size="small"
+                          type="primary"
+                          onClick={() => navigate(`/provider-profile/${c.id}`)}
+                        >
+                          {t("Profile")}
+                        </Button>
+                      </div>
+                    }
                     info={c.info}
                     onClick={() => handleConvesationClick(c.id)}
                     unreadCnt={c.unreadCnt}
                   >
                     <Avatar
-                      name={c.names}
                       src={`${
                         c.picture.image !== ""
                           ? c.picture.image
@@ -327,7 +345,11 @@ export const ChatView = () => {
               name={activeContact.names}
             />
             <ConversationHeader.Content
-              userName={activeContact.names}
+              userName={
+                <Typography.Text ellipsis>
+                  {activeContact.names}
+                </Typography.Text>
+              }
               info={activeContact.id !== "" ? activeContact.info : ""}
             />
             <ConversationHeader.Actions>
