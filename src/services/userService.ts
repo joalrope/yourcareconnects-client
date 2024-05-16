@@ -125,10 +125,7 @@ export const restoreUserById = async (id: string) => {
 
 export const updateUserRatings = async (
   id: string | undefined,
-  ratings: {
-    value: number;
-    count: number;
-  }
+  ratings: number
 ) => {
   const resp = await fetchWithToken(`/users/ratings/${id}`, { ratings }, "PUT");
 

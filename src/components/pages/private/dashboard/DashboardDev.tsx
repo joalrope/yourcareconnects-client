@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 //import { useState } from "react";
 import {
   clearContactsService,
+  ratingsNormalizeService,
   userHardDeleteService,
 } from "../../../../services";
 import { DashboardAdmin } from "./DashboardAdmin";
@@ -62,6 +63,20 @@ export const DashboardDev = () => {
         content: t(`${msg}`),
         onOk: () => {
           //console.log(result);
+        },
+      });
+    }
+  };
+
+  const ratingsNormalize = async () => {
+    const { ok, msg, result } = await ratingsNormalizeService();
+
+    if (ok) {
+      modal.confirm({
+        title: "Success",
+        content: t(`${msg}`),
+        onOk: () => {
+          console.log(result);
         },
       });
     }
@@ -213,6 +228,11 @@ export const DashboardDev = () => {
                 </Space.Compact>
               </Form.Item>
             </Form>
+          </Col>
+          <Col>
+            <Button type="primary" onClick={ratingsNormalize}>
+              {t("Ratings Normalize")}
+            </Button>
           </Col>
         </Row>
       </Row>

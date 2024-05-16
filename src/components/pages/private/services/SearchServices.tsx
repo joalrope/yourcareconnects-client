@@ -269,7 +269,7 @@ export const SearchServices = () => {
         ) : (
           providers.map((provider: IProvider) => {
             return (
-              <Col style={{ width: 250 }} key={provider.id}>
+              <Col style={{ width: 250, marginBottom: 96 }} key={provider.id}>
                 {provider.role !== "customer" && (
                   <ProviderCard provider={provider} small={false} />
                 )}

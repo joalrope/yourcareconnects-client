@@ -23,6 +23,10 @@ export {
   restoreUserById,
 } from "./userService";
 
-export { clearContactsService, userHardDeleteService } from "./devServices";
+export {
+  clearContactsService,
+  ratingsNormalizeService,
+  userHardDeleteService,
+} from "./devServices";
 
 export { getFilesService, docDeleteService } from "./uploads";

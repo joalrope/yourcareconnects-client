@@ -21,19 +21,6 @@ import { useNavigate } from "react-router-dom";
 const { Meta } = Card;
 const { Text, Title } = Typography;
 
-/* export interface IDataProvider {
-  id: string;
-  services: string[];
-  fullname?: string;
-  email?: string;
-  location?: ILocation;
-  pictures: { profile: { name: string; image: string; type: string } };
-  isActive?: boolean;
-  ratings?: number;
-  small?: boolean;
-  role?: string;
-} */
-
 export const ProviderCard = ({
   provider,
   small,
@@ -58,7 +45,9 @@ export const ProviderCard = ({
   const navigate = useNavigate();
 
   const { locationPath } = useSelector((state: RootState) => state.router);
-  const [rate, setRate] = useState(ratings?.value);
+  const [rate, setRate] = useState(
+    ratings.length > 0 ? ratings.reduce((a, b) => a + b, 0) / ratings.length : 0
+  );
 
   const profile = provider.pictures?.profile;
 
@@ -74,21 +63,14 @@ export const ProviderCard = ({
   const userServ = serv.join(", ");
 
   const onRate = async (value: number) => {
-    setRate(value);
-    const newRate = value + ratings.value / (ratings.count + 1);
-    const newRatings = {
-      value: newRate,
-      count: ratings.count + 1,
-    };
-
-    const { ok, msg, result } = await updateUserRatings(id, newRatings);
+    const { ok, msg, result } = await updateUserRatings(id, value);
 
     if (ok) {
-      setRate(newRate);
+      setRate(value);
 
       dispatch(updateProviderRatings({ id, ratings: result.ratings }));
 
-      message.success(msg);
+      message.success(t(`${msg}`));
     }
   };
 
@@ -103,7 +85,7 @@ export const ProviderCard = ({
         display: "flex",
         flexDirection: "column",
         maxHeight: 450,
-        height: small ? 350 : 450,
+        height: small ? 360 : 450,
       }}
       cover={
         !small && (

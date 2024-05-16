@@ -15,6 +15,6 @@ export interface IProvider {
   isActive?: boolean;
   isAllowedViewData?: boolean;
   pictures?: { profile: { name: string; image: string; type: string } };
-  ratings: { value: number; count: number };
+  ratings: number[];
   services?: string[];
 }

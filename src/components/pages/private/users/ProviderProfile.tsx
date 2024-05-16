@@ -1,27 +1,18 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Col, Rate, Row, Typography } from "antd";
+import { Col, Rate, Row, Typography, message } from "antd";
 import type { UploadFile } from "antd/es/upload/interface";
-import { getFilesService, getUserById } from "../../../../services";
+import {
+  getFilesService,
+  getUserById,
+  updateUserRatings,
+} from "../../../../services";
 import { useTranslation } from "react-i18next";
 import { IUser } from "../../../../interface";
 import { ProfileItem } from "./ProfileItem";
 import { UploadDocs } from "../../../ui-components/UploadDocs";
 
 const { Title } = Typography;
-
-/*
-serviceModality: Array (empty)
-certificates: Array (empty)
-
-biography: Soy desarrollador de aplicaciones"
-faxNumber: ""
-
-owner: ""
-webUrl: ziCode
-"
-
-*/
 
 export const ProviderProfile = () => {
   const { t } = useTranslation();
@@ -50,17 +41,31 @@ export const ProviderProfile = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getUserById(String(id));
+      const { result } = await getUserById(String(id));
+      console.log({ result });
 
-      setProvider(response?.result);
-      setRate(response?.result?.ratings?.value);
+      if (result) {
+        setProvider(result);
+        setRate(
+          result.ratings.length > 0
+            ? result.ratings.reduce((a: number, b: number) => a + b, 0) /
+                result.ratings.length
+            : 0
+        );
+      }
     };
 
     fetchData();
   }, [id]);
 
-  const onRate = (value: number) => {
+  const onRate = async (value: number) => {
     setRate(value);
+
+    const { ok, msg } = await updateUserRatings(id, value);
+
+    if (ok) {
+      message.success(t(`${msg}`));
+    }
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

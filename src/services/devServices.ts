@@ -20,3 +20,13 @@ export const clearContactsService = async () => {
     result,
   };
 };
+
+export const ratingsNormalizeService = async () => {
+  const { ok, msg, result } = await fetchWithToken("/dev/ratingsNormalize");
+
+  return {
+    ok,
+    msg,
+    result,
+  };
+};
