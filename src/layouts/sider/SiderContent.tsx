@@ -3,10 +3,10 @@ import { SiderMenu } from "./SiderMenu";
 
 import "../app-layout.css";
 
-export const SiderContent = ({ collapsed = false }: { collapsed: boolean }) => {
+export const SiderContent = () => {
   return (
     <div className="--layout__sider">
-      <AppLogo collapsed={collapsed} />
+      <AppLogo />
       <SiderMenu />
     </div>
   );

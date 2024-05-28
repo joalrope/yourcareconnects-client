@@ -4,14 +4,11 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 
-interface Props {
-  collapsed?: boolean;
-}
-
 const { useToken } = theme;
 
-export const AppLogo = ({ collapsed = false }: Props) => {
+export const AppLogo = () => {
   const { isLoggedIn } = useSelector((state: RootState) => state.user);
+  const { collapsed } = useSelector((state: RootState) => state.router);
   const { token } = useToken();
 
   return (

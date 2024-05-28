@@ -149,6 +149,13 @@ body {
   background-color: var(--secondary-color);
 }
 
+.ant-btn-primary {
+  color: #1a1a13 !important;
+}
+
+.ant-menu-vertical .ant-menu-item {
+  display: flex;
+}
 /*.avatar-uploader .ant-upload-list-item {
   height: 142px !important;
   width: 142px !important;

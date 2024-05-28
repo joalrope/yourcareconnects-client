@@ -11,7 +11,10 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { setLocationPath } from "../../store/slices/router/routerSlice";
+import {
+  setCollapsed,
+  setLocationPath,
+} from "../../store/slices/router/routerSlice";
 
 export interface INav {
   key: string;
@@ -21,7 +24,9 @@ export interface INav {
 export const SiderMenu = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { locationPath } = useSelector((state: RootState) => state.router);
+  const { collapsed, locationPath } = useSelector(
+    (state: RootState) => state.router
+  );
 
   const role = "customer";
 
@@ -62,6 +67,11 @@ export const SiderMenu = () => {
 
   const handleClick = ({ key }: INav) => {
     dispatch(setLocationPath(key));
+    dispatch(
+      setCollapsed(
+        !collapsed && window.innerWidth < 480 ? true : collapsed ? true : false
+      )
+    );
     if (key === "logout") {
       // dispatch(startLogout());
       // clearStore(dispatch);

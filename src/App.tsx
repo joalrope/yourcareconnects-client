@@ -76,7 +76,8 @@ function App() {
           colorBgBase: "#ffffff29", // body color
           colorTextBase: "#1a1a13",
           colorText: "#1a1a13",
-          colorWhite: "#1a1a13",
+          //colorWhite: "#1a1a13",
+          colorWhite: "#fafafa",
         },
       }}
       locale={curLng}

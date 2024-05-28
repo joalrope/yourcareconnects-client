@@ -37,7 +37,8 @@ export const useTranslatedServices = (services: string[] | undefined) => {
   }
 
   services.map((service: string) => {
-    const serv = String(service.split("|").pop());
+    const splitedService = service.split("|");
+    const serv = String(splitedService[splitedService.length - 1]);
 
     result.push(t(serv));
   });

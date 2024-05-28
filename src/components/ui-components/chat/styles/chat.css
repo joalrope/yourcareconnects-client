@@ -125,3 +125,7 @@
 .cs-button:hover:not(:disabled) {
   opacity: 1 !important;
 }
+
+.cs-conversation__content {
+  margin-right: 0px !important;
+}

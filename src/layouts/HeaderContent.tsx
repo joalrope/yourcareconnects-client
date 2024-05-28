@@ -16,22 +16,21 @@ import { InfoContent } from "./InfoContent";
 
 import "./app-layout.css";
 import { INav } from "./sider/SiderMenu";
-import { setLocationPath } from "../store/slices/router/routerSlice";
+import {
+  setCollapsed,
+  setLocationPath,
+} from "../store/slices/router/routerSlice";
 import { LanguageSelect } from "../components/ui-components/LanguageSelect";
 import { AppLogo } from "./AppLogo";
 import { setIsOpened } from "../store/slices";
-import { Dispatch, SetStateAction } from "react";
 
-interface Props {
-  collapsed: boolean;
-  setCollapsed: Dispatch<SetStateAction<boolean>>;
-}
-
-export const HeaderContent = ({ collapsed, setCollapsed }: Props) => {
+export const HeaderContent = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { isLoggedIn, names } = useSelector((state: RootState) => state.user);
-  const { locationPath } = useSelector((state: RootState) => state.router);
+  const { collapsed, locationPath } = useSelector(
+    (state: RootState) => state.router
+  );
   const { isOpened } = useSelector((state: RootState) => state.ui);
 
   const mode = "";
@@ -115,7 +114,7 @@ export const HeaderContent = ({ collapsed, setCollapsed }: Props) => {
             <Button
               type="text"
               icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-              onClick={() => setCollapsed(!collapsed)}
+              onClick={() => dispatch(setCollapsed(!collapsed))}
               style={{
                 color: "#fbd467",
                 fontSize: 16,

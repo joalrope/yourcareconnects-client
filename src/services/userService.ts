@@ -67,20 +67,22 @@ export const updateUserById = async (
 
 export const updateUserContactsById = async (
   id: string | undefined,
-  contact: string
+  contact: string,
+  addContact: boolean
 ) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let resp: any;
+  const mode: string = addContact ? "add" : "remove";
 
   const resp1 = await fetchWithToken(
-    `/users/contacts/${id}`,
+    `/users/contacts/${id}?${mode}`,
     { contact },
     "PUT"
   );
 
   if (resp1.ok) {
     const resp2 = await fetchWithToken(
-      `/users/contacts/${contact}`,
+      `/users/contacts/${contact}?${mode}`,
       { contact: id },
       "PUT"
     );

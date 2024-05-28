@@ -15,6 +15,7 @@ import {
   DeleteOutlined,
   RestOutlined,
   UserAddOutlined,
+  UserDeleteOutlined,
 } from "@ant-design/icons";
 import { RootState } from "../../../store";
 import {
@@ -88,6 +89,7 @@ export const UserTitle = ({
   }, [rolePassed]);
 
   const handleAddContact = async (id: string) => {
+    console.log("add contact", id);
     const {
       ok,
       result: { fullname },
@@ -98,20 +100,60 @@ export const UserTitle = ({
         ok,
         msg,
         result: { user },
-      } = await updateUserContactsById(userId, id);
+      } = await updateUserContactsById(userId, id, true);
 
       if (ok) {
         message.success({
           content: [
             <b key={"1"}>{userFullname}</b>,
             <span key={"2"}>{` ${t("and")} `}</span>,
-            <b key={"3"}>{fullname}</b>,
-            t(" now are contacts"),
+            <b key={"3"}>{fullname} </b>,
+            t("now are contacts"),
           ],
           duration: 4,
         });
         dispatch(setUser(user));
         navigate(`/chat`);
+        return;
+      } else {
+        message.error({
+          content: t(`${msg}`),
+          duration: 3,
+        });
+        return;
+      }
+    }
+    message.error({
+      content: "Something went wrong",
+      duration: 3,
+    });
+  };
+
+  const handleDeleteContact = async (id: string) => {
+    console.log("delete contact", id);
+    const {
+      ok,
+      result: { fullname },
+    } = await getUserById(id);
+
+    if (ok) {
+      const {
+        ok,
+        msg,
+        result: { user },
+      } = await updateUserContactsById(userId, id, false);
+
+      if (ok) {
+        message.success({
+          content: [
+            <b key={"1"}>{userFullname}</b>,
+            <span key={"2"}>{` ${t("and")} `}</span>,
+            <b key={"3"}>{fullname} </b>,
+            t("are no longer contacts"),
+          ],
+          duration: 4,
+        });
+        dispatch(setUser(user));
         return;
       } else {
         message.error({
@@ -343,7 +385,7 @@ export const UserTitle = ({
             {fullname}
           </Tooltip>
         </Title>
-        {isAllowedViewData && (
+        {isAllowedViewData ? (
           <Row style={{ flexDirection: "column" }}>
             <Tooltip
               placement="leftTop"
@@ -359,21 +401,54 @@ export const UserTitle = ({
               <Text style={{ fontSize: 12, marginTop: 8 }}>{phoneNumber}</Text>
             </Col>
           </Row>
+        ) : (
+          userLoggedIn && (
+            <Row style={{ flexDirection: "column" }}>
+              <Tooltip
+                placement="leftTop"
+                title={email}
+                style={{ display: "flex", justifyContent: "flex-end" }}
+              >
+                <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+                  <a href={`mailto:${email}`}>{email}</a>
+                </Text>
+              </Tooltip>
+
+              <Col>
+                <Text style={{ fontSize: 12, marginTop: 8 }}>
+                  {phoneNumber}
+                </Text>
+              </Col>
+            </Row>
+          )
         )}
       </Col>
-      {!contacts?.includes(id) && (
+      {
         <Col xs={contact ? 24 : 5} style={{ textAlign: "right" }}>
-          {!contact && (
+          {
             <Tooltip placement="top" title={t("Add contact")}>
               <Button
-                icon={<UserAddOutlined />}
-                type="primary"
-                onClick={() => handleAddContact(id)}
+                icon={
+                  !contacts?.includes(id) ? (
+                    <UserAddOutlined />
+                  ) : (
+                    <UserDeleteOutlined />
+                  )
+                }
+                type={!contacts?.includes(id) ? "primary" : "default"}
+                onClick={() =>
+                  !contacts?.includes(id)
+                    ? handleAddContact(id)
+                    : handleDeleteContact(id)
+                }
+                style={{
+                  backgroundColor: !contacts?.includes(id) ? "" : "red",
+                }}
               />
             </Tooltip>
-          )}
+          }
         </Col>
-      )}
+      }
     </Row>
   );
 };

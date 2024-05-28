@@ -36,6 +36,8 @@ export const ProviderForm = () => {
   const [modalities, setModalities] = useState<IModality[]>([]);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
+  console.log({ user });
+
   useEffect(() => {
     const fetchData = async () => {
       const {
@@ -49,7 +51,8 @@ export const ProviderForm = () => {
     };
 
     fetchData();
-  }, [user.id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -107,9 +110,9 @@ export const ProviderForm = () => {
   useEffect(() => {
     const values = defaultValues.current;
 
-    form.setFieldsValue({
+    /*form.setFieldsValue({
       services: [],
-    });
+    });*/
 
     form.setFieldsValue({
       ...values,

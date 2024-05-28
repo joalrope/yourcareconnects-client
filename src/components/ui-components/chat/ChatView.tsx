@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Schema } from "mongoose";
 
-import { Button, Menu, Typography, type MenuProps } from "antd";
+import { App, Button, Col, Menu, Typography, type MenuProps } from "antd";
+import { UserDeleteOutlined } from "@ant-design/icons";
 
 import { RootState } from "../../../store";
 import {
@@ -11,6 +12,7 @@ import {
   setReceiverId,
   setChatMessages,
   setUnreadCount,
+  setUser,
 } from "../../../store/slices";
 import {
   Avatar,
@@ -38,7 +40,11 @@ import EmojiPicker, {
 import { IChatMessage, IConversation, IMessageType } from "./interfaces";
 import { useChatSocketCtx } from "./context";
 import { getConversations } from "./helpers/conversations";
-import { clearNotificationsById, getUserMessagesById } from "../../../services";
+import {
+  clearNotificationsById,
+  getUserMessagesById,
+  updateUserContactsById,
+} from "../../../services";
 import { useChatMenuItems } from "./hooks/ChatMenuItems";
 import { useSocket } from "./hooks/useSocket";
 import { months } from "./interfaces/chat";
@@ -55,6 +61,7 @@ const contacInit = {
 };
 
 export const ChatView = () => {
+  const { message } = App.useApp();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -298,17 +305,64 @@ export const ChatView = () => {
                         style={{
                           display: "flex",
                           flexDirection: "row",
+                          gap: 8,
                           justifyContent: "space-between",
                         }}
                       >
-                        <Typography.Text ellipsis>{c.names}</Typography.Text>
-                        <Button
-                          size="small"
-                          type="primary"
-                          onClick={() => navigate(`/provider-profile/${c.id}`)}
-                        >
-                          {t("Profile")}
-                        </Button>
+                        <Col>
+                          <Typography.Text ellipsis>{c.names}</Typography.Text>
+                        </Col>
+                        {c.names !== "Support" && (
+                          <Col style={{ display: "flex", gap: 8 }}>
+                            <Button
+                              size="small"
+                              type="primary"
+                              onClick={() =>
+                                navigate(`/provider-profile/${c.id}`)
+                              }
+                            >
+                              {t("Profile")}
+                            </Button>
+                            <Button
+                              size="small"
+                              type="default"
+                              onClick={async () => {
+                                console.log({ userID: id, contactID: c.id });
+                                const {
+                                  ok,
+                                  msg,
+                                  result: { user },
+                                } = await updateUserContactsById(
+                                  id,
+                                  c.id,
+                                  false
+                                );
+
+                                if (ok) {
+                                  message.success({
+                                    content: [
+                                      <b key={"1"}>{user.fullname}</b>,
+                                      <span key={"2"}>{` ${t("and")} `}</span>,
+                                      <b key={"3"}>{c.names} </b>,
+                                      t("are no longer contacts"),
+                                    ],
+                                    duration: 4,
+                                  });
+                                  dispatch(setUser(user));
+                                  return;
+                                } else {
+                                  message.error({
+                                    content: t(`${msg}`),
+                                    duration: 3,
+                                  });
+                                  return;
+                                }
+                              }}
+                              icon={<UserDeleteOutlined />}
+                              style={{ backgroundColor: "red" }}
+                            />
+                          </Col>
+                        )}
                       </div>
                     }
                     info={c.info}

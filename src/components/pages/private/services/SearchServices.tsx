@@ -153,10 +153,10 @@ export const SearchServices = () => {
         justify={"center"}
         style={{
           display: "flex",
-          flexDirection: "column",
           marginTop: "5%",
           padding: 24,
           userSelect: "none",
+          width: "100%",
         }}
       >
         <Col xs={24} md={16} lg={12}>

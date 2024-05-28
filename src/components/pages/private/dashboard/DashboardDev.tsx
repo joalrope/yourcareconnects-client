@@ -8,7 +8,7 @@ import {
   //Radio,
   //RadioChangeEvent,
   Row,
-  Space,
+  Tooltip,
   Typography,
 } from "antd";
 import { useTranslation } from "react-i18next";
@@ -21,7 +21,7 @@ import {
 } from "../../../../services";
 import { DashboardAdmin } from "./DashboardAdmin";
 
-const { Title } = Typography;
+const { Text, Title } = Typography;
 //const { Search } = Input;
 
 export enum TypeActiveUserStatus {
@@ -192,46 +192,90 @@ export const DashboardDev = () => {
         </Row>
 
         <Row
+          gutter={[4, 4]}
           style={{
             gap: 24,
-            justifyContent: "space-around",
+            justifyContent: "space-evenly",
             userSelect: "none",
             width: "100%",
           }}
         >
-          <Col>
-            <Button type="primary" onClick={clearContacts}>
-              {t("Clear Contacts")}
+          <Col
+            xs={24}
+            sm={24}
+            md={4}
+            lg={4}
+            style={{ paddingRight: 6, textAlign: "center" }}
+          >
+            <Button
+              type="primary"
+              onClick={clearContacts}
+              style={{ width: "100%" }}
+            >
+              <Text ellipsis={true}>{t("Clear Contacts")}</Text>
             </Button>
           </Col>
-          <Col>
+          <Col xs={24} sm={24} md={14} lg={14} style={{ textAlign: "center" }}>
             <Form name="userDelete" form={form} onFinish={onFinish}>
-              <Form.Item
-                label="Correo"
-                name="email"
-                rules={[
-                  {
-                    required: true,
-                    message: `${t("Please input a email")}`,
-                  },
-                  {
-                    type: "email",
-                    message: `${t("Please input a valid email")}`,
-                  },
-                ]}
+              <Row
+                style={{
+                  justifyContent: "space-between",
+                  width: "100%",
+                }}
+                gutter={[4, 4]}
               >
-                <Space.Compact style={{ width: "100%" }}>
-                  <Input style={{ width: 350 }} />
-                  <Button htmlType="submit" type="primary">
-                    {t("User hard delete")}
+                <Col xs={24} sm={24} md={10} lg={10}>
+                  <Form.Item
+                    label="Correo"
+                    name="email"
+                    rules={[
+                      {
+                        required: true,
+                        message: `${t("Please input a email")}`,
+                      },
+                      {
+                        type: "email",
+                        message: `${t("Please input a valid email")}`,
+                      },
+                    ]}
+                    style={{ width: "100%" }}
+                  >
+                    <Input placeholder="Email" />
+                  </Form.Item>
+                </Col>
+                <Col
+                  xs={24}
+                  sm={24}
+                  md={14}
+                  lg={14}
+                  style={{ textAlign: "center" }}
+                >
+                  <Button
+                    htmlType="submit"
+                    type="primary"
+                    style={{ width: "100%" }}
+                  >
+                    <Text ellipsis={true}>
+                      <Tooltip>{t("User hard delete")}</Tooltip>
+                    </Text>
                   </Button>
-                </Space.Compact>
-              </Form.Item>
+                </Col>
+              </Row>
             </Form>
           </Col>
-          <Col>
-            <Button type="primary" onClick={ratingsNormalize}>
-              {t("Ratings Normalize")}
+          <Col
+            xs={24}
+            sm={24}
+            md={4}
+            lg={4}
+            style={{ paddingRight: 6, textAlign: "center" }}
+          >
+            <Button
+              type="primary"
+              onClick={ratingsNormalize}
+              style={{ width: "100%" }}
+            >
+              <Text ellipsis={true}>{t("Ratings Normalize")}</Text>
             </Button>
           </Col>
         </Row>

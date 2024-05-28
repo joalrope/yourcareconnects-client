@@ -1,21 +1,25 @@
-import { /* ReactNode, */ useState } from "react";
-import { FloatButton, Layout, Spin } from "antd";
+import { FloatButton, Layout, Row, Spin } from "antd";
 import { WhatsAppOutlined } from "@ant-design/icons";
 
 import { FooterContent } from "./FooterContent";
 import { HeaderContent } from "./HeaderContent";
 import { SiderContent } from "./sider/SiderContent";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import { AppRouter } from "../router/AppRouter";
+import { setCollapsed } from "../store/slices/router/routerSlice";
 
 import "./app-layout.css";
 
 const { Header, Footer, Sider, Content } = Layout;
 
 export const AppLayout = (/* { children }: { children: ReactNode } */) => {
-  const [collapsed, setCollapsed] = useState(false);
+  //const [collapsed, setCollapsed] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const { collapsed } = useSelector((state: RootState) => state.router);
 
   const { isLoggedIn } = useSelector((state: RootState) => state.user);
   const { loading } = useSelector((state: RootState) => state.ui);
@@ -23,7 +27,7 @@ export const AppLayout = (/* { children }: { children: ReactNode } */) => {
   const hScreen = isLoggedIn ? "83.5vh" : "86.7vh";
 
   const onCollapse = () => {
-    setCollapsed(!collapsed);
+    dispatch(setCollapsed(!collapsed));
   };
 
   const supportPhone = import.meta.env.VITE_SUPPORT_PHONE;
@@ -38,12 +42,12 @@ export const AppLayout = (/* { children }: { children: ReactNode } */) => {
           collapsed={collapsed}
           onCollapse={onCollapse}
         >
-          <SiderContent collapsed={collapsed} />
+          <SiderContent />
         </Sider>
       )}
       <Layout>
         <Header style={{ paddingLeft: 0, width: "100%" }}>
-          <HeaderContent collapsed={collapsed} setCollapsed={setCollapsed} />
+          <HeaderContent />
         </Header>
         <Content
           style={{
@@ -52,32 +56,38 @@ export const AppLayout = (/* { children }: { children: ReactNode } */) => {
             overflowX: "hidden",
           }}
         >
-          <Spin
-            size="large"
-            spinning={loading}
-            style={{
-              position: "absolute",
-              top: screen.width / 3,
-              left: screen.width / 2,
-              zIndex: 100,
-            }}
-          />
-          <AppRouter />
-          <FloatButton
-            className="float-button"
-            style={{
-              left: isLoggedIn ? (collapsed ? 88 : 208) : 36,
-              backgroundColor: "#01e675",
-              bottom: 88,
-              height: 48,
-              width: 48,
-            }}
-            type="default"
-            icon={<WhatsAppOutlined className="float-button-icon" />}
-            onClick={() =>
-              window.open(`https://wa.me/${supportPhone}`, "_blank")
-            }
-          />
+          {(!isLoggedIn ||
+            (isLoggedIn && window.innerWidth > 360) ||
+            (isLoggedIn && collapsed && window.innerWidth <= 360)) && (
+            <Row style={{ width: "100%", height: "100%" }}>
+              <Spin
+                size="large"
+                spinning={loading}
+                style={{
+                  position: "absolute",
+                  top: screen.width / 3,
+                  left: screen.width / 2,
+                  zIndex: 100,
+                }}
+              />
+              <AppRouter />
+              <FloatButton
+                className="float-button"
+                style={{
+                  left: isLoggedIn ? (collapsed ? 88 : 208) : 36,
+                  backgroundColor: "#01e675",
+                  bottom: 88,
+                  height: 48,
+                  width: 48,
+                }}
+                type="default"
+                icon={<WhatsAppOutlined className="float-button-icon" />}
+                onClick={() =>
+                  window.open(`https://wa.me/${supportPhone}`, "_blank")
+                }
+              />
+            </Row>
+          )}
         </Content>
         <Footer>
           <FooterContent />
