@@ -57,8 +57,8 @@ export const AppLayout = (/* { children }: { children: ReactNode } */) => {
           }}
         >
           {(!isLoggedIn ||
-            (isLoggedIn && window.innerWidth > 360) ||
-            (isLoggedIn && collapsed && window.innerWidth <= 360)) && (
+            (isLoggedIn && window.innerWidth > 400) ||
+            (isLoggedIn && collapsed && window.innerWidth <= 400)) && (
             <Row style={{ width: "100%", height: "100%" }}>
               <Spin
                 size="large"
