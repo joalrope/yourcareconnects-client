@@ -129,3 +129,7 @@
 .cs-conversation__content {
   margin-right: 0px !important;
 }
+
+.cs-sidebar {
+  overflow: unset !important;
+}

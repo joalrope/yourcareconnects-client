@@ -17,7 +17,7 @@
     "@chatscope/chat-ui-kit-styles": "^1.4.0",
     "@react-google-maps/api": "^2.19.2",
     "@reduxjs/toolkit": "^1.9.5",
-    "antd": "^5.5.1",
+    "antd": "^5.18.0",
     "antd-img-crop": "^4.13.0",
     "emoji-picker-react": "^4.5.15",
     "i18next": "^22.5.1",

@@ -278,23 +278,25 @@ export const DashboardDev = () => {
             </Button>
           </Col>
         </Row>
-        <Row>
-          <Col
-            xs={24}
-            sm={24}
-            md={4}
-            lg={4}
-            style={{ paddingRight: 6, textAlign: "center" }}
-          >
-            <Button
-              type="primary"
-              onClick={clearContacts}
-              style={{ width: "100%" }}
+        {false && (
+          <Row>
+            <Col
+              xs={24}
+              sm={24}
+              md={4}
+              lg={4}
+              style={{ paddingRight: 6, textAlign: "center" }}
             >
-              <Text ellipsis={true}>{t("Limpiar Contacts")}</Text>
-            </Button>
-          </Col>
-        </Row>
+              <Button
+                type="primary"
+                onClick={clearContacts}
+                style={{ width: "100%" }}
+              >
+                <Text ellipsis={true}>{t("Limpiar Contacts")}</Text>
+              </Button>
+            </Col>
+          </Row>
+        )}
       </Row>
     </Row>
   );
