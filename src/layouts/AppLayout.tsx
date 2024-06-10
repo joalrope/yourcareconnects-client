@@ -11,7 +11,6 @@ import { AppRouter } from "../router/AppRouter";
 import { setCollapsed } from "../store/slices/router/routerSlice";
 
 import "./app-layout.css";
-import { useEffect } from "react";
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -20,9 +19,7 @@ export const AppLayout = (/* { children }: { children: ReactNode } */) => {
 
   const dispatch = useDispatch();
 
-  const { collapsed, locationPath } = useSelector(
-    (state: RootState) => state.router
-  );
+  const { collapsed } = useSelector((state: RootState) => state.router);
 
   const { isLoggedIn } = useSelector((state: RootState) => state.user);
   const { loading } = useSelector((state: RootState) => state.ui);
@@ -35,16 +32,8 @@ export const AppLayout = (/* { children }: { children: ReactNode } */) => {
 
   const supportPhone = import.meta.env.VITE_SUPPORT_PHONE;
 
-  useEffect(() => {
-    if (locationPath === "chat") {
-      dispatch(setCollapsed(true));
-    } else {
-      dispatch(setCollapsed(false));
-    }
-  }, [dispatch, locationPath]);
-
   return (
-    <Layout style={{ height: "100vh" }}>
+    <Layout style={{ height: "100vh", width: "100vw" }}>
       {isLoggedIn && (
         <Sider
           breakpoint="xs"
@@ -82,27 +71,26 @@ export const AppLayout = (/* { children }: { children: ReactNode } */) => {
                 }}
               />
               <AppRouter />
-              <FloatButton
-                className="float-button"
-                style={{
-                  left: isLoggedIn ? (collapsed ? 88 : 208) : 36,
-                  backgroundColor: "#01e675",
-                  bottom: 88,
-                  height: 48,
-                  width: 48,
-                }}
-                type="default"
-                icon={<WhatsAppOutlined className="float-button-icon" />}
-                onClick={() =>
-                  window.open(`https://wa.me/${supportPhone}`, "_blank")
-                }
-              />
             </Row>
           )}
         </Content>
         <Footer>
           <FooterContent />
         </Footer>
+        <FloatButton
+          className="float-button"
+          style={{
+            left: isLoggedIn ? (collapsed ? 88 : 208) : 36,
+            backgroundColor: "#01e675",
+            bottom: 128,
+            height: 48,
+            width: 48,
+            zIndex: 100,
+          }}
+          type="default"
+          icon={<WhatsAppOutlined className="float-button-icon" />}
+          onClick={() => window.open(`https://wa.me/${supportPhone}`, "_blank")}
+        />
       </Layout>
     </Layout>
   );

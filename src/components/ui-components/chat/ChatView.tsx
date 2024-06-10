@@ -51,6 +51,7 @@ import { months } from "./interfaces/chat";
 
 import styles from "./styles/chat.module.css";
 import { useNavigate } from "react-router-dom";
+import { setLocationPath } from "../../../store/slices/router/routerSlice";
 
 const contacInit = {
   id: "",
@@ -227,6 +228,12 @@ export const ChatView = () => {
       fetchData();
       //TODO: setNotifications(0);
     }
+
+    if (window.innerWidth < 458) {
+      const button = document.querySelector(".button-arrow");
+      setShowConversations(false);
+      button?.classList.toggle("clicked");
+    }
   };
 
   const handleOnBlur = () => {
@@ -317,9 +324,10 @@ export const ChatView = () => {
                             <Button
                               size="small"
                               type="primary"
-                              onClick={() =>
-                                navigate(`/provider-profile/${c.id}`)
-                              }
+                              onClick={() => {
+                                dispatch(setLocationPath(`/provider-profile`));
+                                navigate(`/provider-profile/${c.id}`);
+                              }}
                             >
                               {t("Profile")}
                             </Button>

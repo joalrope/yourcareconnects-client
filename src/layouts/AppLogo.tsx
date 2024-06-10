@@ -1,4 +1,4 @@
-import { Image, theme } from "antd";
+import { Col, Image, theme } from "antd";
 import styles from "./layout.module.css";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -13,11 +13,12 @@ export const AppLogo = () => {
 
   return (
     <Link to={isLoggedIn ? "/dashboard" : "/login"}>
-      <div
+      <Col
+        xs={0}
         className={styles.logoContainer}
         style={{
           backgroundColor: token.colorPrimary,
-          width: collapsed ? 80 : 200,
+          maxWidth: collapsed ? 80 : 200,
         }}
       >
         <Image
@@ -25,7 +26,7 @@ export const AppLogo = () => {
           preview={false}
           width={collapsed ? 60 : 120}
         />
-      </div>
+      </Col>
     </Link>
   );
 };

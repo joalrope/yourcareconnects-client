@@ -57,3 +57,7 @@
 aside:is(.ant-layout-sider-collapsed) .ant-menu-item {
   padding: 32px 32px !important;
 }
+
+.ant-layout-footer {
+  padding: 10px 40px !important;
+}

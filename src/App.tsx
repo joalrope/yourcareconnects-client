@@ -57,11 +57,11 @@ function App() {
       theme={{
         components: {
           Menu: {
-            colorItemTextHover: "#1a1a13",
-            colorItemText: "#1a1a13",
-            colorItemBgHover: "#000000",
-            colorItemBgSelected: "#000000",
-            colorItemTextSelected: "#1a1a13",
+            itemHoverColor: "#1a1a13",
+            itemColor: "#1a1a13",
+            itemHoverBg: "#000000",
+            itemSelectedBg: "#000000",
+            itemSelectedColor: "#1a1a13",
             paddingContentVertical: 0,
           },
           Select: {

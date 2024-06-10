@@ -29,11 +29,17 @@ export const FooterContent = () => {
       <Col xs={0} sm={0} md={0} lg={8} flex="1 0 auto">
         Made with <HeartFilled style={{ color: "red" }} /> by Bohiques
       </Col>
-      <Col xs={0} sm={0} md={16} flex="1 0 auto">
+      <Col xs={0} sm={0} md={8} lg={8} flex="1 0 auto">
         {t("Copyright")} <CopyrightOutlined /> {new Date().getFullYear()} -
         Yourcareconnects
       </Col>
-      <Col flex="1 0 auto" style={{ textAlign: "center" }}>
+      <Col
+        xs={24}
+        sm={16}
+        md={8}
+        lg={8}
+        style={{ textAlign: "center", width: "100%" }}
+      >
         <Link
           style={{ marginRight: 12 }}
           className="--footer__avatar"

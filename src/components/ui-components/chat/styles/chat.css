@@ -133,3 +133,15 @@
 .cs-sidebar {
   overflow: unset !important;
 }
+
+.cs-message-list {
+  height: 83% !important;
+}
+
+.cs-conversation-list {
+  height: 92% !important;
+}
+
+.cs-chat-container {
+  min-width: 100px !important;
+}

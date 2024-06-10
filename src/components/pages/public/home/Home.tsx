@@ -38,10 +38,9 @@ export const Home = () => {
         <Title
           style={{
             marginBottom: 0,
-
             textAlign: "center",
             userSelect: "none",
-            fontSize: "3em",
+            fontSize: "2.7em",
           }}
           level={3}
         >
