@@ -23,6 +23,7 @@ import {
 import { LanguageSelect } from "../components/ui-components/LanguageSelect";
 import { AppLogo } from "./AppLogo";
 import { setIsOpened } from "../store/slices";
+import { useEffect, useState } from "react";
 
 export const HeaderContent = () => {
   const { t } = useTranslation();
@@ -32,6 +33,7 @@ export const HeaderContent = () => {
     (state: RootState) => state.router
   );
   const { isOpened } = useSelector((state: RootState) => state.ui);
+  const [showCollapseIcon, setShowCollapseIcon] = useState(false);
 
   const mode = "";
 
@@ -73,6 +75,10 @@ export const HeaderContent = () => {
     dispatch(setLocationPath("dashboard"));
   };
 
+  useEffect(() => {
+    setShowCollapseIcon(window.innerWidth < 480 ? false : true);
+  }, [collapsed]);
+
   return (
     <>
       {!isLoggedIn ? (
@@ -105,7 +111,8 @@ export const HeaderContent = () => {
           </Col>
         </>
       ) : (
-        isLoggedIn && (
+        isLoggedIn &&
+        showCollapseIcon && (
           <Row
             align={"middle"}
             justify={"space-between"}

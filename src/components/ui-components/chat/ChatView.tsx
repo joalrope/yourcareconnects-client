@@ -229,7 +229,7 @@ export const ChatView = () => {
       //TODO: setNotifications(0);
     }
 
-    if (window.innerWidth < 458) {
+    if (window.innerWidth < 480) {
       const button = document.querySelector(".button-arrow");
       setShowConversations(false);
       button?.classList.toggle("clicked");
