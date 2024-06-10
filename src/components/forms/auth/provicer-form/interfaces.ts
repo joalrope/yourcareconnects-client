@@ -16,7 +16,7 @@ export interface IProvider {
 
 export interface IModality {
   id: string;
-  title: string | Element;
+  title: string | undefined;
   value: string;
   tagColor?: string;
 }

@@ -60,22 +60,7 @@ export const ProviderForm = () => {
       const data = modalities.map((modality) => {
         return {
           key: modality.title,
-          title: (
-            <Row>
-              <Col
-                xs={24}
-                style={{
-                  backgroundColor: `${"red"}20`,
-                  border: `1px solid ${modality.tagColor}`,
-                  color: modality.tagColor,
-                  borderRadius: 4,
-                  paddingInline: 12,
-                }}
-              >
-                {`${modality.title}`}
-              </Col>
-            </Row>
-          ),
+          title: modality.title,
           value: modality.title,
         };
       });
