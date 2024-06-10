@@ -42,7 +42,6 @@ export const ProviderProfile = () => {
   useEffect(() => {
     const fetchData = async () => {
       const { result } = await getUserById(String(id));
-      console.log({ result });
 
       if (result) {
         setProvider(result);
@@ -69,8 +68,8 @@ export const ProviderProfile = () => {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onRemove = async (file: any) => {
-    console.log("file", file);
+  const onRemove = async (/*file: any*/) => {
+    //console.log("file", file);
   };
 
   return (

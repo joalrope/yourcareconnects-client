@@ -12,12 +12,14 @@ import {
   setServiceFormVisible,
 } from "../../../store/slices";
 import { servicesSort } from "../../../helpers/services";
-//import { usetranslate } from "../../../helpers/translate";
 import { RootState } from "../../../store";
 import { pushAddService } from "./pushAddService";
 import { formatterServiceItems } from "./FormatterServiceItems";
 import { IItem, Props } from "./interfaces";
-import { translateServices } from "../../../helpers/translate";
+import {
+  translateService,
+  translateServices,
+} from "../../../helpers/translate";
 
 export const CategorySelect = ({
   form,
@@ -97,8 +99,8 @@ export const CategorySelect = ({
   };
 
   useEffect(() => {
-    setValue(initValues);
-  }, [initValues]);
+    setValue(translateService(initValues, t));
+  }, [initValues, t]);
 
   return (
     <>

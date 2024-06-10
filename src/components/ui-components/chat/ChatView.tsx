@@ -133,7 +133,7 @@ export const ChatView = () => {
   };
 
   const handleOnAttachClick = () => {
-    console.log("attach");
+    //console.log("attach");
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -327,7 +327,6 @@ export const ChatView = () => {
                               size="small"
                               type="default"
                               onClick={async () => {
-                                console.log({ userID: id, contactID: c.id });
                                 const {
                                   ok,
                                   msg,

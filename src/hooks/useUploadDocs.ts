@@ -13,7 +13,7 @@ export const useUploadDocs = () => {
 
     async onChange({ file, fileList }) {
       if (file.status !== "uploading") {
-        console.log(file, fileList);
+        //console.log(file, fileList);
       }
 
       const formData = new FormData();

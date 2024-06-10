@@ -89,7 +89,6 @@ export const UserTitle = ({
   }, [rolePassed]);
 
   const handleAddContact = async (id: string) => {
-    console.log("add contact", id);
     const {
       ok,
       result: { fullname },
@@ -130,7 +129,6 @@ export const UserTitle = ({
   };
 
   const handleDeleteContact = async (id: string) => {
-    console.log("delete contact", id);
     const {
       ok,
       result: { fullname },
@@ -426,7 +424,12 @@ export const UserTitle = ({
       {
         <Col xs={contact ? 24 : 5} style={{ textAlign: "right" }}>
           {
-            <Tooltip placement="top" title={t("Add contact")}>
+            <Tooltip
+              placement="top"
+              title={
+                contacts?.includes(id) ? t("Delete contact") : t("Add contact")
+              }
+            >
               <Button
                 icon={
                   !contacts?.includes(id) ? (

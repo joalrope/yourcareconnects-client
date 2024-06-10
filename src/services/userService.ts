@@ -71,7 +71,7 @@ export const updateUserContactsById = async (
   addContact: boolean
 ) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let resp: any;
+  let resp!: { ok: boolean; msg: string; result: any };
   const mode: string = addContact ? "add" : "remove";
 
   const resp1 = await fetchWithToken(

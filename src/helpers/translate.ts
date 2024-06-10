@@ -33,3 +33,20 @@ export const translateServices = (
 
   return JSON.parse(JSON.stringify(jsonArray));
 };
+
+export const translateService = (
+  items: string[],
+  t: TFunction<"translation", undefined, "translation">
+) => {
+  const translateItems = items.map((item) => {
+    const splitedItem = item.split("|");
+
+    const translateItem = splitedItem.map((subItem) => {
+      return t(subItem);
+    });
+
+    return translateItem.join("|");
+  });
+
+  return translateItems;
+};

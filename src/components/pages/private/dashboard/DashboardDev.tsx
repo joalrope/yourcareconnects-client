@@ -69,14 +69,14 @@ export const DashboardDev = () => {
   };
 
   const ratingsNormalize = async () => {
-    const { ok, msg, result } = await ratingsNormalizeService();
+    const { ok, msg } = await ratingsNormalizeService();
 
     if (ok) {
       modal.confirm({
         title: "Success",
         content: t(`${msg}`),
         onOk: () => {
-          console.log(result);
+          //console.log(result);
         },
       });
     }
@@ -192,7 +192,6 @@ export const DashboardDev = () => {
         </Row>
 
         <Row
-          gutter={[4, 4]}
           style={{
             gap: 24,
             justifyContent: "space-evenly",
@@ -276,6 +275,23 @@ export const DashboardDev = () => {
               style={{ width: "100%" }}
             >
               <Text ellipsis={true}>{t("Ratings Normalize")}</Text>
+            </Button>
+          </Col>
+        </Row>
+        <Row>
+          <Col
+            xs={24}
+            sm={24}
+            md={4}
+            lg={4}
+            style={{ paddingRight: 6, textAlign: "center" }}
+          >
+            <Button
+              type="primary"
+              onClick={clearContacts}
+              style={{ width: "100%" }}
+            >
+              <Text ellipsis={true}>{t("Limpiar Contacts")}</Text>
             </Button>
           </Col>
         </Row>

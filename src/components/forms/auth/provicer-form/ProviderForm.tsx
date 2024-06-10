@@ -18,7 +18,6 @@ import { CategorySelect } from "../../../ui-components/category-select/CategoryS
 import { IModality, IProvider } from "./interfaces";
 import { FormItemInput } from "../../../ui-components/FormItemInput";
 import { UserProfileImage } from "../../../ui-components/user-profile-image/UserProfileImage";
-import { useTranslatedServices } from "../../../../helpers/services";
 import { UploadDocs } from "../../../ui-components/UploadDocs";
 import { GetLocationMap } from "../../../pages";
 
@@ -35,8 +34,6 @@ export const ProviderForm = () => {
   const { id, role } = user;
   const [modalities, setModalities] = useState<IModality[]>([]);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
-
-  console.log({ user });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -110,9 +107,9 @@ export const ProviderForm = () => {
   useEffect(() => {
     const values = defaultValues.current;
 
-    /*form.setFieldsValue({
+    form.setFieldsValue({
       services: [],
-    });*/
+    });
 
     form.setFieldsValue({
       ...values,
@@ -393,8 +390,7 @@ export const ProviderForm = () => {
               >
                 <CategorySelect
                   form={form}
-                  // eslint-disable-next-line react-hooks/rules-of-hooks
-                  initValues={useTranslatedServices(user.services)}
+                  initValues={user.services}
                   formatted={true}
                   editable={true}
                   sortable={true}
