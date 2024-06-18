@@ -10,6 +10,7 @@ export const SelectCreateAccount = () => {
         maxHeight: "86.5vh",
         maxWidth: "100vw",
         padding: 24,
+        width: "100%",
       }}
       align="middle"
       gutter={[50, 50]}

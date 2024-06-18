@@ -27,11 +27,11 @@ export const Home = () => {
       align={"middle"}
       justify={"center"}
       style={{
+        background: "#f1f1f1",
         height: "100%",
-        width: "100%",
         margin: "0 auto",
         padding: "24px 4vh",
-        background: "#f1f1f1",
+        width: "100%",
       }}
     >
       <Col span={24} md={12}>

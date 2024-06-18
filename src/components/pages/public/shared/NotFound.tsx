@@ -12,35 +12,33 @@ export const NotFound = () => {
 
   return (
     <Row
-      align={"middle"}
-      gutter={48}
-      justify={"center"}
+      gutter={16}
       style={{
-        position: "relative",
-        backgroundColor: "white",
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
         height: "100%",
-        padding: 24,
-        top: -20,
+        width: "100%",
       }}
     >
-      <Col>
-        <Image src="/images/404.jpg" width={"30vw"} preview={false} />
+      <Col xs={24} sm={24} md={12} lg={12} style={{ textAlign: "center" }}>
+        <Image src="/images/404.jpg" width={"50vw"} preview={false} />
       </Col>
 
-      <Col>
-        <Row style={{ alignItems: "start", flexDirection: "column" }}>
+      <Col xs={24} sm={24} md={12} lg={12} style={{ padding: 24 }}>
+        <Row style={{ alignItems: "center", flexDirection: "column" }}>
           <Col>
             <Title level={3} style={{ textAlign: "left", color: "red" }}>
               {t("404 Error")}
             </Title>
           </Col>
           <Col>
-            <Title level={2} style={{ textAlign: "left" }}>
+            <Title level={2} style={{ textAlign: "center" }}>
               {t("Sorry, page not found")}
             </Title>
           </Col>
           <Col>
-            <Title level={4} style={{ textAlign: "left" }}>
+            <Title level={4} style={{ textAlign: "center" }}>
               {t("Lost, Find your way by going back or asking for help")}
             </Title>
           </Col>

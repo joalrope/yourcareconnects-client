@@ -26,23 +26,24 @@ export const Login = () => {
         justifyContent: "center",
         height: "100%",
         padding: 24,
+        width: "100%",
       }}
     >
       <Col
         xs={0}
         sm={0}
-        md={11}
-        lg={11}
+        md={12}
+        lg={12}
         style={{ display: "flex", justifyContent: "flex-end" }}
       >
-        <ImageYCC width="30vw" />
+        <ImageYCC width="33vw" />
       </Col>
       <Col
         xs={24}
         offset={1}
-        sm={12}
-        md={12}
-        lg={12}
+        sm={11}
+        md={11}
+        lg={11}
         style={{ display: "flex", justifyContent: "flex-start" }}
       >
         <LoginForm />

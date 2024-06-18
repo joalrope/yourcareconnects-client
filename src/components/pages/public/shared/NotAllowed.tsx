@@ -12,22 +12,32 @@ export const NotAllowed = () => {
 
   return (
     <Row
-      align={"middle"}
-      gutter={48}
-      justify={"center"}
       style={{
-        position: "relative",
-        backgroundColor: "white",
-        height: "100%",
-        padding: 24,
-        top: -20,
+        alignContent: "center",
+        alignItems: "center",
+        //backgroundColor: "white",
+        justifyContent: "center",
+        gap: 16,
       }}
     >
-      <Col>
-        <Image src="/images/403.jpg" width={"30vw"} preview={false} />
+      <Col xs={16} sm={16} md={12} lg={12}>
+        <Row
+          style={{
+            alignItems: "start",
+            flexDirection: "column",
+            width: "100%",
+          }}
+        >
+          <Image
+            src="/images/403.jpg"
+            height={"auto"}
+            width={"100%"}
+            preview={false}
+          />
+        </Row>
       </Col>
 
-      <Col>
+      <Col xs={16} sm={16} md={8} lg={8}>
         <Row
           style={{
             alignItems: "start",
@@ -43,7 +53,7 @@ export const NotAllowed = () => {
                 borderRadius: "12px",
                 color: "white",
                 display: "block",
-                fontSize: "2vw",
+                fontSize: "clamp(1.5rem, 8vw-2rem, 3rem)",
                 paddingBottom: "0.75vh",
                 paddingInline: "2vw",
                 textAlign: "center",
@@ -54,7 +64,12 @@ export const NotAllowed = () => {
             </Text>
           </Col>
           <Col>
-            <Text style={{ fontSize: "1.2vw", textAlign: "left" }}>
+            <Text
+              style={{
+                fontSize: "clamp(var(10px), var(12px), var(16px)) !important",
+                textAlign: "left",
+              }}
+            >
               {t("Looks like you don't have access to this page")}
             </Text>
           </Col>

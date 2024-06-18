@@ -8,7 +8,7 @@ export const Register = () => {
   const { code } = useParams();
 
   return (
-    <Row>
+    <Row style={{ justifyContent: "center", height: "100%", width: "100%" }}>
       <Col style={{ margin: "auto", padding: 24, maxWidth: 500 }}>
         <RegisterForm role={role} code={code} />
       </Col>
