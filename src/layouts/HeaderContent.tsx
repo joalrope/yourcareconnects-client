@@ -66,12 +66,12 @@ export const HeaderContent = () => {
     dispatch(setLocationPath(key));
   };
 
-  const handleOpenChange = (flag: boolean) => {
-    dispatch(setIsOpened(flag));
+  const handleOpenChange = () => {
+    dispatch(setIsOpened(!isOpened));
   };
 
   const handleNameClick = () => {
-    dispatch(setIsOpened(false));
+    dispatch(setIsOpened(!isOpened));
     dispatch(setLocationPath("dashboard"));
   };
 
@@ -111,13 +111,12 @@ export const HeaderContent = () => {
           </Col>
         </>
       ) : (
-        isLoggedIn &&
-        showCollapseIcon && (
-          <Row
-            align={"middle"}
-            justify={"space-between"}
-            style={{ width: "100%" }}
-          >
+        <Row
+          align={"middle"}
+          justify={"space-between"}
+          style={{ width: "100%" }}
+        >
+          {isLoggedIn && showCollapseIcon ? (
             <Button
               type="text"
               icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -129,10 +128,11 @@ export const HeaderContent = () => {
                 height: 48,
               }}
             />
-
-            <InfoContent names={names} />
-          </Row>
-        )
+          ) : (
+            <Col> </Col>
+          )}
+          <InfoContent names={names} />
+        </Row>
       )}
     </>
   );

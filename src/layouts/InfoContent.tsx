@@ -75,18 +75,18 @@ export const InfoContent = ({ names }: Props) => {
   };
 
   const handleNameClick = () => {
-    dispatch(setIsOpened(false));
+    dispatch(setIsOpened(!isOpened));
     //setOpen(false);
     dispatch(setLocationPath("profile"));
     navigate("/profile");
   };
 
   const handleNotificationsClick = () => {
-    dispatch(setIsOpened(false));
+    dispatch(setIsOpened(!isOpened));
   };
 
   const handleItemClick = () => {
-    dispatch(setIsOpened(false));
+    dispatch(setIsOpened(!isOpened));
   };
 
   const pictureUrl =
@@ -94,8 +94,8 @@ export const InfoContent = ({ names }: Props) => {
       ? "/images/user.png"
       : `${pictures?.profile.image}`;
 
-  const handleOpenChange = (flag: boolean) => {
-    dispatch(setIsOpened(flag));
+  const handleOpenChange = () => {
+    dispatch(setIsOpened(!isOpened));
   };
 
   const items: MenuProps["items"] = [

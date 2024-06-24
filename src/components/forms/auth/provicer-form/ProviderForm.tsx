@@ -10,6 +10,7 @@ import {
   docDeleteService,
   getFilesService,
   getModalities,
+  getUserById,
   updateUserById,
 } from "../../../../services";
 import { setUser } from "../../../../store/slices";
@@ -34,6 +35,24 @@ export const ProviderForm = () => {
   const { id, role } = user;
   const [modalities, setModalities] = useState<IModality[]>([]);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+  const getUser = async () => {
+    console.log("Regresando...");
+    if (!user) {
+      const user = await getUserById(String(sessionStorage.getItem("id")));
+
+      console.log({ user });
+
+      dispatch(setUser(user));
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
+  getUser();
 
   useEffect(() => {
     const fetchData = async () => {

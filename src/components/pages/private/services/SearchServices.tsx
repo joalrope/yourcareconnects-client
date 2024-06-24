@@ -159,7 +159,7 @@ export const SearchServices = () => {
           width: "100%",
         }}
       >
-        <Col xs={24} md={16} lg={12}>
+        <Col xs={24} md={16} lg={12} style={{ textAlign: "center" }}>
           <Title level={3}>{t("Search Services")}</Title>
         </Col>
         <Col xs={24} md={16} lg={16} style={{ width: "100%" }}>
